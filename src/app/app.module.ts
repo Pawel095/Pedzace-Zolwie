@@ -8,6 +8,7 @@ import { MapViewComponent } from "./map-view/map-view.component";
 import { CardViewComponent } from "./card-view/card-view.component";
 import { ScoreboardComponent } from "./scoreboard/scoreboard.component";
 import { RulesComponent } from "./rules/rules.component";
+import { MainContainterComponent } from "./main-containter/main-containter.component";
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { RulesComponent } from "./rules/rules.component";
     MapViewComponent,
     CardViewComponent,
     ScoreboardComponent,
-    RulesComponent
+    RulesComponent,
+    MainContainterComponent
   ],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],
