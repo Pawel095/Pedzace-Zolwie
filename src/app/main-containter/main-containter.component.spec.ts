@@ -1,16 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { MainContainterComponent } from './main-containter.component';
+import { MainContainterComponent } from "./main-containter.component";
 
-describe('MainContainterComponent', () => {
+describe("MainContainterComponent", () => {
   let component: MainContainterComponent;
   let fixture: ComponentFixture<MainContainterComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MainContainterComponent ]
-    })
-    .compileComponents();
+      declarations: [MainContainterComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('MainContainterComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });
