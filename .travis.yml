@@ -10,4 +10,13 @@ before_script:
   - npm install -g @angular/cli
 script:
 - ng lint
-- ng build --prod
+- ng build --prod --base-href https://pawel095.github.io/Pedzace-Zolwie/
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: dist/Pedzace-Zolwie
+  on:
+    branch: master
+
