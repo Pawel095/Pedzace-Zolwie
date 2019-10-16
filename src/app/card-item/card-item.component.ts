@@ -1,5 +1,7 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, ElementRef, ViewChild } from "@angular/core";
 import { Card } from "../Models/Card";
+import { TurtleColours } from "../Enums/TurlteColours";
+import { CardMarkings } from "../Enums/CardMarkings";
 
 @Component({
   selector: "app-card-item",
@@ -7,9 +9,28 @@ import { Card } from "../Models/Card";
   styleUrls: ["./card-item.component.scss"]
 })
 export class CardItemComponent implements OnInit {
-  constructor() {}
+  card: Card;
+  ctx: CanvasRenderingContext2D;
 
-  @Input() card: Card;
+  @ViewChild("card", { static: true }) canvas: ElementRef<HTMLCanvasElement>;
 
-  ngOnInit() {}
+  background = new Image();
+  constructor() {
+    this.card = new Card();
+    this.card.colour = TurtleColours.BLUE;
+    this.card.marking = CardMarkings.COLOUR_ONE_FORWARD;
+  }
+
+  ngOnInit() {
+    this.background.src = "/assets/Background.png";
+    this.ctx = this.canvas.nativeElement.getContext("2d");
+
+    this.background.onload = backgroundOnload => {
+      if (this.background.src.length > 0) {
+        this.ctx.drawImage(this.background, 0, 0);
+      } else {
+        console.error('MISSING IMAGE "background.png"');
+      }
+    };
+  }
 }
