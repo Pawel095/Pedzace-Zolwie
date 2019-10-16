@@ -75,12 +75,8 @@ export class CardItemComponent implements OnInit {
           this.marking.src = this.markingL2Path;
           break;
       }
-      switch (this.card.colour) {
-        case TurtleColours.BLUE:
-          this.turtleColour = "blue";
-          break;
-      }
     });
+
     Promise.all([backgroundPromise, markingPromsie])
       .then(img => {
         // background
@@ -91,7 +87,26 @@ export class CardItemComponent implements OnInit {
         this.ctx.drawImage(img[1] as CanvasImageSource, this.width - 35, 5);
 
         // turtle
-        this.ctx.fillStyle = this.turtleColour;
+        switch (this.card.colour) {
+          case TurtleColours.BLUE:
+            this.ctx.fillStyle = "blue";
+            break;
+          case TurtleColours.RED:
+            this.ctx.fillStyle = "red";
+            break;
+          case TurtleColours.YELLOW:
+            this.ctx.fillStyle = "yellow";
+            break;
+          case TurtleColours.GREEN:
+            this.ctx.fillStyle = "green";
+            break;
+          case TurtleColours.VIOLET:
+            this.ctx.fillStyle = "violed";
+            break;
+          case TurtleColours.RAINBOW:
+            this.ctx.fillStyle = "black";
+            break;
+        }
         this.ctx.fillRect(100, 100, 30, 30);
       })
       .catch(e => console.error(e));

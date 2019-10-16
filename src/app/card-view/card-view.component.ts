@@ -8,15 +8,14 @@ import { TurtleColours } from "../Enums/TurtleColours";
   styleUrls: ["./card-view.component.scss"]
 })
 export class CardViewComponent implements OnInit {
+  cards: Array<Card> = [];
   constructor() {
     for (let i = 0; i < 10; i++) {
       const card: Card = new Card();
-      // card.colour = Math.floor(Math.random() * 5);
-      card.colour = TurtleColours.BLUE;
+      card.colour = Math.floor(Math.random() * 5);
       card.marking = Math.floor(Math.random() * 4);
       this.cards.push(card);
     }
   }
-  cards: Array<Card> = [];
   ngOnInit() {}
 }
