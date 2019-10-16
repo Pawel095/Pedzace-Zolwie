@@ -9,6 +9,7 @@ import { CardViewComponent } from "./card-view/card-view.component";
 import { ScoreboardComponent } from "./scoreboard/scoreboard.component";
 import { RulesComponent } from "./rules/rules.component";
 import { MainContainterComponent } from "./main-containter/main-containter.component";
+import { CardItemComponent } from "./card-item/card-item.component";
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { MainContainterComponent } from "./main-containter/main-containter.compo
     CardViewComponent,
     ScoreboardComponent,
     RulesComponent,
-    MainContainterComponent
+    MainContainterComponent,
+    CardItemComponent
   ],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],
