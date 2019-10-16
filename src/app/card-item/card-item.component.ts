@@ -2,7 +2,6 @@ import { Component, OnInit, Input, ElementRef, ViewChild } from "@angular/core";
 import { Card } from "../Models/Card";
 import { TurtleColours } from "../Enums/TurtleColours";
 import { CardMarkings } from "../Enums/CardMarkings";
-import { promise } from "protractor";
 
 @Component({
   selector: "app-card-item",
@@ -27,6 +26,7 @@ export class CardItemComponent implements OnInit {
   @ViewChild("card", { static: true }) canvas: ElementRef<HTMLCanvasElement>;
   background = new Image();
   marking = new Image();
+  turtleColour: string;
 
   constructor() {}
 
@@ -38,6 +38,7 @@ export class CardItemComponent implements OnInit {
     } else {
       this.card = this.inputCard;
     }
+
     this.ctx = this.canvas.nativeElement.getContext("2d");
     this.ctx.fillRect(0, 0, this.width, this.height);
     const backgroundPromise = new Promise((resolve, reject) => {
@@ -74,11 +75,24 @@ export class CardItemComponent implements OnInit {
           this.marking.src = this.markingL2Path;
           break;
       }
+      switch (this.card.colour) {
+        case TurtleColours.BLUE:
+          this.turtleColour = "blue";
+          break;
+      }
     });
     Promise.all([backgroundPromise, markingPromsie])
       .then(img => {
+        // background
         this.ctx.drawImage(img[0] as CanvasImageSource, 0, 0);
-        this.ctx.drawImage(img[1] as CanvasImageSource, 10, 10);
+        // marking top left
+        this.ctx.drawImage(img[1] as CanvasImageSource, 5, 5);
+        // marking top right
+        this.ctx.drawImage(img[1] as CanvasImageSource, this.width - 35, 5);
+
+        // turtle
+        this.ctx.fillStyle = this.turtleColour;
+        this.ctx.fillRect(100, 100, 30, 30);
       })
       .catch(e => console.error(e));
   }
