@@ -16,11 +16,45 @@
       the occupant
     </p>
     <p>Moving a turtle with other turtles on top moves ever turtle.</p>
-    <!-- <p>CARD DESCRIPTION HERE</p> -->
+  </section>
+  <section>
+    <h2>Card Explanation</h2>
+    <p>Note the markings in top corners of the cards</p>
     <div class="cardExamples">
       <div class="item">
-        <app-card-item [inputCard]="C1"></app-card-item
-        ><span class="desc">Moves turtle one tile forward</span>
+        <app-card-item [inputCard]="C1"></app-card-item>
+        <div class="desc">
+          Moves <span class="emphasis">coloured</span> turtle
+          <span class="emphasis">one</span> tile forward
+        </div>
+      </div>
+      <div class="item">
+        <app-card-item [inputCard]="C2"></app-card-item>
+        <div class="desc">
+          Moves <span class="emphasis">coloured</span> turtle
+          <span class="emphasis">two</span> tiles forward
+        </div>
+      </div>
+      <div class="item">
+        <app-card-item [inputCard]="C_1"></app-card-item>
+        <div class="desc">
+          Moves <span class="emphasis">coloured</span> turtle
+          <span class="emphasis">one</span> tile backward
+        </div>
+      </div>
+      <div class="item">
+        <app-card-item [inputCard]="L1"></app-card-item>
+        <div class="desc">
+          Moves <span class="emphasis">last</span> turtle
+          <span class="emphasis">one</span> tile forward
+        </div>
+      </div>
+      <div class="item">
+        <app-card-item [inputCard]="L2"></app-card-item>
+        <div class="desc">
+          Moves <span class="emphasis">last</span> turtle
+          <span class="emphasis">two</span> tile forward
+        </div>
       </div>
     </div>
   </section>
