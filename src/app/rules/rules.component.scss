@@ -1,0 +1,21 @@
+.cardExamples {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  .item {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    border: 1px lightgray solid;
+    border-collapse: collapse;
+  }
+  .desc {
+    max-width: 150px;
+    text-align: center;
+    font-style: italic;
+    .emphasis{
+      text-decoration-line: underline;
+      font-weight: bolder;
+    }
+  }
+}
