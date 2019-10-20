@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Card } from "../Models/Card";
 import { CardMarkings } from "../Enums/CardMarkings";
+import { TurtleColours } from "../Enums/TurtleColours";
 
 @Component({
   selector: "app-rules",
@@ -22,10 +23,10 @@ export class RulesComponent implements OnInit {
     this.C2.colour = Math.floor(Math.random() * 5);
 
     this.L1.marking = CardMarkings.LAST_ONE_FORWARD;
-    this.L1.colour = Math.floor(Math.random() * 5);
+    this.L1.colour = TurtleColours.RAINBOW;
 
     this.L2.marking = CardMarkings.LAST_TWO_FORWARD;
-    this.L2.colour = Math.floor(Math.random() * 5);
+    this.L2.colour = TurtleColours.RAINBOW;
 
     this.C_1.marking = CardMarkings.COLOUR_ONE_BACK;
     this.C_1.colour = Math.floor(Math.random() * 5);
