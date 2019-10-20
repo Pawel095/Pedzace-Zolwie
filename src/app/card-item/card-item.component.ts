@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ElementRef, ViewChild } from "@angular/core";
 import { Card } from "../Models/Card";
 import { TurtleColours } from "../Enums/TurtleColours";
 import { CardMarkings } from "../Enums/CardMarkings";
+import { reject } from "q";
 
 @Component({
   selector: "app-card-item",
@@ -20,13 +21,20 @@ export class CardItemComponent implements OnInit {
   markingL1Path = "/assets/CardMarkings/L1.png";
   markingL2Path = "/assets/CardMarkings/L2.png";
 
+  turtleBluePath = "/assets/Turtles/Turtle Blue.png";
+  turtleGreenPath = "/assets/Turtles/Turtle Green.png";
+  turtleRainbowPath = "/assets/Turtles/Turtle Rainbow.png";
+  turtleRedPath = "/assets/Turtles/Turtle Red.png";
+  turtleVioletPath = "/assets/Turtles/Turtle Violet.png";
+  turtleYellowPath = "/assets/Turtles/Turtle Yellow.png";
+
   @Input() inputCard: Card;
   card: Card;
   ctx: CanvasRenderingContext2D;
   @ViewChild("card", { static: true }) canvas: ElementRef<HTMLCanvasElement>;
   background = new Image();
   marking = new Image();
-  turtleColour: string;
+  turtle = new Image();
 
   constructor() {}
 
@@ -41,7 +49,7 @@ export class CardItemComponent implements OnInit {
 
     this.ctx = this.canvas.nativeElement.getContext("2d");
     this.ctx.fillRect(0, 0, this.width, this.height);
-    const backgroundPromise = new Promise((resolve, reject) => {
+    const backgroundPromise = new Promise(resolve => {
       this.background.addEventListener("load", () => {
         resolve(this.background);
       });
@@ -51,7 +59,7 @@ export class CardItemComponent implements OnInit {
       this.background.src = this.backgroundPath;
     });
 
-    const markingPromsie = new Promise((resolve, reject) => {
+    const markingPromsie = new Promise(resolve => {
       this.marking.addEventListener("load", () => {
         resolve(this.marking);
       });
@@ -77,7 +85,38 @@ export class CardItemComponent implements OnInit {
       }
     });
 
-    Promise.all([backgroundPromise, markingPromsie])
+    const TurtlePromise = new Promise(resolve => {
+      this.turtle.addEventListener("load", () => {
+        resolve(this.turtle);
+      });
+      this.turtle.addEventListener("error", e => {
+        reject(e);
+      });
+
+      // turtle
+      switch (this.card.colour) {
+        case TurtleColours.BLUE:
+          this.turtle.src = this.turtleBluePath;
+          break;
+        case TurtleColours.RED:
+          this.turtle.src = this.turtleRedPath;
+          break;
+        case TurtleColours.YELLOW:
+          this.turtle.src = this.turtleYellowPath;
+          break;
+        case TurtleColours.GREEN:
+          this.turtle.src = this.turtleGreenPath;
+          break;
+        case TurtleColours.VIOLET:
+          this.turtle.src = this.turtleVioletPath;
+          break;
+        case TurtleColours.RAINBOW:
+          this.turtle.src = this.turtleRainbowPath;
+          break;
+      }
+    });
+
+    Promise.all([backgroundPromise, markingPromsie, TurtlePromise])
       .then(img => {
         // background
         this.ctx.drawImage(img[0] as CanvasImageSource, 0, 0);
@@ -85,29 +124,8 @@ export class CardItemComponent implements OnInit {
         this.ctx.drawImage(img[1] as CanvasImageSource, 5, 5);
         // marking top right
         this.ctx.drawImage(img[1] as CanvasImageSource, this.width - 35, 5);
-
         // turtle
-        switch (this.card.colour) {
-          case TurtleColours.BLUE:
-            this.ctx.fillStyle = "blue";
-            break;
-          case TurtleColours.RED:
-            this.ctx.fillStyle = "red";
-            break;
-          case TurtleColours.YELLOW:
-            this.ctx.fillStyle = "yellow";
-            break;
-          case TurtleColours.GREEN:
-            this.ctx.fillStyle = "green";
-            break;
-          case TurtleColours.VIOLET:
-            this.ctx.fillStyle = "violed";
-            break;
-          case TurtleColours.RAINBOW:
-            this.ctx.fillStyle = "black";
-            break;
-        }
-        this.ctx.fillRect(100, 100, 30, 30);
+        this.ctx.drawImage(img[2] as CanvasImageSource, 0, 0);
       })
       .catch(e => console.error(e));
   }
