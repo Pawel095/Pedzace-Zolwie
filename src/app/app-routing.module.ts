@@ -1,14 +1,14 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
-import { MainContainterComponent } from "./main-containter/main-containter.component";
 import { RulesComponent } from "./rules/rules.component";
 import { CardViewComponent } from "./card-view/card-view.component";
+import { GameControllerComponent } from "./game-controller/game-controller.component";
 
 const routes: Routes = [
-  { path: "home", component: MainContainterComponent },
+  { path: "home", component: GameControllerComponent },
   { path: "", redirectTo: "/home", pathMatch: "full" },
-  { path: "rules", component: RulesComponent },
-  { path: "debug", component: CardViewComponent }
+  { path: "rules", component: RulesComponent }
+  // { path: "debug", component: CardViewComponent }
 ];
 
 @NgModule({

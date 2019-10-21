@@ -8,8 +8,9 @@ import { MapViewComponent } from "./map-view/map-view.component";
 import { CardViewComponent } from "./card-view/card-view.component";
 import { ScoreboardComponent } from "./scoreboard/scoreboard.component";
 import { RulesComponent } from "./rules/rules.component";
-import { MainContainterComponent } from "./main-containter/main-containter.component";
 import { CardItemComponent } from "./card-item/card-item.component";
+import { GameControllerComponent } from "./game-controller/game-controller.component";
+import { PlayerBarComponent } from "./player-bar/player-bar.component";
 
 @NgModule({
   declarations: [
@@ -19,8 +20,9 @@ import { CardItemComponent } from "./card-item/card-item.component";
     CardViewComponent,
     ScoreboardComponent,
     RulesComponent,
-    MainContainterComponent,
-    CardItemComponent
+    CardItemComponent,
+    GameControllerComponent,
+    PlayerBarComponent
   ],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],
