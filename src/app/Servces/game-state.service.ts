@@ -7,7 +7,7 @@ import { TurtleColours } from "../Enums/TurtleColours";
 import { Card } from "../Models/Card";
 import { CardMarkings } from "../Enums/CardMarkings";
 import { convertUpdateArguments } from "@angular/compiler/src/compiler_util/expression_converter";
-import { TurtlePiece } from "../Models/turtlePiece";
+import { TurtlePiece } from "../Models/TurtlePiece";
 
 // This will be later moved to the server. replacing logic with Socket.io
 @Injectable({
