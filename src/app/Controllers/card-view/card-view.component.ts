@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { Card } from "../Models/Card";
-import { TurtleColours } from "../Enums/TurtleColours";
+import { Card } from "../../Models/Card";
+import { TurtleColours } from "../../Enums/TurtleColours";
 
 @Component({
   selector: "app-card-view",

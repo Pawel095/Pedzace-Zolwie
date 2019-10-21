@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ElementRef, ViewChild } from "@angular/core";
-import { Card } from "../Models/Card";
-import { TurtleColours } from "../Enums/TurtleColours";
-import { CardMarkings } from "../Enums/CardMarkings";
+import { Card } from "../../Models/Card";
+import { TurtleColours } from "../../Enums/TurtleColours";
+import { CardMarkings } from "../../Enums/CardMarkings";
 import { reject } from "q";
 
 @Component({

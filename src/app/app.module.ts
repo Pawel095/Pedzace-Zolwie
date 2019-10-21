@@ -3,14 +3,14 @@ import { NgModule } from "@angular/core";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { NavBarComponent } from "./nav-bar/nav-bar.component";
-import { MapViewComponent } from "./map-view/map-view.component";
-import { CardViewComponent } from "./card-view/card-view.component";
-import { ScoreboardComponent } from "./scoreboard/scoreboard.component";
-import { RulesComponent } from "./rules/rules.component";
-import { CardItemComponent } from "./card-item/card-item.component";
-import { GameControllerComponent } from "./game-controller/game-controller.component";
-import { PlayerBarComponent } from "./player-bar/player-bar.component";
+import { NavBarComponent } from "./Controllers/nav-bar/nav-bar.component";
+import { MapViewComponent } from "./Controllers/map-view/map-view.component";
+import { CardViewComponent } from "./Controllers/card-view/card-view.component";
+import { ScoreboardComponent } from "./Controllers/scoreboard/scoreboard.component";
+import { RulesComponent } from "./Controllers/rules/rules.component";
+import { CardItemComponent } from "./Controllers/card-item/card-item.component";
+import { GameControllerComponent } from "./Controllers/game-controller/game-controller.component";
+import { PlayerBarComponent } from "./Controllers/player-bar/player-bar.component";
 
 @NgModule({
   declarations: [
