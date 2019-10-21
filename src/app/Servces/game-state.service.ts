@@ -7,7 +7,10 @@ import { TurtleColours } from "../Enums/TurtleColours";
 import { Card } from "../Models/Card";
 import { CardMarkings } from "../Enums/CardMarkings";
 import { convertUpdateArguments } from "@angular/compiler/src/compiler_util/expression_converter";
+import { TurtlePiece } from "../Models/turtlePiece";
 
+
+// This will be later moved to the server. replacing logic with Socket.io
 @Injectable({
   providedIn: "root"
 })
@@ -16,7 +19,7 @@ export class GameStateService {
   private deck: Array<Card>;
   constructor() {}
 
-  setupDeck() {
+  private setupDeck() {
     this.deck = [];
     // coloured cards
     for (let i = 0; i < 5; i++) {
@@ -59,6 +62,10 @@ export class GameStateService {
     }
   }
 
+  private dealCards(){
+    
+  }
+
   setup(mode: GameModes) {
     this.setupDeck();
     // console.log(this.deck);
@@ -82,6 +89,11 @@ export class GameStateService {
         }
         players.push(new Player(PlayerTypes.HUMAN, availableTurtleColours[0]));
         console.log(players);
+        const turtles: Array<TurtlePiece> = [];
+        for (let i = 0; i < 5; i++) {
+          turtles.push(new TurtlePiece(i, 0));
+        }
+        this.gameState = new GameState(players, turtles);
         break;
     }
   }

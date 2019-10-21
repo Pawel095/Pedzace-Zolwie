@@ -9,6 +9,7 @@ import { NewGameViewComponent } from "./Controllers/new-game-view/new-game-view.
 const routes: Routes = [
   { path: "home", component: HomeViewComponent },
   { path: "newGame", component: NewGameViewComponent },
+  { path: "game", component: GameControllerComponent },
   { path: "", redirectTo: "/home", pathMatch: "full" },
   { path: "rules", component: RulesComponent }
   // { path: "debug", component: CardViewComponent }
