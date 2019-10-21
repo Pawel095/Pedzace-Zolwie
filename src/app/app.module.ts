@@ -1,5 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
+import { FormsModule } from "@angular//forms";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -11,6 +12,9 @@ import { RulesComponent } from "./Controllers/rules/rules.component";
 import { CardItemComponent } from "./Controllers/card-item/card-item.component";
 import { GameControllerComponent } from "./Controllers/game-controller/game-controller.component";
 import { PlayerBarComponent } from "./Controllers/player-bar/player-bar.component";
+import { NewGameViewComponent } from "./Controllers/new-game-view/new-game-view.component";
+import { HomeViewComponent } from "./Controllers/home-view/home-view.component";
+import { from } from "rxjs";
 
 @NgModule({
   declarations: [
@@ -22,9 +26,11 @@ import { PlayerBarComponent } from "./Controllers/player-bar/player-bar.componen
     RulesComponent,
     CardItemComponent,
     GameControllerComponent,
-    PlayerBarComponent
+    PlayerBarComponent,
+    NewGameViewComponent,
+    HomeViewComponent
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent]
 })

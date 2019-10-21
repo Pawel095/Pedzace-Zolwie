@@ -1,19 +1,20 @@
 <div class="setup">
-  <form (submit)="onSubmit()" class="modeForm" #form="ngForm">
+  <form (submit)="onSubmit(form)" class="modeForm" #form="ngForm">
     <div>
-      <input type="radio" name="mode" value="AI" [(ngModel)]="vsAi" />Vs AI
+      <input type="radio" name="mode" value="AI" ngmodel />
+      <label for="mode">Vs AI</label>
     </div>
     <div>
-      <input type="radio" name="mode" value="HS" [(ngModel)]="vsHs" />Vs Humans
-      (hot seat)
+      <input type="radio" name="mode" value="HS" ngmodel />
+      <label for="mode">Vs Humans (hot seat)</label>
     </div>
     <div>
-      <input type="radio" name="mode" value="MP" [(ngModel)]="vsMp" />Vs Humans
-      (multiplayer)
+      <input type="radio" name="mode" value="MP" ngmodel />
+      <label for="mode">Vs Humans (multiplayer)</label>
     </div>
     <div>
-      <input type="radio" name="mode" value="CS" disabled />Custom (not yet
-      implemented)
+      <input type="radio" name="mode" value="CS" disabled />
+      <label for="mode">Custom (not yet implemented)</label>
     </div>
     <div><input type="submit" value="Begin" /></div>
   </form>

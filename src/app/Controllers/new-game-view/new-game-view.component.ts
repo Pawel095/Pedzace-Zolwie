@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { NgForm } from "@angular/forms";
 
 @Component({
   selector: "app-new-game-view",
@@ -9,13 +10,11 @@ import { Router } from "@angular/router";
 export class NewGameViewComponent implements OnInit {
   gameMode: string;
 
-  vsAi: boolean;
-  vsHs: boolean;
-  vsMp: boolean;
-
   constructor() {}
 
   ngOnInit() {}
 
-  onSubmit() {}
+  onSubmit(form: NgForm) {
+    console.log(JSON.stringify(form.value));
+  }
 }

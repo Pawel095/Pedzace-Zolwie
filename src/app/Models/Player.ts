@@ -6,4 +6,8 @@ export class Player {
   playerType: PlayerTypes;
   hand: Array<Card>;
   turtleColour: TurtleColours;
+  constructor(type: PlayerTypes, colour: TurtleColours) {
+    this.playerType = type;
+    this.turtleColour = colour;
+  }
 }
