@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
 import { NgForm } from "@angular/forms";
+import { GameStateService } from "src/app/Servces/game-state.service";
+import { GameModes } from "src/app/Enums/GameModes";
 
 @Component({
   selector: "app-new-game-view",
@@ -8,13 +9,16 @@ import { NgForm } from "@angular/forms";
   styleUrls: ["./new-game-view.component.scss"]
 })
 export class NewGameViewComponent implements OnInit {
-  gameMode: string;
+  gss: GameStateService;
 
-  constructor() {}
+  // tslint:disable-next-line: variable-name
+  constructor(private _gss: GameStateService) {
+    this.gss = _gss;
+  }
 
   ngOnInit() {}
 
   onSubmit(form: NgForm) {
-    console.log(JSON.stringify(form.value));
+    this.gss.setup(GameModes.AI);
   }
 }
