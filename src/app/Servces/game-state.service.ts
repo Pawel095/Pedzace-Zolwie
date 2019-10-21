@@ -9,7 +9,6 @@ import { CardMarkings } from "../Enums/CardMarkings";
 import { convertUpdateArguments } from "@angular/compiler/src/compiler_util/expression_converter";
 import { TurtlePiece } from "../Models/turtlePiece";
 
-
 // This will be later moved to the server. replacing logic with Socket.io
 @Injectable({
   providedIn: "root"
@@ -62,9 +61,7 @@ export class GameStateService {
     }
   }
 
-  private dealCards(){
-    
-  }
+  private dealCards() {}
 
   setup(mode: GameModes) {
     this.setupDeck();
