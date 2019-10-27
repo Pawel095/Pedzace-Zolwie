@@ -1,4 +1,4 @@
-export enum CardMarkings {
+export enum CardTypes {
     COLOUR_TWO_FORWARD,
     COLOUR_ONE_FORWARD,
     COLOUR_ONE_BACK,
