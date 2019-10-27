@@ -7,7 +7,7 @@ branches:
   only:
   - master
 before_script:
-  - npm install -g @angular/cli
+  - npm install
 script:
 - ng lint
 - ng build --prod --base-href https://pawel095.github.io/Pedzace-Zolwie/
