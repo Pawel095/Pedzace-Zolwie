@@ -100,12 +100,16 @@ export class GameStateService {
                     TurtleColours.VIOLET
                 ];
                 for (let i = 0; i < 4; i++) {
-                    const rand: number = Math.floor(Math.random() * availableTurtleColours.length);
+                    const rand: number = Math.floor(
+                        Math.random() * availableTurtleColours.length
+                    );
                     const colour: TurtleColours = availableTurtleColours[rand];
                     availableTurtleColours.splice(rand, 1);
                     players.push(new Player(PlayerTypes.AI, colour));
                 }
-                players.push(new Player(PlayerTypes.HUMAN, availableTurtleColours[0]));
+                players.push(
+                    new Player(PlayerTypes.HUMAN, availableTurtleColours[0])
+                );
                 console.log(players);
 
                 const turtles: Array<TurtlePiece> = [];
