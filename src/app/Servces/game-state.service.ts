@@ -110,7 +110,7 @@ export class GameStateService {
 
                 const turtles: Array<TurtlePiece> = [];
                 for (let i = 0; i < 5; i++) {
-                    turtles.push(new TurtlePiece(i, 1, i));
+                    turtles.push(new TurtlePiece(i, 0, 0));
                 }
                 this.gameState = new GameState(players, turtles);
 

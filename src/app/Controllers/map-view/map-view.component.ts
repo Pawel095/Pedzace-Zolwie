@@ -63,6 +63,7 @@ export class MapViewComponent implements OnInit {
 
     render() {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        // pola
         this.ctx.fillStyle = "green";
         this.points.forEach(e => {
             this.ctx.fillRect(e.x, e.y, 20, 20);
@@ -70,14 +71,17 @@ export class MapViewComponent implements OnInit {
 
         let debugIterator = 0;
         this.turtlePositions.forEach(e => {
+            // landscape
             if (this.ctx.canvas.width >= this.ctx.canvas.height) {
                 if (e.mapPosition === 0) {
+                    // pozycje startowe
                     const x = this.points[e.mapPosition].x + 10 - this.TurtleSize / 2;
                     const y = this.points[e.mapPosition].y + (this.TurtleSize + 5) * e.colour - this.TurtleSize * 2.5;
 
                     this.ctx.fillStyle = this.debugFillStyles[debugIterator++];
                     this.ctx.fillRect(x, y, this.TurtleSize, this.TurtleSize);
                 } else {
+                    // reszta pól
                     const x = this.points[e.mapPosition].x + this.TurtleSize / 2;
                     const y =
                         this.points[e.mapPosition].y + this.TurtleSize / 2 - (e.verticalPositon * this.TurtleSize) / 2;
@@ -85,7 +89,9 @@ export class MapViewComponent implements OnInit {
                     this.ctx.fillStyle = this.debugFillStyles[debugIterator++];
                     this.ctx.fillRect(x, y, this.TurtleSize, this.TurtleSize);
                 }
+                // portrait
             } else {
+                // pozycje startowe
                 if (e.mapPosition === 0) {
                     const x =
                         this.points[this.TILE_NUMBER - 1 - e.mapPosition].x +
@@ -95,6 +101,7 @@ export class MapViewComponent implements OnInit {
 
                     this.ctx.fillStyle = this.debugFillStyles[debugIterator++];
                     this.ctx.fillRect(x, y, this.TurtleSize, this.TurtleSize);
+                    // reszta pól
                 } else {
                     const x = this.points[this.TILE_NUMBER - 1 - e.mapPosition].x + this.TurtleSize / 2;
                     const y =
