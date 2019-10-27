@@ -28,7 +28,7 @@ export class MapViewComponent implements OnInit {
 
     @ViewChild("map", { static: true }) map: ElementRef<HTMLCanvasElement>;
 
-    @HostListener("window:resize", ["$event"])
+    @HostListener("window:resize", [""])
     onResize() {
         this.points = [];
         this.ctx.canvas.width = window.innerWidth - 200;
