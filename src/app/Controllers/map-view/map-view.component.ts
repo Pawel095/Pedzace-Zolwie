@@ -11,7 +11,8 @@ import { runInThisContext } from "vm";
 })
 export class MapViewComponent implements OnInit {
     TILE_NUMBER = 10;
-    TURTLE_SIZE = 10;
+    TurtleSize = 10;
+    debugFillStyles = ["red", "yellow", "black", "lightblue", "magenta"];
 
     ctx: CanvasRenderingContext2D;
     points: Array<Point> = [];
@@ -32,25 +33,21 @@ export class MapViewComponent implements OnInit {
         // poziome: y sinus; x stałe
         let temp = Math.PI / 2;
         const piece = -Math.PI / 3;
+        const start = new Point(10, 10);
+        const stop = new Point(this.ctx.canvas.width - 10, this.ctx.canvas.height - 10);
+
         if (this.ctx.canvas.width >= this.ctx.canvas.height) {
-            this.TURTLE_SIZE = this.ctx.canvas.height / 15;
             for (let i = 0; i < this.TILE_NUMBER; i++) {
                 temp += piece;
                 this.points.push(
-                    new Point(
-                        (this.ctx.canvas.width / this.TILE_NUMBER) * i + 10,
-                        (Math.sin(temp) * this.ctx.canvas.height) / 5 + this.ctx.canvas.height / 2
-                    )
+                    new Point((stop.x / this.TILE_NUMBER) * i + start.x, (Math.sin(temp) * stop.y) / 5 + stop.y / 2.5)
                 );
             }
         } else {
             for (let i = 0; i < this.TILE_NUMBER; i++) {
                 temp += piece;
                 this.points.push(
-                    new Point(
-                        (Math.sin(temp) * this.ctx.canvas.width) / 5 + this.ctx.canvas.width / 2,
-                        (this.ctx.canvas.height / this.TILE_NUMBER) * i + 10
-                    )
+                    new Point((Math.sin(temp) * stop.x) / 5 + stop.x / 2.5, (stop.y / this.TILE_NUMBER) * i + start.y)
                 );
             }
         }
@@ -62,30 +59,51 @@ export class MapViewComponent implements OnInit {
         this.turtlePositions = this.gss.turtlePositions;
 
         this.onResize();
-        this.gss.registerGameStateUpdate(() => {
-            console.log("CALLBACK!");
-        });
     }
-    debugFillStyles = ["red", "yellow", "black", "lightblue", "magenta"];
+
     render() {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         this.ctx.fillStyle = "green";
         this.points.forEach(e => {
-            this.ctx.fillRect(e.x, e.y, this.ctx.canvas.width / 10, this.ctx.canvas.height / 15);
+            this.ctx.fillRect(e.x, e.y, 20, 20);
         });
+
         let debugIterator = 0;
         this.turtlePositions.forEach(e => {
             if (this.ctx.canvas.width >= this.ctx.canvas.height) {
                 if (e.mapPosition === 0) {
-                    const x = this.points[e.mapPosition].x + this.ctx.canvas.width / 40 - this.TURTLE_SIZE / 2;
-                    const y = this.points[e.mapPosition].y + (this.TURTLE_SIZE + 5) * e.colour;
-                    this.ctx.fillStyle = "lightBlue";
-                    this.ctx.fillRect(x, y, this.TURTLE_SIZE, this.TURTLE_SIZE);
-                } else {
-                    const x = this.points[e.mapPosition].x + this.ctx.canvas.width / 40 - this.TURTLE_SIZE / 2;
-                    const y = this.points[e.mapPosition].y - (e.verticalPositon + this.TURTLE_SIZE/2) * e.colour;
+                    const x = this.points[e.mapPosition].x + 10 - this.TurtleSize / 2;
+                    const y = this.points[e.mapPosition].y + (this.TurtleSize + 5) * e.colour - this.TurtleSize * 2.5;
+
                     this.ctx.fillStyle = this.debugFillStyles[debugIterator++];
-                    this.ctx.fillRect(x, y, this.TURTLE_SIZE, this.TURTLE_SIZE);
+                    this.ctx.fillRect(x, y, this.TurtleSize, this.TurtleSize);
+                } else {
+                    const x = this.points[e.mapPosition].x + this.TurtleSize / 2;
+                    const y =
+                        this.points[e.mapPosition].y + this.TurtleSize / 2 - (e.verticalPositon * this.TurtleSize) / 2;
+
+                    this.ctx.fillStyle = this.debugFillStyles[debugIterator++];
+                    this.ctx.fillRect(x, y, this.TurtleSize, this.TurtleSize);
+                }
+            } else {
+                if (e.mapPosition === 0) {
+                    const x =
+                        this.points[this.TILE_NUMBER - 1 - e.mapPosition].x +
+                        this.TurtleSize / 2 +
+                        (e.colour * (this.TurtleSize + 5) - this.TurtleSize * 2.5);
+                    const y = this.points[this.TILE_NUMBER - 1 - e.mapPosition].y + this.TurtleSize / 2;
+
+                    this.ctx.fillStyle = this.debugFillStyles[debugIterator++];
+                    this.ctx.fillRect(x, y, this.TurtleSize, this.TurtleSize);
+                } else {
+                    const x = this.points[this.TILE_NUMBER - 1 - e.mapPosition].x + this.TurtleSize / 2;
+                    const y =
+                        this.points[this.TILE_NUMBER - 1 - e.mapPosition].y +
+                        this.TurtleSize / 2 -
+                        (e.verticalPositon * this.TurtleSize) / 2;
+
+                    this.ctx.fillStyle = this.debugFillStyles[debugIterator++];
+                    this.ctx.fillRect(x, y, this.TurtleSize, this.TurtleSize);
                 }
             }
         });
