@@ -1,4 +1,4 @@
 export enum PlayerTypes {
-  AI,
-  HUMAN
+    AI,
+    HUMAN
 }

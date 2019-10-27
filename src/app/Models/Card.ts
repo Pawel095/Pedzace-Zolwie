@@ -1,7 +1,7 @@
-import { CardMarkings } from "../Enums/CardMarkings";
+import { CardTypes } from "../Enums/CardTypes";
 import { TurtleColours } from "../Enums/TurtleColours";
 
 export class Card {
-  marking: CardMarkings;
-  colour: TurtleColours;
+    type: CardTypes;
+    colour: TurtleColours;
 }

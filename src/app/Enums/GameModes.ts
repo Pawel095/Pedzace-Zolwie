@@ -1,5 +1,5 @@
 export enum GameModes {
-  AI,
-  HOT_SEAT,
-  MULTIPLAYER
+    AI,
+    HOT_SEAT,
+    MULTIPLAYER
 }
