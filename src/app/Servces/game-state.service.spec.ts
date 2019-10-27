@@ -1,7 +1,6 @@
 import { TestBed } from "@angular/core/testing";
 import { GameStateService } from "./game-state.service";
 
-
 describe("GameStateService", () => {
     beforeEach(() => TestBed.configureTestingModule({}));
 

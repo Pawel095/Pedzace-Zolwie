@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from "@angular/core";
 import { reject } from "q";
-import { CardMarkings } from "../../Enums/CardMarkings";
+import { CardTypes } from "../../Enums/CardTypes";
 import { TurtleColours } from "../../Enums/TurtleColours";
 import { Card } from "../../Models/Card";
 
@@ -42,7 +42,7 @@ export class CardItemComponent implements OnInit {
         if (this.inputCard === undefined) {
             this.card = new Card();
             this.card.colour = TurtleColours.BLUE;
-            this.card.marking = CardMarkings.COLOUR_TWO_FORWARD;
+            this.card.type = CardTypes.COLOUR_TWO_FORWARD;
         } else {
             this.card = this.inputCard;
         }
@@ -66,20 +66,20 @@ export class CardItemComponent implements OnInit {
             this.marking.addEventListener("error", e => {
                 reject(e);
             });
-            switch (this.card.marking) {
-                case CardMarkings.COLOUR_ONE_BACK:
+            switch (this.card.type) {
+                case CardTypes.COLOUR_ONE_BACK:
                     this.marking.src = this.markingC_1Path;
                     break;
-                case CardMarkings.COLOUR_ONE_FORWARD:
+                case CardTypes.COLOUR_ONE_FORWARD:
                     this.marking.src = this.markingC1Path;
                     break;
-                case CardMarkings.COLOUR_TWO_FORWARD:
+                case CardTypes.COLOUR_TWO_FORWARD:
                     this.marking.src = this.markingC2Path;
                     break;
-                case CardMarkings.LAST_ONE_FORWARD:
+                case CardTypes.LAST_ONE_FORWARD:
                     this.marking.src = this.markingL1Path;
                     break;
-                case CardMarkings.LAST_TWO_FORWARD:
+                case CardTypes.LAST_TWO_FORWARD:
                     this.marking.src = this.markingL2Path;
                     break;
             }
