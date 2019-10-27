@@ -1,8 +1,7 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from "@angular/core";
 import { Point } from "src/app/Models/Point";
-import { GameStateService } from "src/app/Servces/game-state.service";
 import { TurtlePiece } from "src/app/Models/TurtlePiece";
-import { runInThisContext } from "vm";
+import { GameStateService } from "src/app/Servces/game-state.service";
 
 @Component({
     selector: "app-map-view",

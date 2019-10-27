@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { environment } from "src/environments/environment";
 import { CardTypes } from "../Enums/CardTypes";
 import { GameModes } from "../Enums/GameModes";
 import { PlayerTypes } from "../Enums/PlayerTypes";
@@ -7,7 +8,6 @@ import { Card } from "../Models/Card";
 import { GameState } from "../Models/GameState";
 import { Player } from "../Models/Player";
 import { TurtlePiece } from "../Models/TurtlePiece";
-import { environment } from "src/environments/environment";
 
 // This will be later moved to the server. replacing logic with Socket.io
 @Injectable({
