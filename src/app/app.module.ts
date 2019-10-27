@@ -13,6 +13,7 @@ import { NewGameViewComponent } from "./Controllers/new-game-view/new-game-view.
 import { PlayerBarComponent } from "./Controllers/player-bar/player-bar.component";
 import { RulesComponent } from "./Controllers/rules/rules.component";
 import { ScoreboardComponent } from "./Controllers/scoreboard/scoreboard.component";
+import { DebugComponent } from './debug/debug.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { ScoreboardComponent } from "./Controllers/scoreboard/scoreboard.compone
         GameControllerComponent,
         PlayerBarComponent,
         NewGameViewComponent,
-        HomeViewComponent
+        HomeViewComponent,
+        DebugComponent
     ],
     imports: [BrowserModule, AppRoutingModule, FormsModule],
     providers: [],
