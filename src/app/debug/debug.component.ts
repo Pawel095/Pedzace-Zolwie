@@ -10,5 +10,6 @@ export class DebugComponent implements OnInit {
     constructor(private gss: GameStateService) {}
 
     ngOnInit() {}
+
     click() {}
 }

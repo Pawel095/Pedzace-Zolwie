@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { PlayerBarComponent } from "./player-bar.component";
 
-
 describe("PlayerBarComponent", () => {
     let component: PlayerBarComponent;
     let fixture: ComponentFixture<PlayerBarComponent>;

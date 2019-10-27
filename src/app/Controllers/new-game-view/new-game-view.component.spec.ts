@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { NewGameViewComponent } from "./new-game-view.component";
 
-
 describe("NewGameViewComponent", () => {
     let component: NewGameViewComponent;
     let fixture: ComponentFixture<NewGameViewComponent>;

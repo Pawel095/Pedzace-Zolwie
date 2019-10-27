@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { CardItemComponent } from "./card-item.component";
 
-
 describe("CardItemComponent", () => {
     let component: CardItemComponent;
     let fixture: ComponentFixture<CardItemComponent>;
