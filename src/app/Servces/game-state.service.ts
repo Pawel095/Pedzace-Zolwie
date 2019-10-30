@@ -8,6 +8,8 @@ import { Card } from "../Models/Card";
 import { GameState } from "../Models/GameState";
 import { Player } from "../Models/Player";
 import { TurtlePiece } from "../Models/TurtlePiece";
+import { Subject, Observable } from "rxjs";
+import { Move } from "../Models/Move";
 
 // This will be later moved to the server. replacing logic with Socket.io
 @Injectable({
@@ -16,10 +18,17 @@ import { TurtlePiece } from "../Models/TurtlePiece";
 export class GameStateService {
     private gameState: GameState;
     private deck: Array<Card>;
-    private callbacks: Array<() => void> = [];
 
-    constructor() {}
+    private playerMovesSubject = new Subject<Move>();
+    public playerMoves$: Observable<Move>;
 
+    private mapUpdateSubject = new Subject<TurtlePiece>();
+    public mapUpdates$: Observable<TurtlePiece>;
+
+    constructor() {
+        this.playerMoves$ = this.playerMovesSubject.asObservable();
+        this.mapUpdates$ = this.mapUpdateSubject.asObservable();
+    }
     private setupDeck() {
         this.deck = [];
         // coloured cards
@@ -63,25 +72,41 @@ export class GameStateService {
         }
     }
 
-    private dealCards() {}
-    registerGameStateUpdate(f: () => void) {
-        this.callbacks.push(f);
-        this.callbacks[0]();
-    }
-
     debugGet0thPlayerId(): number {
         if (!environment.production) {
             return this.gameState.players[0].id;
         }
     }
 
-    playerMove(id: number, card: Card) {
-        const player: Player = this.gameState.players.find(e => {
-            return e.id === id;
-        });
-        switch (card.type) {
-        }
+    // private processMove(m: Move): boolean {
+    //     switch (m.card.type) {
+    //         case CardTypes.COLOUR_ONE_BACK:
+    //             const turtle = this.gameState.turtles.find(e => m.card.colour === e.colour);
+    //             if (turtle.mapPosition > 1) {
+    //                 return true;
+    //             }
+    //             break;
+    //         case CardTypes.COLOUR_ONE_FORWARD:
+
+    //             break;
+    //         case CardTypes.COLOUR_TWO_FORWARD:
+    //             break;
+    //         case CardTypes.LAST_ONE_FORWARD:
+    //             break;
+    //         case CardTypes.LAST_TWO_FORWARD:
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    // }
+
+    playerMove(m: Move) {
+        this.playerMovesSubject.next(m);
+
+        this.gameState.turtles[0].mapPosition += 1;
+        this.mapUpdateSubject.next(this.gameState.turtles[0]);
     }
+
     get turtlePositions(): Array<TurtlePiece> {
         return this.gameState.turtles;
     }
@@ -100,16 +125,12 @@ export class GameStateService {
                     TurtleColours.VIOLET
                 ];
                 for (let i = 0; i < 4; i++) {
-                    const rand: number = Math.floor(
-                        Math.random() * availableTurtleColours.length
-                    );
+                    const rand: number = Math.floor(Math.random() * availableTurtleColours.length);
                     const colour: TurtleColours = availableTurtleColours[rand];
                     availableTurtleColours.splice(rand, 1);
                     players.push(new Player(PlayerTypes.AI, colour));
                 }
-                players.push(
-                    new Player(PlayerTypes.HUMAN, availableTurtleColours[0])
-                );
+                players.push(new Player(PlayerTypes.HUMAN, availableTurtleColours[0]));
                 console.log(players);
 
                 const turtles: Array<TurtlePiece> = [];
