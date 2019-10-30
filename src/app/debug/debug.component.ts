@@ -17,7 +17,7 @@ export class DebugComponent implements OnInit {
 
     click() {
         const c: Card = new Card();
-        c.type = CardTypes.COLOUR_ONE_FORWARD;
+        c.type = CardTypes.COLOUR_ONE_BACK;
         c.colour = TurtleColours.BLUE;
         this.gss.playerMove(new Move(this.gss.debugGet0thPlayerId(), c));
     }

@@ -72,18 +72,39 @@ export class GameStateService {
         }
     }
 
-    private dealCards() {}
-
     debugGet0thPlayerId(): number {
         if (!environment.production) {
             return this.gameState.players[0].id;
         }
     }
 
+    // private processMove(m: Move): boolean {
+    //     switch (m.card.type) {
+    //         case CardTypes.COLOUR_ONE_BACK:
+    //             const turtle = this.gameState.turtles.find(e => m.card.colour === e.colour);
+    //             if (turtle.mapPosition > 1) {
+    //                 return true;
+    //             }
+    //             break;
+    //         case CardTypes.COLOUR_ONE_FORWARD:
+
+    //             break;
+    //         case CardTypes.COLOUR_TWO_FORWARD:
+    //             break;
+    //         case CardTypes.LAST_ONE_FORWARD:
+    //             break;
+    //         case CardTypes.LAST_TWO_FORWARD:
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    // }
+
     playerMove(m: Move) {
         this.playerMovesSubject.next(m);
-        // this.playerMovesSubject.complete();
+
         this.gameState.turtles[0].mapPosition += 1;
+        this.mapUpdateSubject.next(this.gameState.turtles[0]);
     }
 
     get turtlePositions(): Array<TurtlePiece> {

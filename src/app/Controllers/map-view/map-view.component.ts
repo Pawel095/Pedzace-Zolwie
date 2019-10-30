@@ -60,10 +60,13 @@ export class MapViewComponent implements OnInit {
 
         this.onResize();
         this.gss.mapUpdates$.subscribe((data: TurtlePiece) => {
+            console.log(data);
             const index = this.turtlePositions.findIndex(e => {
                 return e.colour === data.colour;
             });
-            
+
+            this.turtlePositions[index] = data;
+            this.render();
         });
     }
 
