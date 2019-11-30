@@ -1,13 +1,13 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-import { HomeViewComponent } from "./home-view.component";
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HomeViewComponent } from './home-view.component';
 
-describe("HomeViewComponent", () => {
+describe('HomeViewComponent', () => {
     let component: HomeViewComponent;
     let fixture: ComponentFixture<HomeViewComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [HomeViewComponent]
+            declarations: [HomeViewComponent],
         }).compileComponents();
     }));
 
@@ -17,7 +17,7 @@ describe("HomeViewComponent", () => {
         fixture.detectChanges();
     });
 
-    it("should create", () => {
+    it('should create', () => {
         expect(component).toBeTruthy();
     });
 });

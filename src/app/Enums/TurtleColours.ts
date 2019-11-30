@@ -4,5 +4,5 @@ export enum TurtleColours {
     BLUE,
     GREEN,
     VIOLET,
-    RAINBOW
+    RAINBOW,
 }

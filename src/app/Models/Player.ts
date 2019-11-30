@@ -1,6 +1,6 @@
-import { PlayerTypes } from "../Enums/PlayerTypes";
-import { TurtleColours } from "../Enums/TurtleColours";
-import { Card } from "./Card";
+import { PlayerTypes } from '../Enums/PlayerTypes';
+import { TurtleColours } from '../Enums/TurtleColours';
+import { Card } from './Card';
 
 export class Player {
     readonly id: number;

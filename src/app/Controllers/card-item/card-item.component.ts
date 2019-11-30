@@ -1,37 +1,37 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from "@angular/core";
-import { reject } from "q";
-import { CardTypes } from "../../Enums/CardTypes";
-import { TurtleColours } from "../../Enums/TurtleColours";
-import { Card } from "../../Models/Card";
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { reject } from 'q';
+import { CardTypes } from '../../Enums/CardTypes';
+import { TurtleColours } from '../../Enums/TurtleColours';
+import { Card } from '../../Models/Card';
 
 @Component({
-    selector: "app-card-item",
-    templateUrl: "./card-item.component.html",
-    styleUrls: ["./card-item.component.scss"]
+    selector: 'app-card-item',
+    templateUrl: './card-item.component.html',
+    styleUrls: ['./card-item.component.scss'],
 })
 export class CardItemComponent implements OnInit {
     width = 150;
     height = 300;
 
-    backgroundPath = "assets/Background.png";
+    backgroundPath = 'assets/Background.png';
     // tslint:disable-next-line: variable-name
-    markingC_1Path = "assets/CardMarkings/C-1.png";
-    markingC1Path = "assets/CardMarkings/C1.png";
-    markingC2Path = "assets/CardMarkings/C2.png";
-    markingL1Path = "assets/CardMarkings/L1.png";
-    markingL2Path = "assets/CardMarkings/L2.png";
+    markingC_1Path = 'assets/CardMarkings/C-1.png';
+    markingC1Path = 'assets/CardMarkings/C1.png';
+    markingC2Path = 'assets/CardMarkings/C2.png';
+    markingL1Path = 'assets/CardMarkings/L1.png';
+    markingL2Path = 'assets/CardMarkings/L2.png';
 
-    turtleBluePath = "assets/Turtles/Turtle Blue.png";
-    turtleGreenPath = "assets/Turtles/Turtle Green.png";
-    turtleRainbowPath = "assets/Turtles/Turtle Rainbow.png";
-    turtleRedPath = "assets/Turtles/Turtle Red.png";
-    turtleVioletPath = "assets/Turtles/Turtle Violet.png";
-    turtleYellowPath = "assets/Turtles/Turtle Yellow.png";
+    turtleBluePath = 'assets/Turtles/Turtle Blue.png';
+    turtleGreenPath = 'assets/Turtles/Turtle Green.png';
+    turtleRainbowPath = 'assets/Turtles/Turtle Rainbow.png';
+    turtleRedPath = 'assets/Turtles/Turtle Red.png';
+    turtleVioletPath = 'assets/Turtles/Turtle Violet.png';
+    turtleYellowPath = 'assets/Turtles/Turtle Yellow.png';
 
     @Input() inputCard: Card;
     card: Card;
     ctx: CanvasRenderingContext2D;
-    @ViewChild("card", { static: true }) canvas: ElementRef<HTMLCanvasElement>;
+    @ViewChild('card', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
     background = new Image();
     marking = new Image();
     turtle = new Image();
@@ -47,23 +47,23 @@ export class CardItemComponent implements OnInit {
             this.card = this.inputCard;
         }
 
-        this.ctx = this.canvas.nativeElement.getContext("2d");
+        this.ctx = this.canvas.nativeElement.getContext('2d');
         this.ctx.fillRect(0, 0, this.width, this.height);
         const backgroundPromise = new Promise(resolve => {
-            this.background.addEventListener("load", () => {
+            this.background.addEventListener('load', () => {
                 resolve(this.background);
             });
-            this.background.addEventListener("error", e => {
+            this.background.addEventListener('error', e => {
                 reject(e);
             });
             this.background.src = this.backgroundPath;
         });
 
         const markingPromsie = new Promise(resolve => {
-            this.marking.addEventListener("load", () => {
+            this.marking.addEventListener('load', () => {
                 resolve(this.marking);
             });
-            this.marking.addEventListener("error", e => {
+            this.marking.addEventListener('error', e => {
                 reject(e);
             });
             switch (this.card.type) {
@@ -86,10 +86,10 @@ export class CardItemComponent implements OnInit {
         });
 
         const TurtlePromise = new Promise(resolve => {
-            this.turtle.addEventListener("load", () => {
+            this.turtle.addEventListener('load', () => {
                 resolve(this.turtle);
             });
-            this.turtle.addEventListener("error", e => {
+            this.turtle.addEventListener('error', e => {
                 reject(e);
             });
 

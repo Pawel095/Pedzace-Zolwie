@@ -1,8 +1,7 @@
-import { Player } from "./Player";
-import { TurtlePiece } from "./TurtlePiece";
+import { Player } from './Player';
+import { TurtlePiece } from './TurtlePiece';
 
 export class GameState {
-    // wszyscy gracze i pozycje żółwi
     players: Array<Player>;
     turtles: Array<TurtlePiece>;
     constructor(players: Array<Player>, turtles: Array<TurtlePiece>) {

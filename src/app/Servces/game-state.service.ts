@@ -1,19 +1,20 @@
-import { Injectable } from "@angular/core";
-import { environment } from "src/environments/environment";
-import { CardTypes } from "../Enums/CardTypes";
-import { GameModes } from "../Enums/GameModes";
-import { PlayerTypes } from "../Enums/PlayerTypes";
-import { TurtleColours } from "../Enums/TurtleColours";
-import { Card } from "../Models/Card";
-import { GameState } from "../Models/GameState";
-import { Player } from "../Models/Player";
-import { TurtlePiece } from "../Models/TurtlePiece";
-import { Subject, Observable } from "rxjs";
-import { Move } from "../Models/Move";
+import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
+import { CardTypes } from '../Enums/CardTypes';
+import { GameModes } from '../Enums/GameModes';
+import { PlayerTypes } from '../Enums/PlayerTypes';
+import { TurtleColours } from '../Enums/TurtleColours';
+import { Card } from '../Models/Card';
+import { GameState } from '../Models/GameState';
+import { Player } from '../Models/Player';
+import { TurtlePiece } from '../Models/TurtlePiece';
+import { Subject, Observable } from 'rxjs';
+import { Move } from '../Models/Move';
+import { ReturnStatement } from '@angular/compiler';
 
 // This will be later moved to the server. replacing logic with Socket.io
 @Injectable({
-    providedIn: "root"
+    providedIn: 'root',
 })
 export class GameStateService {
     private gameState: GameState;
@@ -22,8 +23,8 @@ export class GameStateService {
     private playerMovesSubject = new Subject<Move>();
     public playerMoves$: Observable<Move>;
 
-    private mapUpdateSubject = new Subject<TurtlePiece>();
-    public mapUpdates$: Observable<TurtlePiece>;
+    private mapUpdateSubject = new Subject<TurtlePiece[]>();
+    public mapUpdates$: Observable<TurtlePiece[]>;
 
     constructor() {
         this.playerMoves$ = this.playerMovesSubject.asObservable();
@@ -78,33 +79,98 @@ export class GameStateService {
         }
     }
 
-    // private processMove(m: Move): boolean {
-    //     switch (m.card.type) {
-    //         case CardTypes.COLOUR_ONE_BACK:
-    //             const turtle = this.gameState.turtles.find(e => m.card.colour === e.colour);
-    //             if (turtle.mapPosition > 1) {
-    //                 return true;
-    //             }
-    //             break;
-    //         case CardTypes.COLOUR_ONE_FORWARD:
+    public validateMove(m: Move): boolean {
+        const turtle = this.gameState.turtles.find(e => {
+            if (m.selectedTurtleColour === undefined) {
+                return m.card.colour === e.colour;
+            } else {
+                return m.selectedTurtleColour === e.colour;
+            }
+        });
+        const lastPos = Math.min(
+            ...this.gameState.turtles.map(e => e.mapPosition)
+        );
+        switch (m.card.type) {
+            case CardTypes.COLOUR_ONE_BACK:
+                if (turtle.mapPosition > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            case CardTypes.COLOUR_ONE_FORWARD:
+                if (turtle.mapPosition < 9) {
+                    return true;
+                } else {
+                    return false;
+                }
+            case CardTypes.COLOUR_TWO_FORWARD:
+                if (turtle.mapPosition < 8) {
+                    return true;
+                } else {
+                    return false;
+                }
+            case CardTypes.LAST_ONE_FORWARD:
+                if (turtle.mapPosition < 9 && turtle.mapPosition === lastPos) {
+                    return true;
+                } else {
+                    return false;
+                }
+            case CardTypes.LAST_TWO_FORWARD:
+                if (turtle.mapPosition < 8 && turtle.mapPosition === lastPos) {
+                    return true;
+                } else {
+                    return false;
+                }
+            default:
+                break;
+        }
+    }
 
-    //             break;
-    //         case CardTypes.COLOUR_TWO_FORWARD:
-    //             break;
-    //         case CardTypes.LAST_ONE_FORWARD:
-    //             break;
-    //         case CardTypes.LAST_TWO_FORWARD:
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // }
+    private processMove(m: Move): TurtlePiece {
+        const turtle = this.gameState.turtles.find(e => {
+            if (m.selectedTurtleColour === undefined) {
+                return m.card.colour === e.colour;
+            } else {
+                return m.selectedTurtleColour === e.colour;
+            }
+        });
+        switch (m.card.type) {
+            case CardTypes.COLOUR_ONE_BACK:
+                turtle.mapPosition -= 1;
+                break;
+            case CardTypes.COLOUR_ONE_FORWARD:
+                turtle.mapPosition += 1;
+                break;
+            case CardTypes.COLOUR_TWO_FORWARD:
+                turtle.mapPosition += 2;
+                break;
+            case CardTypes.LAST_ONE_FORWARD:
+                turtle.mapPosition += 1;
+                break;
+            case CardTypes.LAST_TWO_FORWARD:
+                turtle.mapPosition += 2;
+                break;
+
+            default:
+                break;
+        }
+        return turtle;
+    }
 
     playerMove(m: Move) {
+        const turtle = this.gameState.turtles.find(e => {
+            if (m.selectedTurtleColour === undefined) {
+                return m.card.colour === e.colour;
+            } else {
+                return m.selectedTurtleColour === e.colour;
+            }
+        });
         this.playerMovesSubject.next(m);
+        if (this.validateMove(m)) {
+            this.processMove(m);
+        }
 
-        this.gameState.turtles[0].mapPosition += 1;
-        this.mapUpdateSubject.next(this.gameState.turtles[0]);
+        this.mapUpdateSubject.next(this.gameState.turtles);
     }
 
     get turtlePositions(): Array<TurtlePiece> {
@@ -113,7 +179,6 @@ export class GameStateService {
 
     setup(mode: GameModes) {
         this.setupDeck();
-        // console.log(this.deck);
         switch (mode) {
             case GameModes.AI:
                 const players = Array<Player>();
@@ -122,15 +187,19 @@ export class GameStateService {
                     TurtleColours.YELLOW,
                     TurtleColours.BLUE,
                     TurtleColours.GREEN,
-                    TurtleColours.VIOLET
+                    TurtleColours.VIOLET,
                 ];
                 for (let i = 0; i < 4; i++) {
-                    const rand: number = Math.floor(Math.random() * availableTurtleColours.length);
+                    const rand: number = Math.floor(
+                        Math.random() * availableTurtleColours.length
+                    );
                     const colour: TurtleColours = availableTurtleColours[rand];
                     availableTurtleColours.splice(rand, 1);
                     players.push(new Player(PlayerTypes.AI, colour));
                 }
-                players.push(new Player(PlayerTypes.HUMAN, availableTurtleColours[0]));
+                players.push(
+                    new Player(PlayerTypes.HUMAN, availableTurtleColours[0])
+                );
                 console.log(players);
 
                 const turtles: Array<TurtlePiece> = [];
@@ -138,7 +207,6 @@ export class GameStateService {
                     turtles.push(new TurtlePiece(i, 0, 0));
                 }
                 this.gameState = new GameState(players, turtles);
-
                 break;
         }
     }

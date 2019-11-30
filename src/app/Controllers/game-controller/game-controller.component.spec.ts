@@ -1,13 +1,13 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-import { GameControllerComponent } from "./game-controller.component";
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { GameControllerComponent } from './game-controller.component';
 
-describe("GameControllerComponent", () => {
+describe('GameControllerComponent', () => {
     let component: GameControllerComponent;
     let fixture: ComponentFixture<GameControllerComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [GameControllerComponent]
+            declarations: [GameControllerComponent],
         }).compileComponents();
     }));
 
@@ -17,7 +17,7 @@ describe("GameControllerComponent", () => {
         fixture.detectChanges();
     });
 
-    it("should create", () => {
+    it('should create', () => {
         expect(component).toBeTruthy();
     });
 });
