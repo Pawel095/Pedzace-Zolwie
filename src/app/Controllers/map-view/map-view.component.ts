@@ -34,8 +34,6 @@ export class MapViewComponent implements OnInit {
         this.ctx.canvas.width = window.innerWidth - 200;
         this.ctx.canvas.height = window.innerHeight - 400;
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-        // console.log(this.ctx);
-        // poziome: y sinus; x stałe
         let temp = Math.PI / 2;
         const piece = -Math.PI / 3;
         const start = new Point(10, 10);
@@ -73,13 +71,8 @@ export class MapViewComponent implements OnInit {
         this.turtlePositions = this.gss.turtlePositions;
 
         this.onResize();
-        this.gss.mapUpdates$.subscribe((data: TurtlePiece) => {
-            console.log(data);
-            const index = this.turtlePositions.findIndex(e => {
-                return e.colour === data.colour;
-            });
-
-            this.turtlePositions[index] = data;
+        this.gss.mapUpdates$.subscribe((data: TurtlePiece[]) => {
+            this.turtlePositions = data;
             this.render();
         });
     }

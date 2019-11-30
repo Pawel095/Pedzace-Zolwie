@@ -10,6 +10,7 @@ import { Player } from '../Models/Player';
 import { TurtlePiece } from '../Models/TurtlePiece';
 import { Subject, Observable } from 'rxjs';
 import { Move } from '../Models/Move';
+import { ReturnStatement } from '@angular/compiler';
 
 // This will be later moved to the server. replacing logic with Socket.io
 @Injectable({
@@ -22,8 +23,8 @@ export class GameStateService {
     private playerMovesSubject = new Subject<Move>();
     public playerMoves$: Observable<Move>;
 
-    private mapUpdateSubject = new Subject<TurtlePiece>();
-    public mapUpdates$: Observable<TurtlePiece>;
+    private mapUpdateSubject = new Subject<TurtlePiece[]>();
+    public mapUpdates$: Observable<TurtlePiece[]>;
 
     constructor() {
         this.playerMoves$ = this.playerMovesSubject.asObservable();
@@ -78,33 +79,98 @@ export class GameStateService {
         }
     }
 
-    // private processMove(m: Move): boolean {
-    //     switch (m.card.type) {
-    //         case CardTypes.COLOUR_ONE_BACK:
-    //             const turtle = this.gameState.turtles.find(e => m.card.colour === e.colour);
-    //             if (turtle.mapPosition > 1) {
-    //                 return true;
-    //             }
-    //             break;
-    //         case CardTypes.COLOUR_ONE_FORWARD:
+    public validateMove(m: Move): boolean {
+        const turtle = this.gameState.turtles.find(e => {
+            if (m.selectedTurtleColour === undefined) {
+                return m.card.colour === e.colour;
+            } else {
+                return m.selectedTurtleColour === e.colour;
+            }
+        });
+        const lastPos = Math.min(
+            ...this.gameState.turtles.map(e => e.mapPosition)
+        );
+        switch (m.card.type) {
+            case CardTypes.COLOUR_ONE_BACK:
+                if (turtle.mapPosition > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            case CardTypes.COLOUR_ONE_FORWARD:
+                if (turtle.mapPosition < 9) {
+                    return true;
+                } else {
+                    return false;
+                }
+            case CardTypes.COLOUR_TWO_FORWARD:
+                if (turtle.mapPosition < 8) {
+                    return true;
+                } else {
+                    return false;
+                }
+            case CardTypes.LAST_ONE_FORWARD:
+                if (turtle.mapPosition < 9 && turtle.mapPosition === lastPos) {
+                    return true;
+                } else {
+                    return false;
+                }
+            case CardTypes.LAST_TWO_FORWARD:
+                if (turtle.mapPosition < 8 && turtle.mapPosition === lastPos) {
+                    return true;
+                } else {
+                    return false;
+                }
+            default:
+                break;
+        }
+    }
 
-    //             break;
-    //         case CardTypes.COLOUR_TWO_FORWARD:
-    //             break;
-    //         case CardTypes.LAST_ONE_FORWARD:
-    //             break;
-    //         case CardTypes.LAST_TWO_FORWARD:
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // }
+    private processMove(m: Move): TurtlePiece {
+        const turtle = this.gameState.turtles.find(e => {
+            if (m.selectedTurtleColour === undefined) {
+                return m.card.colour === e.colour;
+            } else {
+                return m.selectedTurtleColour === e.colour;
+            }
+        });
+        switch (m.card.type) {
+            case CardTypes.COLOUR_ONE_BACK:
+                turtle.mapPosition -= 1;
+                break;
+            case CardTypes.COLOUR_ONE_FORWARD:
+                turtle.mapPosition += 1;
+                break;
+            case CardTypes.COLOUR_TWO_FORWARD:
+                turtle.mapPosition += 2;
+                break;
+            case CardTypes.LAST_ONE_FORWARD:
+                turtle.mapPosition += 1;
+                break;
+            case CardTypes.LAST_TWO_FORWARD:
+                turtle.mapPosition += 2;
+                break;
+
+            default:
+                break;
+        }
+        return turtle;
+    }
 
     playerMove(m: Move) {
+        const turtle = this.gameState.turtles.find(e => {
+            if (m.selectedTurtleColour === undefined) {
+                return m.card.colour === e.colour;
+            } else {
+                return m.selectedTurtleColour === e.colour;
+            }
+        });
         this.playerMovesSubject.next(m);
+        if (this.validateMove(m)) {
+            this.processMove(m);
+        }
 
-        this.gameState.turtles[0].mapPosition += 1;
-        this.mapUpdateSubject.next(this.gameState.turtles[0]);
+        this.mapUpdateSubject.next(this.gameState.turtles);
     }
 
     get turtlePositions(): Array<TurtlePiece> {
@@ -113,7 +179,6 @@ export class GameStateService {
 
     setup(mode: GameModes) {
         this.setupDeck();
-        // console.log(this.deck);
         switch (mode) {
             case GameModes.AI:
                 const players = Array<Player>();
@@ -142,7 +207,6 @@ export class GameStateService {
                     turtles.push(new TurtlePiece(i, 0, 0));
                 }
                 this.gameState = new GameState(players, turtles);
-
                 break;
         }
     }
