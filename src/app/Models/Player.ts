@@ -11,5 +11,6 @@ export class Player {
         this.id = Math.floor(Math.random() * 10000);
         this.playerType = type;
         this.turtleColour = colour;
+        this.hand = [];
     }
 }
