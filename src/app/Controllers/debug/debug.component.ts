@@ -15,45 +15,41 @@ export class DebugComponent implements OnInit {
 
     ngOnInit() {}
 
-    c_1() {
+    c_1(co: TurtleColours) {
         const c: Card = new Card();
         c.type = CardTypes.COLOUR_ONE_BACK;
-        c.colour = TurtleColours.RED;
+        c.colour = co;
         this.gss.playerMove(
             new Move(this.gss.debugGet0thPlayerId(), c, c.colour)
         );
     }
 
-    c1() {
+    c1(co: TurtleColours) {
         const c: Card = new Card();
         c.type = CardTypes.COLOUR_ONE_FORWARD;
-        c.colour = TurtleColours.RED;
+        c.colour = co;
         this.gss.playerMove(
             new Move(this.gss.debugGet0thPlayerId(), c, c.colour)
         );
     }
-    c2() {
+    c2(co: TurtleColours) {
         const c: Card = new Card();
         c.type = CardTypes.COLOUR_TWO_FORWARD;
-        c.colour = TurtleColours.RED;
+        c.colour = co;
         this.gss.playerMove(
             new Move(this.gss.debugGet0thPlayerId(), c, c.colour)
         );
     }
-    l1() {
+    l1(co: TurtleColours) {
         const c: Card = new Card();
         c.type = CardTypes.LAST_ONE_FORWARD;
         c.colour = TurtleColours.RAINBOW;
-        this.gss.playerMove(
-            new Move(this.gss.debugGet0thPlayerId(), c, TurtleColours.RED)
-        );
+        this.gss.playerMove(new Move(this.gss.debugGet0thPlayerId(), c, co));
     }
-    l2() {
+    l2(co: TurtleColours) {
         const c: Card = new Card();
         c.type = CardTypes.LAST_TWO_FORWARD;
         c.colour = TurtleColours.RAINBOW;
-        this.gss.playerMove(
-            new Move(this.gss.debugGet0thPlayerId(), c, TurtleColours.RED)
-        );
+        this.gss.playerMove(new Move(this.gss.debugGet0thPlayerId(), c, co));
     }
 }
