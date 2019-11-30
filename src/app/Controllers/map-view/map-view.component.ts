@@ -18,12 +18,11 @@ import { Move } from 'src/app/Models/Move';
 export class MapViewComponent implements OnInit {
     TILE_NUMBER = 10;
     TurtleSize = 10;
-    debugFillStyles = ['red', 'yellow', 'black', 'lightblue', 'magenta'];
+    debugFillStyles = ['red', 'yellow', 'blue', 'green', 'magenta'];
 
     ctx: CanvasRenderingContext2D;
     points: Array<Point> = [];
 
-    // aktualizowane w callbacku
     turtlePositions: Array<TurtlePiece>;
     constructor(private gss: GameStateService) {}
 
