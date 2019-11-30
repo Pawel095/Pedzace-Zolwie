@@ -139,7 +139,7 @@ export class GameStateService {
     }
 
     private processMove(m: Move) {
-        const turtle = this.gameState.turtles.find(e => {
+        const cardTurtle = this.gameState.turtles.find(e => {
             if (m.selectedTurtleColour === undefined) {
                 return m.card.colour === e.colour;
             } else {
@@ -147,26 +147,78 @@ export class GameStateService {
             }
         });
 
-        const turtlesOnTop = this.gameState.turtles.filter(e => {});
-        console.log(turtlesOnTop);
+        const turtlesOnTop = this.gameState.turtles.filter(
+            e =>
+                cardTurtle.mapPosition === e.mapPosition &&
+                e.verticalPositon > cardTurtle.verticalPositon
+        );
+        const turtlesToAlter = [cardTurtle, ...turtlesOnTop];
+
+        let turtlesOnTargetTile: TurtlePiece[];
         switch (m.card.type) {
             case CardTypes.COLOUR_ONE_BACK:
-                turtle.mapPosition -= 1;
+                turtlesOnTargetTile = this.gameState.turtles.filter(
+                    e => e.mapPosition === cardTurtle.mapPosition - 1
+                );
+                turtlesToAlter.forEach(e => {
+                    e.mapPosition -= 1;
+                });
                 break;
             case CardTypes.COLOUR_ONE_FORWARD:
-                turtle.mapPosition += 1;
+                turtlesOnTargetTile = this.gameState.turtles.filter(
+                    e => e.mapPosition === cardTurtle.mapPosition + 1
+                );
+                turtlesToAlter.forEach(e => {
+                    e.mapPosition += 1;
+                });
                 break;
             case CardTypes.COLOUR_TWO_FORWARD:
-                turtle.mapPosition += 2;
+                turtlesOnTargetTile = this.gameState.turtles.filter(
+                    e => e.mapPosition === cardTurtle.mapPosition + 2
+                );
+                turtlesToAlter.forEach(e => {
+                    e.mapPosition += 2;
+                });
                 break;
             case CardTypes.LAST_ONE_FORWARD:
-                turtle.mapPosition += 1;
+                turtlesOnTargetTile = this.gameState.turtles.filter(
+                    e => e.mapPosition === cardTurtle.mapPosition + 1
+                );
+                turtlesToAlter.forEach(e => {
+                    e.mapPosition += 1;
+                });
                 break;
             case CardTypes.LAST_TWO_FORWARD:
-                turtle.mapPosition += 2;
+                turtlesOnTargetTile = this.gameState.turtles.filter(
+                    e => e.mapPosition === cardTurtle.mapPosition + 2
+                );
+                turtlesToAlter.forEach(e => {
+                    e.mapPosition += 2;
+                });
                 break;
             default:
                 break;
+        }
+        console.log(turtlesOnTargetTile);
+        // jeżeli nie ma innych żółwi na polu
+        if (turtlesOnTargetTile.length <= 0) {
+            const turtles = this.gameState.turtles.filter(
+                e => e.mapPosition === cardTurtle.mapPosition
+            );
+            const min = Math.min(...turtles.map(e => e.verticalPositon));
+            turtles.forEach(e => {
+                e.verticalPositon -= min;
+            });
+        } else {
+            const verticalPos = Math.max(
+                ...turtlesOnTargetTile.map(e => e.verticalPositon)
+            );
+            const min = Math.min(...turtlesToAlter.map(e => e.verticalPositon));
+            turtlesToAlter.forEach(e => {
+                e.verticalPositon -= min;
+                e.verticalPositon += verticalPos + 1;
+            });
+            console.log(turtlesToAlter);
         }
     }
 
@@ -175,7 +227,7 @@ export class GameStateService {
         if (this.validateMove(m)) {
             this.processMove(m);
         }
-
+        console.log(this.gameState.turtles.map(e => e.verticalPositon));
         this.mapUpdateSubject.next(this.gameState.turtles);
     }
 

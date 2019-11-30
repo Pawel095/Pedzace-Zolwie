@@ -18,7 +18,7 @@ import { Move } from 'src/app/Models/Move';
 export class MapViewComponent implements OnInit {
     TILE_NUMBER = 10;
     TurtleSize = 10;
-    debugFillStyles = ['red', 'yellow', 'blue', 'green', 'magenta'];
+    debugFillStyles = ['red', 'yellow', 'blue', 'lightGreen', 'magenta'];
 
     ctx: CanvasRenderingContext2D;
     points: Array<Point> = [];
