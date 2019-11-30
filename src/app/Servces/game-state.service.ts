@@ -10,9 +10,8 @@ import { Player } from '../Models/Player';
 import { TurtlePiece } from '../Models/TurtlePiece';
 import { Subject, Observable } from 'rxjs';
 import { Move } from '../Models/Move';
-import { ReturnStatement } from '@angular/compiler';
+import shuffle from '../Utils/shuffle';
 
-// This will be later moved to the server. replacing logic with Socket.io
 @Injectable({
     providedIn: 'root',
 })
@@ -30,6 +29,17 @@ export class GameStateService {
         this.playerMoves$ = this.playerMovesSubject.asObservable();
         this.mapUpdates$ = this.mapUpdateSubject.asObservable();
     }
+
+    get turtlePositions(): Array<TurtlePiece> {
+        return this.gameState.turtles;
+    }
+
+    debugGet0thPlayerId(): number {
+        if (!environment.production) {
+            return this.gameState.players[0].id;
+        }
+    }
+
     private setupDeck() {
         this.deck = [];
         // coloured cards
@@ -71,11 +81,13 @@ export class GameStateService {
             card1.type = CardTypes.LAST_ONE_FORWARD;
             this.deck.push(card1);
         }
+        this.deck = shuffle(this.deck);
     }
 
-    debugGet0thPlayerId(): number {
-        if (!environment.production) {
-            return this.gameState.players[0].id;
+    private dealCard(player: Player, ammount: number = 1) {
+        for (let i = 0; i < ammount; i++) {
+            const card: Card = this.deck.pop();
+            player.hand.push(card);
         }
     }
 
@@ -126,58 +138,100 @@ export class GameStateService {
         }
     }
 
-    private processMove(m: Move): TurtlePiece {
-        const turtle = this.gameState.turtles.find(e => {
+    private processMove(m: Move) {
+        const cardTurtle = this.gameState.turtles.find(e => {
             if (m.selectedTurtleColour === undefined) {
                 return m.card.colour === e.colour;
             } else {
                 return m.selectedTurtleColour === e.colour;
             }
         });
+
+        const turtlesOnTop = this.gameState.turtles.filter(
+            e =>
+                cardTurtle.mapPosition === e.mapPosition &&
+                e.verticalPositon > cardTurtle.verticalPositon
+        );
+        const turtlesToAlter = [cardTurtle, ...turtlesOnTop];
+
+        let turtlesOnTargetTile: TurtlePiece[];
         switch (m.card.type) {
             case CardTypes.COLOUR_ONE_BACK:
-                turtle.mapPosition -= 1;
+                turtlesOnTargetTile = this.gameState.turtles.filter(
+                    e => e.mapPosition === cardTurtle.mapPosition - 1
+                );
+                turtlesToAlter.forEach(e => {
+                    e.mapPosition -= 1;
+                });
                 break;
             case CardTypes.COLOUR_ONE_FORWARD:
-                turtle.mapPosition += 1;
+                turtlesOnTargetTile = this.gameState.turtles.filter(
+                    e => e.mapPosition === cardTurtle.mapPosition + 1
+                );
+                turtlesToAlter.forEach(e => {
+                    e.mapPosition += 1;
+                });
                 break;
             case CardTypes.COLOUR_TWO_FORWARD:
-                turtle.mapPosition += 2;
+                turtlesOnTargetTile = this.gameState.turtles.filter(
+                    e => e.mapPosition === cardTurtle.mapPosition + 2
+                );
+                turtlesToAlter.forEach(e => {
+                    e.mapPosition += 2;
+                });
                 break;
             case CardTypes.LAST_ONE_FORWARD:
-                turtle.mapPosition += 1;
+                turtlesOnTargetTile = this.gameState.turtles.filter(
+                    e => e.mapPosition === cardTurtle.mapPosition + 1
+                );
+                turtlesToAlter.forEach(e => {
+                    e.mapPosition += 1;
+                });
                 break;
             case CardTypes.LAST_TWO_FORWARD:
-                turtle.mapPosition += 2;
+                turtlesOnTargetTile = this.gameState.turtles.filter(
+                    e => e.mapPosition === cardTurtle.mapPosition + 2
+                );
+                turtlesToAlter.forEach(e => {
+                    e.mapPosition += 2;
+                });
                 break;
-
             default:
                 break;
         }
-        return turtle;
+        console.log(turtlesOnTargetTile);
+        // jeżeli nie ma innych żółwi na polu
+        if (turtlesOnTargetTile.length <= 0) {
+            const turtles = this.gameState.turtles.filter(
+                e => e.mapPosition === cardTurtle.mapPosition
+            );
+            const min = Math.min(...turtles.map(e => e.verticalPositon));
+            turtles.forEach(e => {
+                e.verticalPositon -= min;
+            });
+        } else {
+            const verticalPos = Math.max(
+                ...turtlesOnTargetTile.map(e => e.verticalPositon)
+            );
+            const min = Math.min(...turtlesToAlter.map(e => e.verticalPositon));
+            turtlesToAlter.forEach(e => {
+                e.verticalPositon -= min;
+                e.verticalPositon += verticalPos + 1;
+            });
+            console.log(turtlesToAlter);
+        }
     }
 
-    playerMove(m: Move) {
-        const turtle = this.gameState.turtles.find(e => {
-            if (m.selectedTurtleColour === undefined) {
-                return m.card.colour === e.colour;
-            } else {
-                return m.selectedTurtleColour === e.colour;
-            }
-        });
+    public playerMove(m: Move) {
         this.playerMovesSubject.next(m);
         if (this.validateMove(m)) {
             this.processMove(m);
         }
-
+        console.log(this.gameState.turtles.map(e => e.verticalPositon));
         this.mapUpdateSubject.next(this.gameState.turtles);
     }
 
-    get turtlePositions(): Array<TurtlePiece> {
-        return this.gameState.turtles;
-    }
-
-    setup(mode: GameModes) {
+    public setup(mode: GameModes) {
         this.setupDeck();
         switch (mode) {
             case GameModes.AI:
@@ -193,19 +247,25 @@ export class GameStateService {
                     const rand: number = Math.floor(
                         Math.random() * availableTurtleColours.length
                     );
-                    const colour: TurtleColours = availableTurtleColours[rand];
-                    availableTurtleColours.splice(rand, 1);
+                    const colour: TurtleColours = availableTurtleColours.splice(
+                        rand,
+                        1
+                    )[0];
                     players.push(new Player(PlayerTypes.AI, colour));
                 }
                 players.push(
                     new Player(PlayerTypes.HUMAN, availableTurtleColours[0])
                 );
-                console.log(players);
+
+                players.forEach(e => this.dealCard(e, 5));
 
                 const turtles: Array<TurtlePiece> = [];
                 for (let i = 0; i < 5; i++) {
-                    turtles.push(new TurtlePiece(i, 0, 0));
+                    turtles.push(new TurtlePiece(i, 1, i));
                 }
+
+                console.log(players);
+                console.log(turtles);
                 this.gameState = new GameState(players, turtles);
                 break;
         }
