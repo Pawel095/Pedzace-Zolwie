@@ -1,13 +1,13 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-import { PlayerBarComponent } from "./player-bar.component";
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { PlayerBarComponent } from './player-bar.component';
 
-describe("PlayerBarComponent", () => {
+describe('PlayerBarComponent', () => {
     let component: PlayerBarComponent;
     let fixture: ComponentFixture<PlayerBarComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [PlayerBarComponent]
+            declarations: [PlayerBarComponent],
         }).compileComponents();
     }));
 
@@ -17,7 +17,7 @@ describe("PlayerBarComponent", () => {
         fixture.detectChanges();
     });
 
-    it("should create", () => {
+    it('should create', () => {
         expect(component).toBeTruthy();
     });
 });

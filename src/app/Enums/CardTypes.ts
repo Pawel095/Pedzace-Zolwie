@@ -3,5 +3,5 @@ export enum CardTypes {
     COLOUR_ONE_FORWARD,
     COLOUR_ONE_BACK,
     LAST_TWO_FORWARD,
-    LAST_ONE_FORWARD
+    LAST_ONE_FORWARD,
 }

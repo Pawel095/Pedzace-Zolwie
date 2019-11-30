@@ -1,13 +1,13 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-import { NewGameViewComponent } from "./new-game-view.component";
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NewGameViewComponent } from './new-game-view.component';
 
-describe("NewGameViewComponent", () => {
+describe('NewGameViewComponent', () => {
     let component: NewGameViewComponent;
     let fixture: ComponentFixture<NewGameViewComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [NewGameViewComponent]
+            declarations: [NewGameViewComponent],
         }).compileComponents();
     }));
 
@@ -17,7 +17,7 @@ describe("NewGameViewComponent", () => {
         fixture.detectChanges();
     });
 
-    it("should create", () => {
+    it('should create', () => {
         expect(component).toBeTruthy();
     });
 });

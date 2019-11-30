@@ -1,19 +1,19 @@
-import { Injectable } from "@angular/core";
-import { environment } from "src/environments/environment";
-import { CardTypes } from "../Enums/CardTypes";
-import { GameModes } from "../Enums/GameModes";
-import { PlayerTypes } from "../Enums/PlayerTypes";
-import { TurtleColours } from "../Enums/TurtleColours";
-import { Card } from "../Models/Card";
-import { GameState } from "../Models/GameState";
-import { Player } from "../Models/Player";
-import { TurtlePiece } from "../Models/TurtlePiece";
-import { Subject, Observable } from "rxjs";
-import { Move } from "../Models/Move";
+import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
+import { CardTypes } from '../Enums/CardTypes';
+import { GameModes } from '../Enums/GameModes';
+import { PlayerTypes } from '../Enums/PlayerTypes';
+import { TurtleColours } from '../Enums/TurtleColours';
+import { Card } from '../Models/Card';
+import { GameState } from '../Models/GameState';
+import { Player } from '../Models/Player';
+import { TurtlePiece } from '../Models/TurtlePiece';
+import { Subject, Observable } from 'rxjs';
+import { Move } from '../Models/Move';
 
 // This will be later moved to the server. replacing logic with Socket.io
 @Injectable({
-    providedIn: "root"
+    providedIn: 'root',
 })
 export class GameStateService {
     private gameState: GameState;
@@ -122,15 +122,19 @@ export class GameStateService {
                     TurtleColours.YELLOW,
                     TurtleColours.BLUE,
                     TurtleColours.GREEN,
-                    TurtleColours.VIOLET
+                    TurtleColours.VIOLET,
                 ];
                 for (let i = 0; i < 4; i++) {
-                    const rand: number = Math.floor(Math.random() * availableTurtleColours.length);
+                    const rand: number = Math.floor(
+                        Math.random() * availableTurtleColours.length
+                    );
                     const colour: TurtleColours = availableTurtleColours[rand];
                     availableTurtleColours.splice(rand, 1);
                     players.push(new Player(PlayerTypes.AI, colour));
                 }
-                players.push(new Player(PlayerTypes.HUMAN, availableTurtleColours[0]));
+                players.push(
+                    new Player(PlayerTypes.HUMAN, availableTurtleColours[0])
+                );
                 console.log(players);
 
                 const turtles: Array<TurtlePiece> = [];

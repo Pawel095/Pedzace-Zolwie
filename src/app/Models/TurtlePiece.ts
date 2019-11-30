@@ -1,4 +1,4 @@
-import { TurtleColours } from "../Enums/TurtleColours";
+import { TurtleColours } from '../Enums/TurtleColours';
 
 export class TurtlePiece {
     colour: TurtleColours;

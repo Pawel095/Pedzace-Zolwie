@@ -1,13 +1,13 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-import { MapViewComponent } from "./map-view.component";
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MapViewComponent } from './map-view.component';
 
-describe("MapViewComponent", () => {
+describe('MapViewComponent', () => {
     let component: MapViewComponent;
     let fixture: ComponentFixture<MapViewComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [MapViewComponent]
+            declarations: [MapViewComponent],
         }).compileComponents();
     }));
 
@@ -17,7 +17,7 @@ describe("MapViewComponent", () => {
         fixture.detectChanges();
     });
 
-    it("should create", () => {
+    it('should create', () => {
         expect(component).toBeTruthy();
     });
 });

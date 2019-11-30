@@ -1,12 +1,12 @@
-import { Component, OnInit } from "@angular/core";
-import { CardTypes } from "../../Enums/CardTypes";
-import { TurtleColours } from "../../Enums/TurtleColours";
-import { Card } from "../../Models/Card";
+import { Component, OnInit } from '@angular/core';
+import { CardTypes } from '../../Enums/CardTypes';
+import { TurtleColours } from '../../Enums/TurtleColours';
+import { Card } from '../../Models/Card';
 
 @Component({
-    selector: "app-rules",
-    templateUrl: "./rules.component.html",
-    styleUrls: ["./rules.component.scss"]
+    selector: 'app-rules',
+    templateUrl: './rules.component.html',
+    styleUrls: ['./rules.component.scss'],
 })
 export class RulesComponent implements OnInit {
     C1: Card = new Card();

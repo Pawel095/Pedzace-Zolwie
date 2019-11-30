@@ -1,5 +1,5 @@
-import { Player } from "./Player";
-import { TurtlePiece } from "./TurtlePiece";
+import { Player } from './Player';
+import { TurtlePiece } from './TurtlePiece';
 
 export class GameState {
     // wszyscy gracze i pozycje żółwi
