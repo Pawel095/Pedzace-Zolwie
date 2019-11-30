@@ -13,7 +13,7 @@ import { NewGameViewComponent } from './Controllers/new-game-view/new-game-view.
 import { PlayerBarComponent } from './Controllers/player-bar/player-bar.component';
 import { RulesComponent } from './Controllers/rules/rules.component';
 import { ScoreboardComponent } from './Controllers/scoreboard/scoreboard.component';
-import { DebugComponent } from './debug/debug.component';
+import { DebugComponent } from './Controllers/debug/debug.component';
 
 @NgModule({
     declarations: [

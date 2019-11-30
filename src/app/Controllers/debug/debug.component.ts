@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { CardTypes } from '../Enums/CardTypes';
-import { TurtleColours } from '../Enums/TurtleColours';
-import { Card } from '../Models/Card';
-import { GameStateService } from '../Servces/game-state.service';
-import { Move } from '../Models/Move';
+import { CardTypes } from '../../Enums/CardTypes';
+import { TurtleColours } from '../../Enums/TurtleColours';
+import { Card } from '../../Models/Card';
+import { GameStateService } from '../../Servces/game-state.service';
+import { Move } from '../../Models/Move';
 
 @Component({
     selector: 'app-debug',
