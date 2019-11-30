@@ -12,7 +12,6 @@ import { Subject, Observable } from 'rxjs';
 import { Move } from '../Models/Move';
 import { ReturnStatement } from '@angular/compiler';
 
-// This will be later moved to the server. replacing logic with Socket.io
 @Injectable({
     providedIn: 'root',
 })
@@ -30,6 +29,17 @@ export class GameStateService {
         this.playerMoves$ = this.playerMovesSubject.asObservable();
         this.mapUpdates$ = this.mapUpdateSubject.asObservable();
     }
+
+    get turtlePositions(): Array<TurtlePiece> {
+        return this.gameState.turtles;
+    }
+
+    debugGet0thPlayerId(): number {
+        if (!environment.production) {
+            return this.gameState.players[0].id;
+        }
+    }
+
     private setupDeck() {
         this.deck = [];
         // coloured cards
@@ -70,12 +80,6 @@ export class GameStateService {
             card1.colour = TurtleColours.RAINBOW;
             card1.type = CardTypes.LAST_ONE_FORWARD;
             this.deck.push(card1);
-        }
-    }
-
-    debugGet0thPlayerId(): number {
-        if (!environment.production) {
-            return this.gameState.players[0].id;
         }
     }
 
@@ -126,7 +130,7 @@ export class GameStateService {
         }
     }
 
-    private processMove(m: Move): TurtlePiece {
+    private processMove(m: Move) {
         const turtle = this.gameState.turtles.find(e => {
             if (m.selectedTurtleColour === undefined) {
                 return m.card.colour === e.colour;
@@ -134,6 +138,8 @@ export class GameStateService {
                 return m.selectedTurtleColour === e.colour;
             }
         });
+
+        // tutaj cza dodać logikę przenoszenia żółwi z góry.
         switch (m.card.type) {
             case CardTypes.COLOUR_ONE_BACK:
                 turtle.mapPosition -= 1;
@@ -154,17 +160,10 @@ export class GameStateService {
             default:
                 break;
         }
-        return turtle;
+
     }
 
-    playerMove(m: Move) {
-        const turtle = this.gameState.turtles.find(e => {
-            if (m.selectedTurtleColour === undefined) {
-                return m.card.colour === e.colour;
-            } else {
-                return m.selectedTurtleColour === e.colour;
-            }
-        });
+    public playerMove(m: Move) {
         this.playerMovesSubject.next(m);
         if (this.validateMove(m)) {
             this.processMove(m);
@@ -173,11 +172,7 @@ export class GameStateService {
         this.mapUpdateSubject.next(this.gameState.turtles);
     }
 
-    get turtlePositions(): Array<TurtlePiece> {
-        return this.gameState.turtles;
-    }
-
-    setup(mode: GameModes) {
+    public setup(mode: GameModes) {
         this.setupDeck();
         switch (mode) {
             case GameModes.AI:
