@@ -32,28 +32,36 @@
                 <app-card-item [inputCard]="C2"></app-card-item>
                 <div class="desc">
                     Moves <span class="emphasis">coloured</span> turtle
-                    <span class="emphasis">two</span> tiles forward
+                    <span class="emphasis">two</span> tiles forward,
+                    <span class="emphasis">unless</span> the piece is on the
+                    second-to-last tile
                 </div>
             </div>
             <div class="item">
                 <app-card-item [inputCard]="C_1"></app-card-item>
                 <div class="desc">
                     Moves <span class="emphasis">coloured</span> turtle
-                    <span class="emphasis">one</span> tile backward
+                    <span class="emphasis">one</span> tile backward,
+                    <span class="emphasis">unless</span> the piece is on first
+                    or start tile
                 </div>
             </div>
             <div class="item">
                 <app-card-item [inputCard]="L1"></app-card-item>
                 <div class="desc">
                     Moves <span class="emphasis">last</span> turtle
-                    <span class="emphasis">one</span> tile forward
+                    <span class="emphasis">one</span> tile forward. If there are
+                    <span class="emphasis">multpile</span> then player
+                    <span class="emphasis">choses</span> one piece.
                 </div>
             </div>
             <div class="item">
                 <app-card-item [inputCard]="L2"></app-card-item>
                 <div class="desc">
                     Moves <span class="emphasis">last</span> turtle
-                    <span class="emphasis">two</span> tile forward
+                    <span class="emphasis">two</span> tile forward. If there are
+                    <span class="emphasis">multpile</span> then player
+                    <span class="emphasis">choses</span> one turtle.
                 </div>
             </div>
         </div>
