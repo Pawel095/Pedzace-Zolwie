@@ -237,6 +237,7 @@ export class GameStateService {
     }
 
     public setup(mode: GameModes) {
+        this.wasSetupRunV = true;
         this.setupDeck();
         switch (mode) {
             case GameModes.AI:
@@ -274,6 +275,5 @@ export class GameStateService {
                 this.gameState = new GameState(players, turtles);
                 break;
         }
-        this.wasSetupRunV = true;
     }
 }
