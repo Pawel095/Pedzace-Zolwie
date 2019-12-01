@@ -104,7 +104,7 @@ export class GameStateService {
         );
         switch (m.card.type) {
             case CardTypes.COLOUR_ONE_BACK:
-                if (turtle.mapPosition > 0) {
+                if (turtle.mapPosition > 1) {
                     return true;
                 } else {
                     return false;
