@@ -35,7 +35,7 @@ export class GameStateService {
         return this.gameState.turtles;
     }
 
-    get wasSetupRun() {
+    wasSetupRun() {
         return this.wasSetupRun;
     }
 
