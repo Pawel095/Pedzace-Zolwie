@@ -1,4 +1,12 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    Input,
+    OnInit,
+    ViewChild,
+    Output,
+    EventEmitter,
+} from '@angular/core';
 import { reject } from 'q';
 import { CardTypes } from '../../Enums/CardTypes';
 import { TurtleColours } from '../../Enums/TurtleColours';
@@ -29,6 +37,7 @@ export class CardItemComponent implements OnInit {
     turtleYellowPath = 'assets/Turtles/Turtle Yellow.png';
 
     @Input() inputCard: Card;
+    @Output() cardClicked: EventEmitter<Card> = new EventEmitter<Card>();
     card: Card;
     ctx: CanvasRenderingContext2D;
     @ViewChild('card', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
@@ -132,5 +141,9 @@ export class CardItemComponent implements OnInit {
                 this.ctx.drawImage(img[2] as CanvasImageSource, 0, 0);
             })
             .catch(e => console.error(e));
+    }
+
+    onClick() {
+        this.cardClicked.emit(this.card);
     }
 }

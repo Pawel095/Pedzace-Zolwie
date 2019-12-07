@@ -23,7 +23,7 @@ export class RefrechCheckGuard implements CanActivate {
         | boolean
         | UrlTree {
         if (environment.production) {
-            if (this.gss.wasSetupRun()) {
+            if (this.gss.wasSetupRun) {
                 return true;
             } else {
                 return false;
