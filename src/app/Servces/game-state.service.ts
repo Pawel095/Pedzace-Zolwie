@@ -25,7 +25,7 @@ export class GameStateService {
     private mapUpdateSubject = new Subject<TurtlePiece[]>();
     public mapUpdates$: Observable<TurtlePiece[]>;
 
-    private wasSetupRunV = false;
+    public  wasSetupRun = false;
     constructor() {
         this.playerMoves$ = this.playerMovesSubject.asObservable();
         this.mapUpdates$ = this.mapUpdateSubject.asObservable();
@@ -33,10 +33,6 @@ export class GameStateService {
 
     get turtlePositions(): Array<TurtlePiece> {
         return this.gameState.turtles;
-    }
-
-    wasSetupRun() {
-        return this.wasSetupRun;
     }
 
     debugGet0thPlayerId(): number {
@@ -237,7 +233,7 @@ export class GameStateService {
     }
 
     public setup(mode: GameModes) {
-        this.wasSetupRunV = true;
+        this.wasSetupRun = true;
         this.setupDeck();
         switch (mode) {
             case GameModes.AI:
