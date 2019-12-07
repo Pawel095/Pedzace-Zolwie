@@ -22,6 +22,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatDialogModule } from '@angular/material/dialog';
+import { SelectColorDialogComponent } from './Controllers/Game/game-controller/select-color-dialog/select-color-dialog.component';
 
 @NgModule({
     declarations: [
@@ -38,6 +40,7 @@ import { MatRadioModule } from '@angular/material/radio';
         HomeViewComponent,
         DebugComponent,
         PlayerBarItemComponent,
+        SelectColorDialogComponent,
     ],
     imports: [
         BrowserModule,
@@ -49,6 +52,7 @@ import { MatRadioModule } from '@angular/material/radio';
         MatCardModule,
         MatExpansionModule,
         MatRadioModule,
+        MatDialogModule,
     ],
     providers: [],
     bootstrap: [AppComponent],

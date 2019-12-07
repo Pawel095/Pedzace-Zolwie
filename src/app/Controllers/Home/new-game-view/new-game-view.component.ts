@@ -10,8 +10,7 @@ import { GameStateService } from 'src/app/Servces/game-state.service';
     styleUrls: ['./new-game-view.component.scss'],
 })
 export class NewGameViewComponent implements OnInit {
-    constructor(private gss: GameStateService, private router: Router) {
-    }
+    constructor(private gss: GameStateService, private router: Router) {}
 
     ngOnInit() {}
 

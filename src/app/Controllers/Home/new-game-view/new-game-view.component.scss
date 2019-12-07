@@ -11,7 +11,8 @@
         justify-self: center;
         min-width: 70%;
 
-        form,mat-radio-group{
+        form,
+        mat-radio-group {
             display: flex;
             flex-direction: column;
         }
