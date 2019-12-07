@@ -31,7 +31,7 @@ export class MapViewComponent implements OnInit {
     @HostListener('window:resize', [''])
     onResize() {
         this.points = [];
-        this.ctx.canvas.width = window.innerWidth - 200;
+        this.ctx.canvas.width = window.innerWidth - 400;
         this.ctx.canvas.height = window.innerHeight - 600;
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         let temp = Math.PI / 2;
