@@ -15,7 +15,11 @@ export class RulesComponent implements OnInit {
     L2: Card = new Card();
     C_1: Card = new Card();
 
-    constructor() {
+    step = 0;
+
+    constructor() {}
+
+    ngOnInit() {
         this.C1.type = CardTypes.COLOUR_ONE_FORWARD;
         this.C1.colour = Math.floor(Math.random() * 6);
 
@@ -32,5 +36,13 @@ export class RulesComponent implements OnInit {
         this.C_1.colour = Math.floor(Math.random() * 6);
     }
 
-    ngOnInit() {}
+    setstep(i: number) {
+        this.step = i;
+    }
+    nextstep() {
+        this.step += 1;
+    }
+    prevstep() {
+        this.step -= 1;
+    }
 }

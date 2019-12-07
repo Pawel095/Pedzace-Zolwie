@@ -1,7 +1,9 @@
+@import '../../../../styles.scss';
 .cardExamples {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: center;
     .item {
         display: flex;
         flex-direction: column;

@@ -1,4 +1,3 @@
-
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @import '~@angular/material/theming';
@@ -12,21 +11,32 @@
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$Pedzace-Zolwie-primary: mat-palette($mat-green);
-$Pedzace-Zolwie-accent: mat-palette($mat-grey, 800, 700, 900);
+$primary: mat-palette($mat-green);
+$accent: mat-palette($mat-light-green);
 
 // The warn palette is optional (defaults to red).
-$Pedzace-Zolwie-warn: mat-palette($mat-orange);
+$warn: mat-palette($mat-orange);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$Pedzace-Zolwie-theme: mat-light-theme($Pedzace-Zolwie-primary, $Pedzace-Zolwie-accent, $Pedzace-Zolwie-warn);
+$theme: mat-light-theme($primary, $accent, $warn);
+$background: map-get(
+    $map: $mat-gray,
+    $key: 500,
+);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include angular-material-theme($Pedzace-Zolwie-theme);
+@include angular-material-theme($theme);
 
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+    background: $background;
+}
