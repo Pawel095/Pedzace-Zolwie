@@ -1,4 +1,10 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    HostListener,
+    OnInit,
+    ViewChild,
+} from '@angular/core';
 import { Point } from 'src/app/Models/Point';
 import { TurtlePiece } from 'src/app/Models/TurtlePiece';
 import { GameStateService } from 'src/app/Servces/game-state.service';
@@ -11,6 +17,7 @@ import { GameStateService } from 'src/app/Servces/game-state.service';
 export class MapViewComponent implements OnInit {
     TILE_NUMBER = 10;
     TurtleSize = 10;
+    TileSize = 20;
     debugFillStyles = ['red', 'yellow', 'blue', 'lightGreen', 'magenta'];
 
     ctx: CanvasRenderingContext2D;
@@ -25,7 +32,7 @@ export class MapViewComponent implements OnInit {
     onResize() {
         this.points = [];
         this.ctx.canvas.width = window.innerWidth - 200;
-        this.ctx.canvas.height = window.innerHeight - 400;
+        this.ctx.canvas.height = window.innerHeight - 600;
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         let temp = Math.PI / 2;
         const piece = -Math.PI / 3;
@@ -75,7 +82,7 @@ export class MapViewComponent implements OnInit {
         // pola
         this.ctx.fillStyle = 'green';
         this.points.forEach(e => {
-            this.ctx.fillRect(e.x, e.y, 20, 20);
+            this.ctx.fillRect(e.x, e.y, this.TileSize, this.TileSize);
         });
 
         let debugIterator = 0;
@@ -100,7 +107,7 @@ export class MapViewComponent implements OnInit {
                     const y =
                         this.points[e.mapPosition].y +
                         this.TurtleSize / 2 -
-                        (e.verticalPositon * this.TurtleSize);
+                        e.verticalPositon * this.TurtleSize;
 
                     this.ctx.fillStyle = this.debugFillStyles[debugIterator++];
                     this.ctx.fillRect(x, y, this.TurtleSize, this.TurtleSize);
@@ -128,7 +135,7 @@ export class MapViewComponent implements OnInit {
                     const y =
                         this.points[this.TILE_NUMBER - 1 - e.mapPosition].y +
                         this.TurtleSize / 2 -
-                        (e.verticalPositon * this.TurtleSize);
+                        e.verticalPositon * this.TurtleSize;
 
                     this.ctx.fillStyle = this.debugFillStyles[debugIterator++];
                     this.ctx.fillRect(x, y, this.TurtleSize, this.TurtleSize);

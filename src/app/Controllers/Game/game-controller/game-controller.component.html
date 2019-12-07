@@ -1,3 +1,13 @@
-<app-player-bar></app-player-bar>
-<app-map-view></app-map-view>
-<app-card-view [cardsInput]="player.cards" (cardClicked)="cardClicked($event)"></app-card-view>
+<mat-card>
+    <app-player-bar></app-player-bar>
+</mat-card>
+<mat-card>
+    <app-map-view></app-map-view>
+    <app-debug></app-debug>
+</mat-card>
+<mat-card>
+    <app-card-view
+        [cardsInput]="player.cards"
+        (cardClicked)="cardClicked($event)"
+    ></app-card-view>
+</mat-card>
