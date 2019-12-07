@@ -62,9 +62,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     ],
     providers: [],
     bootstrap: [AppComponent],
-    entryComponents: [
-        SelectColorDialogComponent,
-        SelectColorDialogItemComponent,
-    ],
+    entryComponents: [SelectColorDialogComponent, SelectColorDialogItemComponent],
 })
 export class AppModule {}

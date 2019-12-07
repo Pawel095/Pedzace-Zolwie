@@ -6,8 +6,5 @@
     <app-debug *ngIf="debug"></app-debug>
 </mat-card>
 <mat-card>
-    <app-card-view
-        [cardsInput]="player.cards"
-        (cardClicked)="cardClicked($event)"
-    ></app-card-view>
+    <app-card-view [cardsInput]="player.cards" (cardClicked)="cardClicked($event)"></app-card-view>
 </mat-card>

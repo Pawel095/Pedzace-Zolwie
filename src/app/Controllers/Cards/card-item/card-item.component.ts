@@ -1,12 +1,4 @@
-import {
-    Component,
-    ElementRef,
-    EventEmitter,
-    Input,
-    OnInit,
-    Output,
-    ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { reject } from 'q';
 import { CardTypes } from '../../../Enums/CardTypes';
 import { TurtleColours } from '../../../Enums/TurtleColours';
@@ -132,21 +124,9 @@ export class CardItemComponent implements OnInit {
                 // marking top left
                 this.ctx.drawImage(img[1] as CanvasImageSource, 5, 5, 25, 50);
                 // marking top right
-                this.ctx.drawImage(
-                    img[1] as CanvasImageSource,
-                    this.width - 35,
-                    5,
-                    25,
-                    50
-                );
+                this.ctx.drawImage(img[1] as CanvasImageSource, this.width - 35, 5, 25, 50);
                 // turtle
-                this.ctx.drawImage(
-                    img[2] as CanvasImageSource,
-                    0,
-                    50,
-                    150,
-                    300
-                );
+                this.ctx.drawImage(img[2] as CanvasImageSource, 0, 50, 150, 300);
             })
             .catch(e => console.error(e));
     }
