@@ -15,6 +15,10 @@ import { NewGameViewComponent } from './Controllers/Home/new-game-view/new-game-
 import { RulesComponent } from './Controllers/Home/rules/rules.component';
 import { ScoreboardComponent } from './Controllers/Home/scoreboard/scoreboard.component';
 import { NavBarComponent } from './Controllers/nav-bar/nav-bar.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
     declarations: [
@@ -32,7 +36,14 @@ import { NavBarComponent } from './Controllers/nav-bar/nav-bar.component';
         DebugComponent,
         PlayerBarItemComponent,
     ],
-    imports: [BrowserModule, AppRoutingModule, FormsModule],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        MatToolbarModule,
+        MatButtonModule,
+    ],
     providers: [],
     bootstrap: [AppComponent],
 })

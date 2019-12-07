@@ -1,14 +1,5 @@
-$background: #bedead;
-
 .navbar {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    background: $background;
-
-    .element {
-        display: flex;
-        font-size: 150%;
-        border: 2px solid black;
-    }
 }
