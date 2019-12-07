@@ -1,4 +1,19 @@
-.modeForm {
+@import '../../../../styles.scss';
+
+.container {
     display: flex;
-    flex-direction: column;
+    height: 75%;
+    width: 100%;
+    justify-content: center;
+
+    mat-card {
+        align-self: center;
+        justify-self: center;
+        min-width: 70%;
+
+        form,mat-radio-group{
+            display: flex;
+            flex-direction: column;
+        }
+    }
 }
