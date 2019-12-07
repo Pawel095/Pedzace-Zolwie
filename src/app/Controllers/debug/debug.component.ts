@@ -14,8 +14,6 @@ import { environment } from 'src/environments/environment';
 export class DebugComponent implements OnInit {
     constructor(private gss: GameStateService) {}
 
-    debug = environment.production;
-
     ngOnInit() {}
 
     c_1(co: TurtleColours) {

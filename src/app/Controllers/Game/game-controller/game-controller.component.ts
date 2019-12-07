@@ -4,6 +4,7 @@ import { PlayerTypes } from 'src/app/Enums/PlayerTypes';
 import { Card } from 'src/app/Models/Card';
 import { Player } from 'src/app/Models/Player';
 import { GameStateService } from 'src/app/Servces/game-state.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-game-controller',
@@ -13,7 +14,7 @@ import { GameStateService } from 'src/app/Servces/game-state.service';
 export class GameControllerComponent implements OnInit {
     constructor(private gss: GameStateService) {}
     player: Player;
-
+    debug = !environment.production;
     ngOnInit() {
         // TODO: usuń debugowanie z tego miejsca
         this.gss.setup(GameModes.AI);
