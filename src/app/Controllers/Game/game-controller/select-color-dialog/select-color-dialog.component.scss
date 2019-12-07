@@ -1,0 +1,11 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    .elem {
+        max-width: 20%;
+    }
+}
+.actions {
+    display: flex;
+    justify-content: center;
+}

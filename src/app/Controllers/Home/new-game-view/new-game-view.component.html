@@ -1,0 +1,27 @@
+<div class="container">
+    <mat-card>
+        <mat-card-header>
+            Select Game Mode
+        </mat-card-header>
+        <mat-card-content>
+            <!-- TODO: ADD LOGIC so that selecting actually does somenthing -->
+            <form (submit)="onSubmit(form)" class="modeForm" #form="ngForm">
+                <mat-radio-group>
+                    <mat-radio-button value="AI">
+                        Vs AI
+                    </mat-radio-button>
+                    <mat-radio-button value="HS" disabled>
+                        Vs Humans (hot seat) (not yet implemented)
+                    </mat-radio-button>
+                    <mat-radio-button value="MP" disabled>
+                        Vs Humans (multiplayer) (not yet implemented)
+                    </mat-radio-button>
+                    <mat-radio-button value="CS" disabled>
+                        Custom (not yet implemented)
+                    </mat-radio-button>
+                </mat-radio-group>
+                <button mat-button type="submit">Start!</button>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

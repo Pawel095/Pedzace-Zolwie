@@ -1,0 +1,98 @@
+<!-- <a
+    href="http://pomyslnik.pl/wp-content/uploads/2015/09/instrukcja_pedzace_zolwie_2013.pdf"
+>
+    Rules PDF in Polish</a
+> -->
+<div class="container">
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="step === 0" (opened)="setstep(0)">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h3>Gameplay</h3>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p>The player decides whitch card will be played.</p>
+            <p>
+                Moving a turtle onto an already occupied tile places the turtle on top of the occupant
+            </p>
+            <p>
+                Moving a turtle with other turtles on top moves them as well.
+            </p>
+            <mat-action-row>
+                <button mat-button (click)="nextstep()">Next</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+        <mat-expansion-panel [expanded]="step === 1" (opened)="setstep(1)">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h3>Card Explanation</h3>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p>
+                There exist rainbow variants of color cards. The player choses which turtle to move when played.
+            </p>
+            <div class="cardExamples">
+                <div class="item">
+                    <app-card-item [inputCard]="C1"></app-card-item>
+                    <div class="desc">
+                        Moves
+                        <span class="emphasis">coloured</span> turtle <span class="emphasis">one</span> tile forward
+                    </div>
+                </div>
+                <div class="item">
+                    <app-card-item [inputCard]="C2"></app-card-item>
+                    <div class="desc">
+                        Moves
+                        <span class="emphasis">coloured</span> turtle <span class="emphasis">two</span> tiles forward,
+                        <span class="emphasis">unless</span> the piece is on the second-to-last tile
+                    </div>
+                </div>
+                <div class="item">
+                    <app-card-item [inputCard]="C_1"></app-card-item>
+                    <div class="desc">
+                        Moves
+                        <span class="emphasis">coloured</span> turtle <span class="emphasis">one</span> tile backward,
+                        <span class="emphasis">unless</span> the piece is on first or start tile
+                    </div>
+                </div>
+                <div class="item">
+                    <app-card-item [inputCard]="L1"></app-card-item>
+                    <div class="desc">
+                        Moves <span class="emphasis">last</span> turtle <span class="emphasis">one</span> tile forward. If there are
+                        <span class="emphasis">multpile</span> then player <span class="emphasis">choses</span> one piece.
+                    </div>
+                </div>
+                <div class="item">
+                    <app-card-item [inputCard]="L2"></app-card-item>
+                    <div class="desc">
+                        Moves <span class="emphasis">last</span> turtle <span class="emphasis">two</span> tile forward. If there are
+                        <span class="emphasis">multpile</span> then player <span class="emphasis">choses</span> one turtle.
+                    </div>
+                </div>
+            </div>
+            <mat-action-row>
+                <button mat-button (click)="prevstep()">Back</button>
+                <button mat-button (click)="nextstep()">Next</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+        <mat-expansion-panel [expanded]="step === 2" (opened)="setstep(2)">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h3>Winning Condition</h3>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p>
+                As soon as one turtle reaches the end, all players uncover their turtle's colour.
+            </p>
+            <p>
+                The winner is the person whose turtle was the lowest when reaching the end
+            </p>
+            <p>
+                If an unowned turtle reaches the end, the winning turtle is whichever was the closest to the last tile
+            </p>
+            <mat-action-row>
+                <button mat-button (click)="prevstep()">Back</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>

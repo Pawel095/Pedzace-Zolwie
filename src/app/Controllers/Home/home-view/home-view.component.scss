@@ -1,0 +1,14 @@
+@import '../../../../styles.scss';
+
+.container {
+    display: flex;
+    height: 75%;
+    width: 100%;
+    justify-content: center;
+
+    mat-card {
+        align-self: center;
+        justify-self: center;
+        min-width: 70%;
+    }
+}

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CardTypes } from '../Enums/CardTypes';
 import { GameModes } from '../Enums/GameModes';
@@ -6,10 +7,9 @@ import { PlayerTypes } from '../Enums/PlayerTypes';
 import { TurtleColours } from '../Enums/TurtleColours';
 import { Card } from '../Models/Card';
 import { GameState } from '../Models/GameState';
+import { Move } from '../Models/Move';
 import { Player } from '../Models/Player';
 import { TurtlePiece } from '../Models/TurtlePiece';
-import { Subject, Observable } from 'rxjs';
-import { Move } from '../Models/Move';
 import shuffle from '../Utils/shuffle';
 
 @Injectable({
@@ -26,11 +26,15 @@ export class GameStateService {
     private mapUpdateSubject = new Subject<TurtlePiece[]>();
     public mapUpdates$: Observable<TurtlePiece[]>;
 
+    private currentTurnSubject = new Subject<number>();
+    public currentTurn$: Observable<number>;
+
     public wasSetupRun = false;
     public currentGamemode: GameModes;
     constructor() {
         this.playerMoves$ = this.playerMovesSubject.asObservable();
         this.mapUpdates$ = this.mapUpdateSubject.asObservable();
+        this.currentTurn$ = this.currentTurnSubject.asObservable();
     }
 
     get turtlePositions(): Array<TurtlePiece> {
@@ -109,21 +113,13 @@ export class GameStateService {
                     TurtleColours.VIOLET,
                 ];
                 for (let i = 0; i < 4; i++) {
-                    const rand: number = Math.floor(
-                        Math.random() * availableTurtleColours.length
-                    );
-                    const colour: TurtleColours = availableTurtleColours.splice(
-                        rand,
-                        1
-                    )[0];
+                    const rand: number = Math.floor(Math.random() * availableTurtleColours.length);
+                    const colour: TurtleColours = availableTurtleColours.splice(rand, 1)[0];
                     const pl = new Player(PlayerTypes.AI, colour);
                     players.push(pl);
                     this.unassingedPlayers.push(pl);
                 }
-                const pla = new Player(
-                    PlayerTypes.HUMAN,
-                    availableTurtleColours[0]
-                );
+                const pla = new Player(PlayerTypes.HUMAN, availableTurtleColours[0]);
                 players.push(pla);
                 this.unassingedPlayers.push(pla);
 
@@ -131,11 +127,8 @@ export class GameStateService {
 
                 const turtles: Array<TurtlePiece> = [];
                 for (let i = 0; i < 5; i++) {
-                    turtles.push(new TurtlePiece(i, 1, i));
+                    turtles.push(new TurtlePiece(i, 0, 0));
                 }
-
-                console.log(players);
-                console.log(turtles);
                 this.gameState = new GameState(players, turtles);
                 this.currentGamemode = GameModes.AI;
                 break;
@@ -143,9 +136,7 @@ export class GameStateService {
     }
 
     public getPlayer(type: PlayerTypes) {
-        const playerId = this.unassingedPlayers.findIndex(
-            e => e.playerType === type
-        );
+        const playerId = this.unassingedPlayers.findIndex(e => e.playerType === type);
         const player = this.unassingedPlayers[playerId];
         this.unassingedPlayers.splice(playerId, 1);
         return player;
@@ -156,7 +147,6 @@ export class GameStateService {
         if (this.validateMove(m)) {
             this.processMove(m);
         }
-        console.log(this.gameState.turtles.map(e => e.verticalPositon));
         this.mapUpdateSubject.next(this.gameState.turtles);
     }
 
@@ -168,9 +158,7 @@ export class GameStateService {
                 return m.selectedTurtleColour === e.colour;
             }
         });
-        const lastPos = Math.min(
-            ...this.gameState.turtles.map(e => e.mapPosition)
-        );
+        const lastPos = Math.min(...this.gameState.turtles.map(e => e.mapPosition));
         switch (m.card.type) {
             case CardTypes.COLOUR_ONE_BACK:
                 if (turtle.mapPosition > 1) {
@@ -217,50 +205,38 @@ export class GameStateService {
         });
 
         const turtlesOnTop = this.gameState.turtles.filter(
-            e =>
-                cardTurtle.mapPosition === e.mapPosition &&
-                e.verticalPositon > cardTurtle.verticalPositon
+            e => cardTurtle.mapPosition === e.mapPosition && e.verticalPositon > cardTurtle.verticalPositon
         );
         const turtlesToAlter = [cardTurtle, ...turtlesOnTop];
 
         let turtlesOnTargetTile: TurtlePiece[];
         switch (m.card.type) {
             case CardTypes.COLOUR_ONE_BACK:
-                turtlesOnTargetTile = this.gameState.turtles.filter(
-                    e => e.mapPosition === cardTurtle.mapPosition - 1
-                );
+                turtlesOnTargetTile = this.gameState.turtles.filter(e => e.mapPosition === cardTurtle.mapPosition - 1);
                 turtlesToAlter.forEach(e => {
                     e.mapPosition -= 1;
                 });
                 break;
             case CardTypes.COLOUR_ONE_FORWARD:
-                turtlesOnTargetTile = this.gameState.turtles.filter(
-                    e => e.mapPosition === cardTurtle.mapPosition + 1
-                );
+                turtlesOnTargetTile = this.gameState.turtles.filter(e => e.mapPosition === cardTurtle.mapPosition + 1);
                 turtlesToAlter.forEach(e => {
                     e.mapPosition += 1;
                 });
                 break;
             case CardTypes.COLOUR_TWO_FORWARD:
-                turtlesOnTargetTile = this.gameState.turtles.filter(
-                    e => e.mapPosition === cardTurtle.mapPosition + 2
-                );
+                turtlesOnTargetTile = this.gameState.turtles.filter(e => e.mapPosition === cardTurtle.mapPosition + 2);
                 turtlesToAlter.forEach(e => {
                     e.mapPosition += 2;
                 });
                 break;
             case CardTypes.LAST_ONE_FORWARD:
-                turtlesOnTargetTile = this.gameState.turtles.filter(
-                    e => e.mapPosition === cardTurtle.mapPosition + 1
-                );
+                turtlesOnTargetTile = this.gameState.turtles.filter(e => e.mapPosition === cardTurtle.mapPosition + 1);
                 turtlesToAlter.forEach(e => {
                     e.mapPosition += 1;
                 });
                 break;
             case CardTypes.LAST_TWO_FORWARD:
-                turtlesOnTargetTile = this.gameState.turtles.filter(
-                    e => e.mapPosition === cardTurtle.mapPosition + 2
-                );
+                turtlesOnTargetTile = this.gameState.turtles.filter(e => e.mapPosition === cardTurtle.mapPosition + 2);
                 turtlesToAlter.forEach(e => {
                     e.mapPosition += 2;
                 });
@@ -268,26 +244,20 @@ export class GameStateService {
             default:
                 break;
         }
-        console.log(turtlesOnTargetTile);
         // jeżeli nie ma innych żółwi na polu
         if (turtlesOnTargetTile.length <= 0) {
-            const turtles = this.gameState.turtles.filter(
-                e => e.mapPosition === cardTurtle.mapPosition
-            );
+            const turtles = this.gameState.turtles.filter(e => e.mapPosition === cardTurtle.mapPosition);
             const min = Math.min(...turtles.map(e => e.verticalPositon));
             turtles.forEach(e => {
                 e.verticalPositon -= min;
             });
         } else {
-            const verticalPos = Math.max(
-                ...turtlesOnTargetTile.map(e => e.verticalPositon)
-            );
+            const verticalPos = Math.max(...turtlesOnTargetTile.map(e => e.verticalPositon));
             const min = Math.min(...turtlesToAlter.map(e => e.verticalPositon));
             turtlesToAlter.forEach(e => {
                 e.verticalPositon -= min;
                 e.verticalPositon += verticalPos + 1;
             });
-            console.log(turtlesToAlter);
         }
     }
 }
