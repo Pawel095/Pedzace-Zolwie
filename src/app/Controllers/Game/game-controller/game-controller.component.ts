@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { GameModes } from 'src/app/Enums/GameModes';
 import { PlayerTypes } from 'src/app/Enums/PlayerTypes';
+import { TurtleColours } from 'src/app/Enums/TurtleColours';
 import { Card } from 'src/app/Models/Card';
+import { Move } from 'src/app/Models/Move';
 import { Player } from 'src/app/Models/Player';
 import { GameStateService } from 'src/app/Servces/game-state.service';
 import { environment } from 'src/environments/environment';
+import { SelectColorDialogComponent } from './select-color-dialog/select-color-dialog.component';
 
 @Component({
     selector: 'app-game-controller',
@@ -12,7 +16,7 @@ import { environment } from 'src/environments/environment';
     styleUrls: ['./game-controller.component.scss'],
 })
 export class GameControllerComponent implements OnInit {
-    constructor(private gss: GameStateService) {}
+    constructor(private gss: GameStateService, private dialog: MatDialog) {}
     player: Player;
     debug = !environment.production;
     ngOnInit() {
@@ -25,6 +29,16 @@ export class GameControllerComponent implements OnInit {
         }
     }
     cardClicked(card: Card) {
-        console.log(card);
+        if (card.colour === TurtleColours.RAINBOW) {
+            const dialogRef = this.dialog.open(SelectColorDialogComponent);
+            dialogRef.afterClosed().subscribe(data => {
+                console.log(data);
+                this.gss.playerMove(new Move(this.player.id, card, data));
+            });
+        } else {
+            if (this.gss.validateMove(new Move(this.player.id, card, card.colour))) {
+                this.gss.playerMove(new Move(this.player.id, card, card.colour));
+            }
+        }
     }
 }

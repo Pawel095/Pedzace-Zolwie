@@ -4,7 +4,6 @@ import { TurtleColours } from '../../Enums/TurtleColours';
 import { Card } from '../../Models/Card';
 import { Move } from '../../Models/Move';
 import { GameStateService } from '../../Servces/game-state.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-debug',

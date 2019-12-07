@@ -5,6 +5,7 @@ import { HomeViewComponent } from './Controllers/Home/home-view/home-view.compon
 import { NewGameViewComponent } from './Controllers/Home/new-game-view/new-game-view.component';
 import { RulesComponent } from './Controllers/Home/rules/rules.component';
 import { RefrechCheckGuard } from './Guards/refrech-check.guard';
+import { SelectColorDialogComponent } from './Controllers/Game/game-controller/select-color-dialog/select-color-dialog.component';
 
 const routes: Routes = [
     { path: 'home', component: HomeViewComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
         component: GameControllerComponent,
         canActivate: [RefrechCheckGuard],
     },
+    { path: 'debug', component: SelectColorDialogComponent },
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: 'rules', component: RulesComponent },
 ];
