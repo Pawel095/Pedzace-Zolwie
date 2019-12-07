@@ -20,7 +20,6 @@ export class GameControllerComponent implements OnInit {
         switch (this.gss.currentGamemode) {
             case GameModes.AI:
                 this.player = this.gss.getPlayer(PlayerTypes.HUMAN);
-                console.log(this.player);
                 break;
         }
     }

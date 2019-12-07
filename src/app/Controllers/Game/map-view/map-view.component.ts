@@ -100,7 +100,7 @@ export class MapViewComponent implements OnInit {
                     const y =
                         this.points[e.mapPosition].y +
                         this.TurtleSize / 2 -
-                        (e.verticalPositon * this.TurtleSize) / 2;
+                        (e.verticalPositon * this.TurtleSize);
 
                     this.ctx.fillStyle = this.debugFillStyles[debugIterator++];
                     this.ctx.fillRect(x, y, this.TurtleSize, this.TurtleSize);
@@ -128,7 +128,7 @@ export class MapViewComponent implements OnInit {
                     const y =
                         this.points[this.TILE_NUMBER - 1 - e.mapPosition].y +
                         this.TurtleSize / 2 -
-                        (e.verticalPositon * this.TurtleSize) / 2;
+                        (e.verticalPositon * this.TurtleSize);
 
                     this.ctx.fillStyle = this.debugFillStyles[debugIterator++];
                     this.ctx.fillRect(x, y, this.TurtleSize, this.TurtleSize);

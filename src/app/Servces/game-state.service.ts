@@ -131,11 +131,8 @@ export class GameStateService {
 
                 const turtles: Array<TurtlePiece> = [];
                 for (let i = 0; i < 5; i++) {
-                    turtles.push(new TurtlePiece(i, 1, i));
+                    turtles.push(new TurtlePiece(i, 0, 0));
                 }
-
-                console.log(players);
-                console.log(turtles);
                 this.gameState = new GameState(players, turtles);
                 this.currentGamemode = GameModes.AI;
                 break;
@@ -156,7 +153,6 @@ export class GameStateService {
         if (this.validateMove(m)) {
             this.processMove(m);
         }
-        console.log(this.gameState.turtles.map(e => e.verticalPositon));
         this.mapUpdateSubject.next(this.gameState.turtles);
     }
 
@@ -268,7 +264,6 @@ export class GameStateService {
             default:
                 break;
         }
-        console.log(turtlesOnTargetTile);
         // jeżeli nie ma innych żółwi na polu
         if (turtlesOnTargetTile.length <= 0) {
             const turtles = this.gameState.turtles.filter(
@@ -287,7 +282,6 @@ export class GameStateService {
                 e.verticalPositon -= min;
                 e.verticalPositon += verticalPos + 1;
             });
-            console.log(turtlesToAlter);
         }
     }
 }
