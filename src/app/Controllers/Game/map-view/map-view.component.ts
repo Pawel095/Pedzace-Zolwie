@@ -1,14 +1,7 @@
-import {
-    Component,
-    ElementRef,
-    HostListener,
-    OnInit,
-    ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Point } from 'src/app/Models/Point';
 import { TurtlePiece } from 'src/app/Models/TurtlePiece';
 import { GameStateService } from 'src/app/Servces/game-state.service';
-import { Move } from 'src/app/Models/Move';
 
 @Component({
     selector: 'app-map-view',

@@ -1,16 +1,8 @@
-import {
-    Component,
-    ElementRef,
-    Input,
-    OnInit,
-    ViewChild,
-    Output,
-    EventEmitter,
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { reject } from 'q';
-import { CardTypes } from '../../Enums/CardTypes';
-import { TurtleColours } from '../../Enums/TurtleColours';
-import { Card } from '../../Models/Card';
+import { CardTypes } from '../../../Enums/CardTypes';
+import { TurtleColours } from '../../../Enums/TurtleColours';
+import { Card } from '../../../Models/Card';
 
 @Component({
     selector: 'app-card-item',

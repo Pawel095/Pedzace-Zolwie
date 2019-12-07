@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CardTypes } from '../../Enums/CardTypes';
 import { TurtleColours } from '../../Enums/TurtleColours';
 import { Card } from '../../Models/Card';
-import { GameStateService } from '../../Servces/game-state.service';
 import { Move } from '../../Models/Move';
+import { GameStateService } from '../../Servces/game-state.service';
 
 @Component({
     selector: 'app-debug',

@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Card } from '../../Models/Card';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Card } from '../../../Models/Card';
 
 @Component({
     selector: 'app-card-view',

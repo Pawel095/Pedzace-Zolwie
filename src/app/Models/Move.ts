@@ -1,5 +1,5 @@
-import { Card } from './Card';
 import { TurtleColours } from '../Enums/TurtleColours';
+import { Card } from './Card';
 
 export class Move {
     playerId: number;

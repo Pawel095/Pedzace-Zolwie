@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CardTypes } from '../../Enums/CardTypes';
-import { TurtleColours } from '../../Enums/TurtleColours';
-import { Card } from '../../Models/Card';
+import { CardTypes } from '../../../Enums/CardTypes';
+import { TurtleColours } from '../../../Enums/TurtleColours';
+import { Card } from '../../../Models/Card';
 
 @Component({
     selector: 'app-rules',

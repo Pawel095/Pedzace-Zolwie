@@ -3,17 +3,18 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CardItemComponent } from './Controllers/card-item/card-item.component';
-import { CardViewComponent } from './Controllers/card-view/card-view.component';
-import { GameControllerComponent } from './Controllers/game-controller/game-controller.component';
-import { HomeViewComponent } from './Controllers/home-view/home-view.component';
-import { MapViewComponent } from './Controllers/map-view/map-view.component';
-import { NavBarComponent } from './Controllers/nav-bar/nav-bar.component';
-import { NewGameViewComponent } from './Controllers/new-game-view/new-game-view.component';
-import { PlayerBarComponent } from './Controllers/player-bar/player-bar.component';
-import { RulesComponent } from './Controllers/rules/rules.component';
-import { ScoreboardComponent } from './Controllers/scoreboard/scoreboard.component';
+import { CardItemComponent } from './Controllers/Cards/card-item/card-item.component';
+import { CardViewComponent } from './Controllers/Cards/card-view/card-view.component';
 import { DebugComponent } from './Controllers/debug/debug.component';
+import { GameControllerComponent } from './Controllers/Game/game-controller/game-controller.component';
+import { MapViewComponent } from './Controllers/Game/map-view/map-view.component';
+import { PlayerBarItemComponent } from './Controllers/Game/player-bar-item/player-bar-item.component';
+import { PlayerBarComponent } from './Controllers/Game/player-bar/player-bar.component';
+import { HomeViewComponent } from './Controllers/Home/home-view/home-view.component';
+import { NewGameViewComponent } from './Controllers/Home/new-game-view/new-game-view.component';
+import { RulesComponent } from './Controllers/Home/rules/rules.component';
+import { ScoreboardComponent } from './Controllers/Home/scoreboard/scoreboard.component';
+import { NavBarComponent } from './Controllers/nav-bar/nav-bar.component';
 
 @NgModule({
     declarations: [
@@ -29,6 +30,7 @@ import { DebugComponent } from './Controllers/debug/debug.component';
         NewGameViewComponent,
         HomeViewComponent,
         DebugComponent,
+        PlayerBarItemComponent,
     ],
     imports: [BrowserModule, AppRoutingModule, FormsModule],
     providers: [],

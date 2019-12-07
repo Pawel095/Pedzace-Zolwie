@@ -1,9 +1,9 @@
-import { Component, OnInit, APP_ID } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GameModes } from 'src/app/Enums/GameModes';
-import { GameStateService } from 'src/app/Servces/game-state.service';
-import { Player } from 'src/app/Models/Player';
 import { PlayerTypes } from 'src/app/Enums/PlayerTypes';
 import { Card } from 'src/app/Models/Card';
+import { Player } from 'src/app/Models/Player';
+import { GameStateService } from 'src/app/Servces/game-state.service';
 
 @Component({
     selector: 'app-game-controller',

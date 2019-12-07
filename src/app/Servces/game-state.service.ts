@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CardTypes } from '../Enums/CardTypes';
 import { GameModes } from '../Enums/GameModes';
@@ -6,10 +7,9 @@ import { PlayerTypes } from '../Enums/PlayerTypes';
 import { TurtleColours } from '../Enums/TurtleColours';
 import { Card } from '../Models/Card';
 import { GameState } from '../Models/GameState';
+import { Move } from '../Models/Move';
 import { Player } from '../Models/Player';
 import { TurtlePiece } from '../Models/TurtlePiece';
-import { Subject, Observable } from 'rxjs';
-import { Move } from '../Models/Move';
 import shuffle from '../Utils/shuffle';
 
 @Injectable({

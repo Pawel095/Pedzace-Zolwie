@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-    ActivatedRouteSnapshot,
-    CanActivate,
-    RouterStateSnapshot,
-    UrlTree,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { GameStateService } from '../Servces/game-state.service';
@@ -22,11 +17,14 @@ export class RefrechCheckGuard implements CanActivate {
         | Promise<boolean | UrlTree>
         | boolean
         | UrlTree {
-        console.log(this.gss.wasSetupRun);
-        if (this.gss.wasSetupRun) {
-            return true;
+        if (environment.production) {
+            if (this.gss.wasSetupRun) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
-            return false;
+            return true;
         }
     }
 }
