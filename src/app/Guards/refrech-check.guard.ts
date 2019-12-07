@@ -22,14 +22,11 @@ export class RefrechCheckGuard implements CanActivate {
         | Promise<boolean | UrlTree>
         | boolean
         | UrlTree {
-        if (environment.production) {
-            if (this.gss.wasSetupRun) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
+        console.log(this.gss.wasSetupRun);
+        if (this.gss.wasSetupRun) {
             return true;
+        } else {
+            return false;
         }
     }
 }
