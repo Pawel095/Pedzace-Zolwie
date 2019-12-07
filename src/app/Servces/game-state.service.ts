@@ -17,6 +17,7 @@ import shuffle from '../Utils/shuffle';
 })
 export class GameStateService {
     private gameState: GameState;
+    private unassingedPlayers: Array<Player>;
     private deck: Array<Card>;
 
     private playerMovesSubject = new Subject<Move>();
@@ -25,7 +26,8 @@ export class GameStateService {
     private mapUpdateSubject = new Subject<TurtlePiece[]>();
     public mapUpdates$: Observable<TurtlePiece[]>;
 
-    public  wasSetupRun = false;
+    public wasSetupRun = false;
+    public currentGamemode: GameModes;
     constructor() {
         this.playerMoves$ = this.playerMovesSubject.asObservable();
         this.mapUpdates$ = this.mapUpdateSubject.asObservable();
@@ -88,8 +90,74 @@ export class GameStateService {
     private dealCard(player: Player, ammount: number = 1) {
         for (let i = 0; i < ammount; i++) {
             const card: Card = this.deck.pop();
-            player.hand.push(card);
+            player.cards.push(card);
         }
+    }
+
+    public setup(mode: GameModes) {
+        this.wasSetupRun = true;
+        this.setupDeck();
+        this.unassingedPlayers = Array<Player>();
+        switch (mode) {
+            case GameModes.AI:
+                const players = Array<Player>();
+                const availableTurtleColours = [
+                    TurtleColours.RED,
+                    TurtleColours.YELLOW,
+                    TurtleColours.BLUE,
+                    TurtleColours.GREEN,
+                    TurtleColours.VIOLET,
+                ];
+                for (let i = 0; i < 4; i++) {
+                    const rand: number = Math.floor(
+                        Math.random() * availableTurtleColours.length
+                    );
+                    const colour: TurtleColours = availableTurtleColours.splice(
+                        rand,
+                        1
+                    )[0];
+                    const pl = new Player(PlayerTypes.AI, colour);
+                    players.push(pl);
+                    this.unassingedPlayers.push(pl);
+                }
+                const pla = new Player(
+                    PlayerTypes.HUMAN,
+                    availableTurtleColours[0]
+                );
+                players.push(pla);
+                this.unassingedPlayers.push(pla);
+
+                players.forEach(e => this.dealCard(e, 5));
+
+                const turtles: Array<TurtlePiece> = [];
+                for (let i = 0; i < 5; i++) {
+                    turtles.push(new TurtlePiece(i, 1, i));
+                }
+
+                console.log(players);
+                console.log(turtles);
+                this.gameState = new GameState(players, turtles);
+                this.currentGamemode = GameModes.AI;
+                break;
+        }
+    }
+
+    public getPlayer(type: PlayerTypes) {
+        const playerId = this.unassingedPlayers.findIndex(
+            e => e.playerType === type
+        );
+        const player = this.unassingedPlayers[playerId];
+        this.unassingedPlayers.splice(playerId, 1);
+        return player;
+    }
+
+    public playerMove(m: Move) {
+        this.playerMovesSubject.next(m);
+        if (this.validateMove(m)) {
+            this.processMove(m);
+        }
+        console.log(this.gameState.turtles.map(e => e.verticalPositon));
+        this.mapUpdateSubject.next(this.gameState.turtles);
     }
 
     public validateMove(m: Move): boolean {
@@ -220,56 +288,6 @@ export class GameStateService {
                 e.verticalPositon += verticalPos + 1;
             });
             console.log(turtlesToAlter);
-        }
-    }
-
-    public playerMove(m: Move) {
-        this.playerMovesSubject.next(m);
-        if (this.validateMove(m)) {
-            this.processMove(m);
-        }
-        console.log(this.gameState.turtles.map(e => e.verticalPositon));
-        this.mapUpdateSubject.next(this.gameState.turtles);
-    }
-
-    public setup(mode: GameModes) {
-        this.wasSetupRun = true;
-        this.setupDeck();
-        switch (mode) {
-            case GameModes.AI:
-                const players = Array<Player>();
-                const availableTurtleColours = [
-                    TurtleColours.RED,
-                    TurtleColours.YELLOW,
-                    TurtleColours.BLUE,
-                    TurtleColours.GREEN,
-                    TurtleColours.VIOLET,
-                ];
-                for (let i = 0; i < 4; i++) {
-                    const rand: number = Math.floor(
-                        Math.random() * availableTurtleColours.length
-                    );
-                    const colour: TurtleColours = availableTurtleColours.splice(
-                        rand,
-                        1
-                    )[0];
-                    players.push(new Player(PlayerTypes.AI, colour));
-                }
-                players.push(
-                    new Player(PlayerTypes.HUMAN, availableTurtleColours[0])
-                );
-
-                players.forEach(e => this.dealCard(e, 5));
-
-                const turtles: Array<TurtlePiece> = [];
-                for (let i = 0; i < 5; i++) {
-                    turtles.push(new TurtlePiece(i, 1, i));
-                }
-
-                console.log(players);
-                console.log(turtles);
-                this.gameState = new GameState(players, turtles);
-                break;
         }
     }
 }
