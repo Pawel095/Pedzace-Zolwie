@@ -14,6 +14,7 @@ export class PlayerBarItemComponent implements OnInit {
     @Input() card: Card;
 
     imgSrc = '';
+    alt = '';
 
     aiPath = 'assets/Icons/AI.png';
     huPath = 'assets/Icons/Human.png';
@@ -21,9 +22,11 @@ export class PlayerBarItemComponent implements OnInit {
         switch (this.type) {
             case PlayerTypes.AI:
                 this.imgSrc = this.aiPath;
+                this.alt = 'AI';
                 break;
             case PlayerTypes.HUMAN:
                 this.imgSrc = this.huPath;
+                this.alt = 'HUMAN';
                 break;
             default:
                 break;

@@ -1,4 +1,12 @@
-.content{
+.content {
     min-width: 200px;
+    .number {
+        font-size: 80px;
+    }
+    .type {
+        .img {
+            width: 50%;
+            height: auto;
+        }
+    }
 }
-
