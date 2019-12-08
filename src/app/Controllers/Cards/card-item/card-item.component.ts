@@ -12,6 +12,9 @@ import { Card } from '../../../Models/Card';
 export class CardItemComponent implements OnInit {
     width = 150;
     height = 300;
+    canvasWidth = this.width;
+    canvasHeight = this.height;
+    @Input() scale = 1;
 
     backgroundPath = 'assets/Background.png';
     // tslint:disable-next-line: variable-name
@@ -40,6 +43,8 @@ export class CardItemComponent implements OnInit {
     constructor() {}
 
     ngOnInit() {
+        this.canvasWidth = this.width * this.scale;
+        this.canvasHeight = this.height * this.scale;
         if (this.inputCard === undefined) {
             this.card = new Card();
             this.card.colour = TurtleColours.BLUE;
@@ -120,13 +125,19 @@ export class CardItemComponent implements OnInit {
         Promise.all([backgroundPromise, markingPromsie, TurtlePromise])
             .then(img => {
                 // background
-                this.ctx.drawImage(img[0] as CanvasImageSource, 0, 0);
+                this.ctx.drawImage(img[0] as CanvasImageSource, 0, 0, this.canvasWidth, this.canvasHeight);
                 // marking top left
-                this.ctx.drawImage(img[1] as CanvasImageSource, 5, 5, 25, 50);
+                this.ctx.drawImage(img[1] as CanvasImageSource, 5 * this.scale, 5 * this.scale, 34 * this.scale, 75 * this.scale);
                 // marking top right
-                this.ctx.drawImage(img[1] as CanvasImageSource, this.width - 35, 5, 25, 50);
+                this.ctx.drawImage(
+                    img[1] as CanvasImageSource,
+                    (this.width - 40) * this.scale,
+                    5 * this.scale,
+                    34 * this.scale,
+                    75 * this.scale
+                );
                 // turtle
-                this.ctx.drawImage(img[2] as CanvasImageSource, 0, 50, 150, 300);
+                this.ctx.drawImage(img[2] as CanvasImageSource, 0, 50 * this.scale, 150 * this.scale, 300 * this.scale);
             })
             .catch(e => console.error(e));
     }
