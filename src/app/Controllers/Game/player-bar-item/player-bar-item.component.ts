@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { PlayerTypes } from 'src/app/Enums/PlayerTypes';
+import { Card } from 'src/app/Models/Card';
 
 @Component({
     selector: 'app-player-bar-item',
@@ -7,6 +9,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PlayerBarItemComponent implements OnInit {
     constructor() {}
+    @Input() number: number;
+    @Input() type: PlayerTypes;
+    @Input() card: Card;
 
-    ngOnInit() {}
+    imgSrc = '';
+
+    aiPath = 'assets/Icons/AI.png';
+    huPath = 'assets/Icons/Human.png';
+    ngOnInit() {
+        switch (this.type) {
+            case PlayerTypes.AI:
+                this.imgSrc = this.aiPath;
+                break;
+            case PlayerTypes.HUMAN:
+                this.imgSrc = this.huPath;
+                break;
+            default:
+                break;
+        }
+    }
 }

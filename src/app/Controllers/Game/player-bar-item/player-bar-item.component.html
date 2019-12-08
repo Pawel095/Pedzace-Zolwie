@@ -1,1 +1,11 @@
-<p>player-bar-item works!</p>
+<mat-card class="content">
+    <mat-card-content>
+        <mat-grid-list cols="3">
+            <mat-grid-tile [colspan]="2" [rowspan]="1" class="number">#{{ number }}</mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="2" class="card">
+                <app-card-item [inputCard]="card" [scale]="0.4"> </app-card-item>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="2" [rowspan]="1" class="type">AI</mat-grid-tile>
+        </mat-grid-list>
+    </mat-card-content>
+</mat-card>
