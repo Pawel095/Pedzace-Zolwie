@@ -28,6 +28,7 @@ export class GameStateService {
 
     private currentTurnSubject = new Subject<number>();
     public currentTurn$: Observable<number>;
+    private currentPlayerIndex = 0;
 
     public wasSetupRun = false;
     public currentGamemode: GameModes;
@@ -104,7 +105,7 @@ export class GameStateService {
         this.unassingedPlayers = Array<Player>();
         switch (mode) {
             case GameModes.AI:
-                const players = Array<Player>();
+                let players = Array<Player>();
                 const availableTurtleColours = [
                     TurtleColours.RED,
                     TurtleColours.YELLOW,
@@ -122,7 +123,7 @@ export class GameStateService {
                 const pla = new Player(PlayerTypes.HUMAN, availableTurtleColours[0]);
                 players.push(pla);
                 this.unassingedPlayers.push(pla);
-
+                players = shuffle(players);
                 players.forEach(e => this.dealCard(e, 5));
 
                 const turtles: Array<TurtlePiece> = [];
@@ -148,7 +149,21 @@ export class GameStateService {
             this.processMove(m);
         }
         this.mapUpdateSubject.next(this.gameState.turtles);
+        // this.checkGameWon();
+        // this.triggerNextTurn();
     }
+
+    // private checkGameWon() {
+    //     const turtles = this.gameState.turtles.filter(e => e.mapPosition >= 9);
+    // }
+
+    // private triggerNextTurn() {
+    //     this.currentPlayerIndex += 1;
+    //     if (this.currentPlayerIndex + 1 >= this.gameState.players.length) {
+    //         this.currentPlayerIndex = 0;
+    //     }
+    //     this.currentTurnSubject.next(this.gameState.players[this.currentPlayerIndex].id);
+    // }
 
     public validateMove(m: Move): boolean {
         const turtle = this.gameState.turtles.find(e => {
