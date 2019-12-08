@@ -28,6 +28,9 @@ export class GameControllerComponent implements OnInit {
                 this.player = this.gss.getPlayer(PlayerTypes.HUMAN);
                 break;
         }
+        this.gss.currentTurn$.subscribe(data => {
+            console.log(data);
+        });
     }
     cardClicked(card: Card) {
         if (card.colour === TurtleColours.RAINBOW) {
@@ -37,7 +40,10 @@ export class GameControllerComponent implements OnInit {
                     if (this.gss.validateMove(new Move(this.player.id, card, data))) {
                         this.gss.playerMove(new Move(this.player.id, card, data));
                     } else {
-                        this.snackBar.open('You cannot do that!', 'Ok', { duration: 3 * 1000, verticalPosition: 'bottom' });
+                        this.snackBar.open('You cannot do that!', 'Ok', {
+                            duration: 3 * 1000,
+                            verticalPosition: 'bottom',
+                        });
                     }
                     this.gss.playerMove(new Move(this.player.id, card, data));
                 } else {

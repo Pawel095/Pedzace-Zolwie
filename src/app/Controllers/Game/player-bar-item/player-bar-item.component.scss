@@ -1,3 +1,4 @@
+@import '../../../../styles.scss';
 .content {
     min-width: 200px;
     .number {
@@ -9,4 +10,7 @@
             height: auto;
         }
     }
+}
+.highlighted {
+    background: map-get($map: $accent, $key: 100);
 }

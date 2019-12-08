@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, ReplaySubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CardTypes } from '../Enums/CardTypes';
 import { GameModes } from '../Enums/GameModes';
@@ -26,7 +26,7 @@ export class GameStateService {
     private mapUpdateSubject = new Subject<TurtlePiece[]>();
     public mapUpdates$: Observable<TurtlePiece[]>;
 
-    private currentTurnSubject = new Subject<number>();
+    private currentTurnSubject = new ReplaySubject<number>();
     public currentTurn$: Observable<number>;
     private currentPlayerIndex = 0;
 
@@ -132,6 +132,7 @@ export class GameStateService {
                 }
                 this.gameState = new GameState(players, turtles);
                 this.currentGamemode = GameModes.AI;
+                this.triggerNextTurn();
                 break;
         }
     }
@@ -143,27 +144,45 @@ export class GameStateService {
         return player;
     }
 
+    public getInitialPlayerBarData(): Array<{
+        n: number;
+        id: number;
+        type: PlayerTypes;
+        card: undefined;
+        highlighted: boolean;
+    }> {
+        const ret = [];
+        this.gameState.players.forEach((e, i) => {
+            ret.push({ n: i, id: e.id, type: e.playerType, card: undefined, highlighted: false });
+        });
+        return ret;
+    }
+
     public playerMove(m: Move) {
         this.playerMovesSubject.next(m);
         if (this.validateMove(m)) {
             this.processMove(m);
         }
         this.mapUpdateSubject.next(this.gameState.turtles);
-        // this.checkGameWon();
-        // this.triggerNextTurn();
+        if (this.checkGameWon()) {
+            console.log('THE GAME ENDS!');
+        } else {
+            this.triggerNextTurn();
+        }
     }
 
-    // private checkGameWon() {
-    //     const turtles = this.gameState.turtles.filter(e => e.mapPosition >= 9);
-    // }
+    private checkGameWon() {
+        const turtles = this.gameState.turtles.filter(e => e.mapPosition >= 9);
+        return turtles.length > 0;
+    }
 
-    // private triggerNextTurn() {
-    //     this.currentPlayerIndex += 1;
-    //     if (this.currentPlayerIndex + 1 >= this.gameState.players.length) {
-    //         this.currentPlayerIndex = 0;
-    //     }
-    //     this.currentTurnSubject.next(this.gameState.players[this.currentPlayerIndex].id);
-    // }
+    private triggerNextTurn() {
+        this.currentPlayerIndex += 1;
+        if (this.currentPlayerIndex + 1 >= this.gameState.players.length) {
+            this.currentPlayerIndex = 0;
+        }
+        this.currentTurnSubject.next(this.gameState.players[this.currentPlayerIndex].id);
+    }
 
     public validateMove(m: Move): boolean {
         const turtle = this.gameState.turtles.find(e => {

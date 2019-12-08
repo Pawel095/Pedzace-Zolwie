@@ -12,6 +12,7 @@ export class PlayerBarItemComponent implements OnInit {
     @Input() number: number;
     @Input() type: PlayerTypes;
     @Input() card: Card;
+    @Input() highlight: boolean;
 
     imgSrc = '';
     alt = '';
