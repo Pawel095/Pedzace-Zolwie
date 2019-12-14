@@ -31,7 +31,10 @@ export class CardItemComponent implements OnInit {
     turtleVioletPath = 'assets/Turtles/Turtle Violet.png';
     turtleYellowPath = 'assets/Turtles/Turtle Yellow.png';
 
-    @Input() inputCard: Card;
+    @Input() set inputCard(c: Card) {
+        this.card = c;
+        this.ngOnInit();
+    }
     @Output() cardClicked: EventEmitter<Card> = new EventEmitter<Card>();
     card: Card;
     ctx: CanvasRenderingContext2D;
@@ -43,15 +46,14 @@ export class CardItemComponent implements OnInit {
     constructor() {}
 
     ngOnInit() {
-        this.canvasWidth = this.width * this.scale;
-        this.canvasHeight = this.height * this.scale;
-        if (this.inputCard === undefined) {
+        if (this.card === undefined) {
             this.card = new Card();
             this.card.colour = TurtleColours.BLUE;
             this.card.type = CardTypes.COLOUR_TWO_FORWARD;
-        } else {
-            this.card = this.inputCard;
         }
+
+        this.canvasWidth = this.width * this.scale;
+        this.canvasHeight = this.height * this.scale;
 
         this.ctx = this.canvas.nativeElement.getContext('2d');
         this.ctx.fillRect(0, 0, this.width, this.height);
@@ -127,7 +129,13 @@ export class CardItemComponent implements OnInit {
                 // background
                 this.ctx.drawImage(img[0] as CanvasImageSource, 0, 0, this.canvasWidth, this.canvasHeight);
                 // marking top left
-                this.ctx.drawImage(img[1] as CanvasImageSource, 5 * this.scale, 5 * this.scale, 34 * this.scale, 75 * this.scale);
+                this.ctx.drawImage(
+                    img[1] as CanvasImageSource,
+                    5 * this.scale,
+                    5 * this.scale,
+                    34 * this.scale,
+                    75 * this.scale
+                );
                 // marking top right
                 this.ctx.drawImage(
                     img[1] as CanvasImageSource,

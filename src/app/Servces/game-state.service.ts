@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CardTypes } from '../Enums/CardTypes';
 import { GameModes } from '../Enums/GameModes';
 import { PlayerTypes } from '../Enums/PlayerTypes';
 import { TurtleColours } from '../Enums/TurtleColours';
+import { IPlayer } from '../Interfaces/IPlayer';
+import { AI } from '../Models/AI';
 import { Card } from '../Models/Card';
 import { GameState } from '../Models/GameState';
 import { Move } from '../Models/Move';
 import { Player } from '../Models/Player';
 import { TurtlePiece } from '../Models/TurtlePiece';
 import shuffle from '../Utils/shuffle';
-import { IPlayer } from '../Interfaces/IPlayer';
-import { AI } from '../Interfaces/AI';
 
 @Injectable({
     providedIn: 'root',
@@ -31,6 +31,10 @@ export class GameStateService {
     private currentTurnSubject = new ReplaySubject<number>();
     public currentTurn$: Observable<number>;
     private currentPlayerIndex = 0;
+    private firstRound = true;
+
+    private PlayerBarCardUpdatesSubject = new Subject<{ id: number; card: Card }>();
+    public PlayerBarCardUpdates$: Observable<{ id: number; card: Card }>;
 
     public wasSetupRun = false;
     public currentGamemode: GameModes;
@@ -44,6 +48,7 @@ export class GameStateService {
         this.playerMoves$ = this.playerMovesSubject.asObservable();
         this.mapUpdates$ = this.mapUpdateSubject.asObservable();
         this.currentTurn$ = this.currentTurnSubject.asObservable();
+        this.PlayerBarCardUpdates$ = this.PlayerBarCardUpdatesSubject.asObservable();
     }
 
     get turtlePositions(): Array<TurtlePiece> {
@@ -192,8 +197,11 @@ export class GameStateService {
 
     public playerMove(m: Move) {
         this.playerMovesSubject.next(m);
+        const player = this.gameState.players.find(e => e.id === m.playerId);
+        const cardIndex = player.cards.findIndex(e => e.compare(m.card));
         if (this.validateMove(m)) {
             this.processMove(m);
+            this.PlayerBarCardUpdatesSubject.next({ id: m.playerId, card: m.card });
         }
         this.mapUpdateSubject.next(this.gameState.turtles);
         if (this.checkGameEnds()) {
@@ -209,7 +217,11 @@ export class GameStateService {
     }
 
     private triggerNextTurn() {
-        this.currentPlayerIndex += 1;
+        if (this.firstRound) {
+            this.firstRound = false;
+        } else {
+            this.currentPlayerIndex += 1;
+        }
         if (this.currentPlayerIndex >= this.gameState.players.length) {
             this.currentPlayerIndex = 0;
         }

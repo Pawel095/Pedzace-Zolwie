@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { PlayerTypes } from 'src/app/Enums/PlayerTypes';
-import { Card } from 'src/app/Models/Card';
 import { CardTypes } from 'src/app/Enums/CardTypes';
+import { PlayerTypes } from 'src/app/Enums/PlayerTypes';
 import { TurtleColours } from 'src/app/Enums/TurtleColours';
+import { Card } from 'src/app/Models/Card';
 import { GameStateService } from 'src/app/Servces/game-state.service';
 
 @Component({
@@ -43,6 +43,12 @@ export class PlayerBarComponent implements OnInit {
             this.last.highlighted = false;
             current.highlighted = true;
             this.last = current;
+        });
+
+        this.gss.PlayerBarCardUpdates$.subscribe(data => {
+            const player = this.list.find(e => e.id === data.id);
+            player.card = null;
+            player.card = data.card;
         });
     }
 }

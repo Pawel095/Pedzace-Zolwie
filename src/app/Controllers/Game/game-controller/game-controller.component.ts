@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { GameModes } from 'src/app/Enums/GameModes';
 import { PlayerTypes } from 'src/app/Enums/PlayerTypes';
 import { TurtleColours } from 'src/app/Enums/TurtleColours';
+import { IPlayer } from 'src/app/Interfaces/IPlayer';
 import { Card } from 'src/app/Models/Card';
 import { Move } from 'src/app/Models/Move';
 import { Player } from 'src/app/Models/Player';
 import { GameStateService } from 'src/app/Servces/game-state.service';
 import { environment } from 'src/environments/environment';
 import { SelectColorDialogComponent } from './select-color-dialog/select-color-dialog.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { IPlayer } from 'src/app/Interfaces/IPlayer';
 
 @Component({
     selector: 'app-game-controller',
@@ -50,7 +50,6 @@ export class GameControllerComponent implements OnInit, IPlayer {
                             verticalPosition: 'bottom',
                         });
                     }
-                    this.gss.playerMove(new Move(this.player.id, card, data));
                 } else {
                 }
             });

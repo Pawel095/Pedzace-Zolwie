@@ -1,10 +1,14 @@
 import { FormsModule } from '@angular//forms';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatRippleModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,6 +18,8 @@ import { CardItemComponent } from './Controllers/Cards/card-item/card-item.compo
 import { CardViewComponent } from './Controllers/Cards/card-view/card-view.component';
 import { DebugComponent } from './Controllers/debug/debug.component';
 import { GameControllerComponent } from './Controllers/Game/game-controller/game-controller.component';
+// tslint:disable-next-line: max-line-length
+import { SelectColorDialogItemComponent } from './Controllers/Game/game-controller/select-color-dialog-item/select-color-dialog-item.component';
 import { SelectColorDialogComponent } from './Controllers/Game/game-controller/select-color-dialog/select-color-dialog.component';
 import { MapViewComponent } from './Controllers/Game/map-view/map-view.component';
 import { PlayerBarItemComponent } from './Controllers/Game/player-bar-item/player-bar-item.component';
@@ -23,13 +29,6 @@ import { NewGameViewComponent } from './Controllers/Home/new-game-view/new-game-
 import { RulesComponent } from './Controllers/Home/rules/rules.component';
 import { ScoreboardComponent } from './Controllers/Home/scoreboard/scoreboard.component';
 import { NavBarComponent } from './Controllers/nav-bar/nav-bar.component';
-// tslint:disable-next-line: max-line-length
-import { SelectColorDialogItemComponent } from './Controllers/Game/game-controller/select-color-dialog-item/select-color-dialog-item.component';
-import { MatRippleModule } from '@angular/material/core';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { AI } from './Interfaces/AI';
 
 @NgModule({
     declarations: [

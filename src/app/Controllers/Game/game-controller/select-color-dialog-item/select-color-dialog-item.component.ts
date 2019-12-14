@@ -1,6 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TurtleColours } from 'src/app/Enums/TurtleColours';
-import { CardTypes } from 'src/app/Enums/CardTypes';
 
 @Component({
     selector: 'app-select-color-dialog-item',

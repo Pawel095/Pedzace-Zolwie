@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { PlayerTypes } from 'src/app/Enums/PlayerTypes';
 import { Card } from 'src/app/Models/Card';
 
@@ -11,7 +11,11 @@ export class PlayerBarItemComponent implements OnInit {
     constructor() {}
     @Input() number: number;
     @Input() type: PlayerTypes;
-    @Input() card: Card;
+    inputCard: Card;
+    @Input() set card(c: Card) {
+        this.inputCard = null;
+        this.inputCard = c;
+    }
     @Input() highlight: boolean;
 
     imgSrc = '';
