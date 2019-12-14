@@ -22,7 +22,9 @@ export class GameControllerComponent implements OnInit {
     debug = !environment.production;
     ngOnInit() {
         // TODO: usuń debugowanie z tego miejsca
-        // this.gss.setup(GameModes.AI);
+        if (!environment.production) {
+            this.gss.setup(GameModes.AI);
+        }
         switch (this.gss.currentGamemode) {
             case GameModes.AI:
                 this.player = this.gss.getPlayer(PlayerTypes.HUMAN);
@@ -37,7 +39,10 @@ export class GameControllerComponent implements OnInit {
                     if (this.gss.validateMove(new Move(this.player.id, card, data))) {
                         this.gss.playerMove(new Move(this.player.id, card, data));
                     } else {
-                        this.snackBar.open('You cannot do that!', 'Ok', { duration: 3 * 1000, verticalPosition: 'bottom' });
+                        this.snackBar.open('You cannot do that!', 'Ok', {
+                            duration: 3 * 1000,
+                            verticalPosition: 'bottom',
+                        });
                     }
                     this.gss.playerMove(new Move(this.player.id, card, data));
                 } else {

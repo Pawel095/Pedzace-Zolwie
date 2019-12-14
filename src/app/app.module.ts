@@ -28,6 +28,7 @@ import { SelectColorDialogItemComponent } from './Controllers/Game/game-controll
 import { MatRippleModule } from '@angular/material/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @NgModule({
     declarations: [
@@ -61,6 +62,7 @@ import { ReactiveFormsModule } from '@angular/forms';
         MatRippleModule,
         MatSnackBarModule,
         ReactiveFormsModule,
+        MatGridListModule,
     ],
     providers: [],
     bootstrap: [AppComponent],

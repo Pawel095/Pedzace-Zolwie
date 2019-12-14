@@ -1,0 +1,16 @@
+@import '../../../../styles.scss';
+.content {
+    min-width: 200px;
+    .number {
+        font-size: 80px;
+    }
+    .type {
+        .img {
+            width: 50%;
+            height: auto;
+        }
+    }
+}
+.highlighted {
+    background: map-get($map: $accent, $key: 100);
+}

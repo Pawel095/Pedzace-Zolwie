@@ -11,7 +11,7 @@ import { Card } from '../../../Models/Card';
 export class CardViewComponent implements OnInit {
     cards: Array<Card> = [];
     @Input() set cardsInput(cards: Array<Card>) {
-        // this.cards = cards;
+        this.cards = cards;
         // this.cards.push(
         //     new Card(CardTypes.COLOUR_ONE_BACK, TurtleColours.RAINBOW)
         // );
@@ -27,11 +27,11 @@ export class CardViewComponent implements OnInit {
         // this.cards.push(
         //     new Card(CardTypes.LAST_TWO_FORWARD, TurtleColours.RAINBOW)
         // );
-        this.cards.push(new Card(CardTypes.COLOUR_ONE_BACK, TurtleColours.RED));
-        this.cards.push(new Card(CardTypes.COLOUR_ONE_FORWARD, TurtleColours.BLUE));
-        this.cards.push(new Card(CardTypes.COLOUR_TWO_FORWARD, TurtleColours.GREEN));
-        this.cards.push(new Card(CardTypes.LAST_ONE_FORWARD, TurtleColours.RAINBOW));
-        this.cards.push(new Card(CardTypes.LAST_TWO_FORWARD, TurtleColours.RAINBOW));
+        // this.cards.push(new Card(CardTypes.COLOUR_ONE_BACK, TurtleColours.RED));
+        // this.cards.push(new Card(CardTypes.COLOUR_ONE_FORWARD, TurtleColours.BLUE));
+        // this.cards.push(new Card(CardTypes.COLOUR_TWO_FORWARD, TurtleColours.GREEN));
+        // this.cards.push(new Card(CardTypes.LAST_ONE_FORWARD, TurtleColours.RAINBOW));
+        // this.cards.push(new Card(CardTypes.LAST_TWO_FORWARD, TurtleColours.RAINBOW));
     }
     @Output() cardClicked: EventEmitter<Card> = new EventEmitter<Card>();
     onClickCard(card: Card) {

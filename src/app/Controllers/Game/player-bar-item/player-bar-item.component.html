@@ -1,1 +1,12 @@
-<p>player-bar-item works!</p>
+<div class="container" [className]="highlight ? 'highlighted' : ''">
+    <mat-grid-list cols="3" class="content">
+        <mat-grid-tile [colspan]="2" [rowspan]="1" class="number">#{{ number }}</mat-grid-tile>
+        <mat-grid-tile [colspan]="1" [rowspan]="2" class="card">
+            <app-card-item [inputCard]="card" [scale]="0.4" *ngIf="card !== undefined"></app-card-item>
+            <span *ngIf="card === undefined">No card played</span>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="2" [rowspan]="1" class="type">
+            <img src="{{ imgSrc }}" alt="{{ alt }} " class="img" />
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>

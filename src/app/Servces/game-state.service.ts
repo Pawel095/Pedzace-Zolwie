@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, ReplaySubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CardTypes } from '../Enums/CardTypes';
 import { GameModes } from '../Enums/GameModes';
@@ -26,8 +26,9 @@ export class GameStateService {
     private mapUpdateSubject = new Subject<TurtlePiece[]>();
     public mapUpdates$: Observable<TurtlePiece[]>;
 
-    private currentTurnSubject = new Subject<number>();
+    private currentTurnSubject = new ReplaySubject<number>();
     public currentTurn$: Observable<number>;
+    private currentPlayerIndex = 0;
 
     public wasSetupRun = false;
     public currentGamemode: GameModes;
@@ -104,7 +105,7 @@ export class GameStateService {
         this.unassingedPlayers = Array<Player>();
         switch (mode) {
             case GameModes.AI:
-                const players = Array<Player>();
+                let players = Array<Player>();
                 const availableTurtleColours = [
                     TurtleColours.RED,
                     TurtleColours.YELLOW,
@@ -122,7 +123,7 @@ export class GameStateService {
                 const pla = new Player(PlayerTypes.HUMAN, availableTurtleColours[0]);
                 players.push(pla);
                 this.unassingedPlayers.push(pla);
-
+                players = shuffle(players);
                 players.forEach(e => this.dealCard(e, 5));
 
                 const turtles: Array<TurtlePiece> = [];
@@ -131,6 +132,7 @@ export class GameStateService {
                 }
                 this.gameState = new GameState(players, turtles);
                 this.currentGamemode = GameModes.AI;
+                this.triggerNextTurn();
                 break;
         }
     }
@@ -142,12 +144,45 @@ export class GameStateService {
         return player;
     }
 
+    public getInitialPlayerBarData(): Array<{
+        n: number;
+        id: number;
+        type: PlayerTypes;
+        card: undefined;
+        highlighted: boolean;
+    }> {
+        const ret = [];
+        this.gameState.players.forEach((e, i) => {
+            ret.push({ n: i, id: e.id, type: e.playerType, card: undefined, highlighted: false });
+        });
+        return ret;
+    }
+
     public playerMove(m: Move) {
         this.playerMovesSubject.next(m);
         if (this.validateMove(m)) {
             this.processMove(m);
         }
         this.mapUpdateSubject.next(this.gameState.turtles);
+        if (this.checkGameEnds()) {
+            console.log('THE GAME ENDS!');
+        } else {
+            this.triggerNextTurn();
+        }
+    }
+
+    private checkGameEnds() {
+        const turtles = this.gameState.turtles.filter(e => e.mapPosition >= 9);
+        return turtles.length > 0;
+    }
+
+    private triggerNextTurn() {
+        if (this.currentPlayerIndex >= this.gameState.players.length) {
+            this.currentPlayerIndex = 0;
+        }
+        this.currentTurnSubject.next(this.gameState.players[this.currentPlayerIndex].id);
+        console.log(this.gameState.players[this.currentPlayerIndex].id);
+        this.currentPlayerIndex += 1;
     }
 
     public validateMove(m: Move): boolean {
