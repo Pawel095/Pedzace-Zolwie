@@ -196,18 +196,21 @@ export class GameStateService {
     }
 
     public playerMove(m: Move) {
-        this.playerMovesSubject.next(m);
-        const player = this.gameState.players.find(e => e.id === m.playerId);
-        const cardIndex = player.cards.findIndex(e => e.compare(m.card));
-        if (this.validateMove(m)) {
-            this.processMove(m);
-            this.PlayerBarCardUpdatesSubject.next({ id: m.playerId, card: m.card });
-        }
-        this.mapUpdateSubject.next(this.gameState.turtles);
-        if (this.checkGameEnds()) {
-            console.log('THE GAME ENDS!');
-        } else {
-            this.triggerNextTurn();
+        if (m.playerId === this.gameState.players[this.currentPlayerIndex].id) {
+            this.playerMovesSubject.next(m);
+            const player = this.gameState.players.find(e => e.id === m.playerId);
+            const cardIndex = player.cards.findIndex(e => e.compare(m.card));
+
+            if (this.validateMove(m)) {
+                this.processMove(m);
+                this.PlayerBarCardUpdatesSubject.next({ id: m.playerId, card: m.card });
+            }
+            this.mapUpdateSubject.next(this.gameState.turtles);
+            if (this.checkGameEnds()) {
+                console.log('THE GAME ENDS!');
+            } else {
+                this.triggerNextTurn();
+            }
         }
     }
 
