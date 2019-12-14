@@ -5,6 +5,7 @@ export class Move {
     playerId: number;
     card: Card;
     selectedTurtleColour: TurtleColours;
+    discard: boolean;
     constructor(i: number, c: Card, stc: TurtleColours) {
         this.playerId = i;
         this.card = c;

@@ -8,4 +8,7 @@ export class Card {
         this.type = t;
         this.colour = c;
     }
+    compare(c: Card): boolean {
+        return c.colour === this.colour && c.type === this.type;
+    }
 }

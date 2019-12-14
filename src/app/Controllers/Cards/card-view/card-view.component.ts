@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Card } from '../../../Models/Card';
 import { CardTypes } from 'src/app/Enums/CardTypes';
 import { TurtleColours } from 'src/app/Enums/TurtleColours';
-import { Card } from '../../../Models/Card';
 
 @Component({
     selector: 'app-card-view',

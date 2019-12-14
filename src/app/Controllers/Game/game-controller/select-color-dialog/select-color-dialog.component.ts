@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { TurtleColours } from 'src/app/Enums/TurtleColours';
 
 @Component({
     selector: 'app-select-color-dialog',

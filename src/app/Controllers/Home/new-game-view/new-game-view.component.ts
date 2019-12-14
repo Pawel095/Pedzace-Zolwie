@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GameModes } from 'src/app/Enums/GameModes';
 import { GameStateService } from 'src/app/Servces/game-state.service';
