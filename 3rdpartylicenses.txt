@@ -93,6 +93,8 @@ THE SOFTWARE.
 
 @angular/material/expansion
 
+@angular/material/grid-list
+
 @angular/material/radio
 
 @angular/material/snack-bar
