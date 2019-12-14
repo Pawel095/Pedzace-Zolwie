@@ -11,6 +11,8 @@ import { Move } from '../Models/Move';
 import { Player } from '../Models/Player';
 import { TurtlePiece } from '../Models/TurtlePiece';
 import shuffle from '../Utils/shuffle';
+import { IPlayer } from '../Interfaces/IPlayer';
+import { AI } from '../Interfaces/AI';
 
 @Injectable({
     providedIn: 'root',
@@ -32,7 +34,13 @@ export class GameStateService {
 
     public wasSetupRun = false;
     public currentGamemode: GameModes;
+
+    private aiPlayers: Array<IPlayer>;
+    private initsToRun: Array<{ fun: (p: Player) => void; type: PlayerTypes }>;
+
     constructor() {
+        this.initsToRun = [];
+        this.aiPlayers = [];
         this.playerMoves$ = this.playerMovesSubject.asObservable();
         this.mapUpdates$ = this.mapUpdateSubject.asObservable();
         this.currentTurn$ = this.currentTurnSubject.asObservable();
@@ -92,15 +100,17 @@ export class GameStateService {
         this.deck = shuffle(this.deck);
     }
 
-    private dealCard(player: Player, ammount: number = 1) {
+    private dealCard(ammount: number = 1): Array<Card> {
+        const ret: Array<Card> = [];
+
         for (let i = 0; i < ammount; i++) {
             const card: Card = this.deck.pop();
-            player.cards.push(card);
+            ret.push(card);
         }
+        return ret;
     }
 
     public setup(mode: GameModes) {
-        this.wasSetupRun = true;
         this.setupDeck();
         this.unassingedPlayers = Array<Player>();
         switch (mode) {
@@ -117,14 +127,24 @@ export class GameStateService {
                     const rand: number = Math.floor(Math.random() * availableTurtleColours.length);
                     const colour: TurtleColours = availableTurtleColours.splice(rand, 1)[0];
                     const pl = new Player(PlayerTypes.AI, colour);
+                    this.aiPlayers.push(new AI(this));
                     players.push(pl);
                     this.unassingedPlayers.push(pl);
                 }
                 const pla = new Player(PlayerTypes.HUMAN, availableTurtleColours[0]);
                 players.push(pla);
                 this.unassingedPlayers.push(pla);
+                players.forEach((e, i) => {
+                    const cards = this.dealCard(5);
+                    e.cards = cards;
+                    this.unassingedPlayers[i].cards = cards;
+                });
+
+                this.aiPlayers.forEach(e => {
+                    e.init(this.getPlayer(PlayerTypes.AI));
+                });
+
                 players = shuffle(players);
-                players.forEach(e => this.dealCard(e, 5));
 
                 const turtles: Array<TurtlePiece> = [];
                 for (let i = 0; i < 5; i++) {
@@ -134,6 +154,18 @@ export class GameStateService {
                 this.currentGamemode = GameModes.AI;
                 this.triggerNextTurn();
                 break;
+        }
+        this.wasSetupRun = true;
+        this.initsToRun.forEach(e => {
+            e.fun(this.getPlayer(e.type));
+        });
+        delete this.initsToRun;
+    }
+    public registerPlayer(p: IPlayer, type: PlayerTypes) {
+        if (this.wasSetupRun) {
+            p.init(this.getPlayer(type));
+        } else {
+            this.initsToRun.push({ fun: p.init, type });
         }
     }
 
@@ -177,12 +209,11 @@ export class GameStateService {
     }
 
     private triggerNextTurn() {
+        this.currentPlayerIndex += 1;
         if (this.currentPlayerIndex >= this.gameState.players.length) {
             this.currentPlayerIndex = 0;
         }
         this.currentTurnSubject.next(this.gameState.players[this.currentPlayerIndex].id);
-        console.log(this.gameState.players[this.currentPlayerIndex].id);
-        this.currentPlayerIndex += 1;
     }
 
     public validateMove(m: Move): boolean {

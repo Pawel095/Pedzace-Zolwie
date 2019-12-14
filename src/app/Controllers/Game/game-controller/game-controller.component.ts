@@ -10,13 +10,14 @@ import { GameStateService } from 'src/app/Servces/game-state.service';
 import { environment } from 'src/environments/environment';
 import { SelectColorDialogComponent } from './select-color-dialog/select-color-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { IPlayer } from 'src/app/Interfaces/IPlayer';
 
 @Component({
     selector: 'app-game-controller',
     templateUrl: './game-controller.component.html',
     styleUrls: ['./game-controller.component.scss'],
 })
-export class GameControllerComponent implements OnInit {
+export class GameControllerComponent implements OnInit, IPlayer {
     constructor(private gss: GameStateService, private dialog: MatDialog, private snackBar: MatSnackBar) {}
     player: Player;
     debug = !environment.production;
@@ -27,10 +28,15 @@ export class GameControllerComponent implements OnInit {
         }
         switch (this.gss.currentGamemode) {
             case GameModes.AI:
-                this.player = this.gss.getPlayer(PlayerTypes.HUMAN);
+                this.gss.registerPlayer(this, PlayerTypes.HUMAN);
                 break;
         }
     }
+
+    init(p: Player): void {
+        this.player = p;
+    }
+
     cardClicked(card: Card) {
         if (card.colour === TurtleColours.RAINBOW) {
             const dialogRef = this.dialog.open(SelectColorDialogComponent);

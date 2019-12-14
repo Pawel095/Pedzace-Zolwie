@@ -29,6 +29,7 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { AI } from './Interfaces/AI';
 
 @NgModule({
     declarations: [
