@@ -164,24 +164,25 @@ export class GameStateService {
             this.processMove(m);
         }
         this.mapUpdateSubject.next(this.gameState.turtles);
-        if (this.checkGameWon()) {
+        if (this.checkGameEnds()) {
             console.log('THE GAME ENDS!');
         } else {
             this.triggerNextTurn();
         }
     }
 
-    private checkGameWon() {
+    private checkGameEnds() {
         const turtles = this.gameState.turtles.filter(e => e.mapPosition >= 9);
         return turtles.length > 0;
     }
 
     private triggerNextTurn() {
-        this.currentPlayerIndex += 1;
-        if (this.currentPlayerIndex + 1 >= this.gameState.players.length) {
+        if (this.currentPlayerIndex >= this.gameState.players.length) {
             this.currentPlayerIndex = 0;
         }
         this.currentTurnSubject.next(this.gameState.players[this.currentPlayerIndex].id);
+        console.log(this.gameState.players[this.currentPlayerIndex].id);
+        this.currentPlayerIndex += 1;
     }
 
     public validateMove(m: Move): boolean {

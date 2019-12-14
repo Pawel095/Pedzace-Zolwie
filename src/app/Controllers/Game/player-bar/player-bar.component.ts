@@ -40,8 +40,8 @@ export class PlayerBarComponent implements OnInit {
         this.last = this.list[0];
         this.gss.currentTurn$.subscribe(id => {
             const current = this.list.find(e => e.id === id);
-            current.highlighted = true;
             this.last.highlighted = false;
+            current.highlighted = true;
             this.last = current;
         });
     }
