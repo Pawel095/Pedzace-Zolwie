@@ -55,9 +55,9 @@ export class GameStateService {
         return this.gameState.turtles;
     }
 
-    debugGet0thPlayerId(): number {
+    debugGetCurrentthPlayerId(): number {
         if (!environment.production) {
-            return this.gameState.players[0].id;
+            return this.gameState.players[this.currentPlayerIndex].id;
         }
     }
 
