@@ -7,15 +7,12 @@ import { Move } from './Move';
 import { Player } from './Player';
 
 export class AI implements IPlayer {
-    constructor(private gss: GameStateService) {
-        // this.gss.registerPlayer(this, PlayerTypes.AI);
-    }
+    constructor(private gss: GameStateService) {}
 
     player: Player;
 
     init(p: Player): void {
         this.player = p;
-        console.log(p);
         this.gss.currentTurn$.subscribe((id: number) => {
             if (id === p.id) {
                 // console.log('AI!', p.id);
