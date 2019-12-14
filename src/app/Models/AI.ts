@@ -24,6 +24,7 @@ export class AI implements IPlayer {
             }
         });
     }
+
     makeMove(): Move {
         const card = this.player.cards[Math.floor(Math.random() * this.player.cards.length)];
         if (card.colour !== TurtleColours.RAINBOW) {

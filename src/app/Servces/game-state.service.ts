@@ -200,6 +200,7 @@ export class GameStateService {
             this.playerMovesSubject.next(m);
             const player = this.gameState.players.find(e => e.id === m.playerId);
             const cardIndex = player.cards.findIndex(e => e.compare(m.card));
+
             // put card randomly into deck, give one from the top
             const card = new Card(player.cards[cardIndex].type, player.cards[cardIndex].colour);
             player.cards.splice(cardIndex, 1);
