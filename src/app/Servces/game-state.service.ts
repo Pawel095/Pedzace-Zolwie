@@ -214,13 +214,15 @@ export class GameStateService {
                     this.PlayerBarCardUpdatesSubject.next({ id: m.playerId, card: m.card });
                 }
                 this.mapUpdateSubject.next(this.gameState.turtles);
-                if (this.checkGameEnds()) {
-                    console.log('THE GAME ENDS!');
-                } else {
-                    this.triggerNextTurn();
-                }
             } else {
+                this.playerMovesSubject.next(m);
                 console.log('discarding');
+            }
+
+            if (this.checkGameEnds()) {
+                console.log('THE GAME ENDS!');
+            } else {
+                this.triggerNextTurn();
             }
         }
     }

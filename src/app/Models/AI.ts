@@ -27,11 +27,18 @@ export class AI implements IPlayer {
 
     makeMove(): Move {
         const card = this.player.cards[Math.floor(Math.random() * this.player.cards.length)];
+        let ret: Move;
         if (card.colour !== TurtleColours.RAINBOW) {
-            return new Move(this.player.id, card, card.colour);
+            ret = new Move(this.player.id, card, card.colour);
         } else {
             const rand = Math.floor(Math.random() * (Object.keys(TurtleColours).length / 2 - 2));
-            return new Move(this.player.id, card, rand);
+            ret = new Move(this.player.id, card, rand);
+        }
+        if (this.gss.validateMove(ret)) {
+            return ret;
+        } else {
+            ret.discard = true;
+            return ret;
         }
     }
 }
