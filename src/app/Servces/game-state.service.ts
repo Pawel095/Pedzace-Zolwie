@@ -197,7 +197,6 @@ export class GameStateService {
 
     public playerMove(m: Move) {
         if (m.playerId === this.gameState.players[this.currentPlayerIndex].id) {
-            this.playerMovesSubject.next(m);
             const player = this.gameState.players.find(e => e.id === m.playerId);
             const cardIndex = player.cards.findIndex(e => e.compare(m.card));
 
@@ -207,15 +206,21 @@ export class GameStateService {
             this.deck.splice(Math.floor(Math.random() * this.deck.length - 1), 0, card);
             player.cards.push(...this.dealCard());
 
-            if (this.validateMove(m)) {
-                this.processMove(m);
-                this.PlayerBarCardUpdatesSubject.next({ id: m.playerId, card: m.card });
-            }
-            this.mapUpdateSubject.next(this.gameState.turtles);
-            if (this.checkGameEnds()) {
-                console.log('THE GAME ENDS!');
+            if (!m.discard) {
+                console.log('Playing');
+                this.playerMovesSubject.next(m);
+                if (this.validateMove(m)) {
+                    this.processMove(m);
+                    this.PlayerBarCardUpdatesSubject.next({ id: m.playerId, card: m.card });
+                }
+                this.mapUpdateSubject.next(this.gameState.turtles);
+                if (this.checkGameEnds()) {
+                    console.log('THE GAME ENDS!');
+                } else {
+                    this.triggerNextTurn();
+                }
             } else {
-                this.triggerNextTurn();
+                console.log('discarding');
             }
         }
     }

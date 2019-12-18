@@ -1,6 +1,6 @@
 <div class="cards">
     <div class="elem" *ngFor="let i of cards">
-        <button mat-raised-button color="warn" (click)="discardCard()">Discard</button>
+        <button mat-raised-button color="warn" (click)="discardCard(i)">Discard</button>
         <app-card-item [inputCard]="i" (cardClicked)="onClickCard($event)"></app-card-item>
     </div>
 </div>
