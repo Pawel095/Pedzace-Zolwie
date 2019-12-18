@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TurtleColours } from 'src/app/Enums/TurtleColours';
+import { Paths } from 'src/app/Enums/Paths';
 
 @Component({
     selector: 'app-select-color-dialog-item',
@@ -12,33 +13,26 @@ export class SelectColorDialogItemComponent implements OnInit {
     src: string;
     name: string;
 
-    turtleBluePath = 'assets/Turtles/Turtle Blue.png';
-    turtleGreenPath = 'assets/Turtles/Turtle Green.png';
-    turtleRainbowPath = 'assets/Turtles/Turtle Rainbow.png';
-    turtleRedPath = 'assets/Turtles/Turtle Red.png';
-    turtleVioletPath = 'assets/Turtles/Turtle Violet.png';
-    turtleYellowPath = 'assets/Turtles/Turtle Yellow.png';
-
     ngOnInit() {
         switch (this.color) {
             case TurtleColours.BLUE:
-                this.src = this.turtleBluePath;
+                this.src = Paths.TURTLE_BLUE;
                 this.name = 'Blue';
                 break;
             case TurtleColours.RED:
-                this.src = this.turtleRedPath;
+                this.src = Paths.TURTLE_RED;
                 this.name = 'Red';
                 break;
             case TurtleColours.YELLOW:
-                this.src = this.turtleYellowPath;
+                this.src = Paths.TURTLE_YELLOW;
                 this.name = 'Yellow';
                 break;
             case TurtleColours.GREEN:
-                this.src = this.turtleGreenPath;
+                this.src = Paths.TURTLE_GREEN;
                 this.name = 'Green';
                 break;
             case TurtleColours.VIOLET:
-                this.src = this.turtleVioletPath;
+                this.src = Paths.TURTLE_VIOLET;
                 this.name = 'Violet';
                 break;
         }

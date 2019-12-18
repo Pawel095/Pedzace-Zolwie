@@ -2,4 +2,11 @@ mat-card {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    flex-basis: 100;
+    .map {
+        width: 90%;
+    }
+    .pieceDisplay {
+        width: 20%;
+    }
 }

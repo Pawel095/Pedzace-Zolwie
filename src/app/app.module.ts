@@ -29,6 +29,7 @@ import { NewGameViewComponent } from './Controllers/Home/new-game-view/new-game-
 import { RulesComponent } from './Controllers/Home/rules/rules.component';
 import { ScoreboardComponent } from './Controllers/Home/scoreboard/scoreboard.component';
 import { NavBarComponent } from './Controllers/nav-bar/nav-bar.component';
+import { PlayerTurtleViewComponent } from './Controllers/Game/player-turtle-view/player-turtle-view.component';
 
 @NgModule({
     declarations: [
@@ -47,6 +48,7 @@ import { NavBarComponent } from './Controllers/nav-bar/nav-bar.component';
         PlayerBarItemComponent,
         SelectColorDialogComponent,
         SelectColorDialogItemComponent,
+        PlayerTurtleViewComponent,
     ],
     imports: [
         BrowserModule,
