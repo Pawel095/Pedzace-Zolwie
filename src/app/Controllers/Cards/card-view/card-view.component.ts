@@ -39,4 +39,5 @@ export class CardViewComponent implements OnInit {
     }
     constructor() {}
     ngOnInit() {}
+    discardCard() {}
 }
