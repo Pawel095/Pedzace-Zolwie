@@ -18,6 +18,7 @@ export class PlayerBarComponent implements OnInit {
         type: PlayerTypes;
         card: Card;
         highlighted: boolean;
+        discarded: boolean;
     }> = [
         {
             n: 1,
@@ -25,8 +26,9 @@ export class PlayerBarComponent implements OnInit {
             type: PlayerTypes.AI,
             card: new Card(CardTypes.COLOUR_ONE_BACK, TurtleColours.RED),
             highlighted: false,
+            discarded: false,
         },
-        { n: 2, id: 345, type: PlayerTypes.HUMAN, card: undefined, highlighted: false },
+        { n: 2, id: 345, type: PlayerTypes.HUMAN, card: undefined, highlighted: false, discarded: false },
     ];
     last: {
         n: number;
@@ -34,7 +36,9 @@ export class PlayerBarComponent implements OnInit {
         type: PlayerTypes;
         card: Card;
         highlighted: boolean;
+        discarded: boolean;
     };
+
     ngOnInit() {
         this.list = this.gss.getInitialPlayerBarData();
         this.last = this.list[0];
@@ -45,10 +49,16 @@ export class PlayerBarComponent implements OnInit {
             this.last = current;
         });
 
-        this.gss.PlayerBarCardUpdates$.subscribe(data => {
+        this.gss.PlayerBarCardUpdates$.subscribe((data: { id: number; card: Card | null }) => {
             const player = this.list.find(e => e.id === data.id);
-            player.card = null;
-            player.card = data.card;
+            if (data.card != null) {
+                player.card = null;
+                player.card = data.card;
+                player.discarded = false;
+            } else {
+                player.discarded = true;
+                player.card = undefined;
+            }
         });
     }
 }

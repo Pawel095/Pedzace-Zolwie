@@ -22,7 +22,6 @@ export class GameStateService {
     private unassingedPlayers: Array<Player>;
     private deck: Array<Card>;
 
-    private playerMovesSubject = new Subject<Move>();
     public playerMoves$: Observable<Move>;
 
     private mapUpdateSubject = new Subject<TurtlePiece[]>();
@@ -33,8 +32,8 @@ export class GameStateService {
     private currentPlayerIndex = 0;
     private firstRound = true;
 
-    private PlayerBarCardUpdatesSubject = new Subject<{ id: number; card: Card }>();
-    public PlayerBarCardUpdates$: Observable<{ id: number; card: Card }>;
+    private PlayerBarCardUpdatesSubject = new Subject<{ id: number; card: Card | null }>();
+    public PlayerBarCardUpdates$: Observable<{ id: number; card: Card | null }>;
 
     public wasSetupRun = false;
     public currentGamemode: GameModes;
@@ -45,7 +44,6 @@ export class GameStateService {
     constructor() {
         this.initsToRun = [];
         this.aiPlayers = [];
-        this.playerMoves$ = this.playerMovesSubject.asObservable();
         this.mapUpdates$ = this.mapUpdateSubject.asObservable();
         this.currentTurn$ = this.currentTurnSubject.asObservable();
         this.PlayerBarCardUpdates$ = this.PlayerBarCardUpdatesSubject.asObservable();
@@ -187,17 +185,17 @@ export class GameStateService {
         type: PlayerTypes;
         card: undefined;
         highlighted: boolean;
+        discarded: boolean;
     }> {
         const ret = [];
         this.gameState.players.forEach((e, i) => {
-            ret.push({ n: i, id: e.id, type: e.playerType, card: undefined, highlighted: false });
+            ret.push({ n: i, id: e.id, type: e.playerType, card: undefined, highlighted: false, discarded: false });
         });
         return ret;
     }
 
     public playerMove(m: Move) {
         if (m.playerId === this.gameState.players[this.currentPlayerIndex].id) {
-            this.playerMovesSubject.next(m);
             const player = this.gameState.players.find(e => e.id === m.playerId);
             const cardIndex = player.cards.findIndex(e => e.compare(m.card));
 
@@ -207,11 +205,18 @@ export class GameStateService {
             this.deck.splice(Math.floor(Math.random() * this.deck.length - 1), 0, card);
             player.cards.push(...this.dealCard());
 
-            if (this.validateMove(m)) {
-                this.processMove(m);
-                this.PlayerBarCardUpdatesSubject.next({ id: m.playerId, card: m.card });
+            if (!m.discard) {
+                console.log('Playing');
+                if (this.validateMove(m)) {
+                    this.processMove(m);
+                    this.PlayerBarCardUpdatesSubject.next({ id: m.playerId, card: m.card });
+                }
+                this.mapUpdateSubject.next(this.gameState.turtles);
+            } else {
+                this.PlayerBarCardUpdatesSubject.next({ id: m.playerId, card: null });
+                console.log('discarding');
             }
-            this.mapUpdateSubject.next(this.gameState.turtles);
+
             if (this.checkGameEnds()) {
                 console.log('THE GAME ENDS!');
             } else {

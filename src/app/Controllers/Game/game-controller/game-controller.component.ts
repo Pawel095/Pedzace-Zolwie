@@ -37,28 +37,36 @@ export class GameControllerComponent implements OnInit, IPlayer {
         this.player = p;
     }
 
-    cardClicked(card: Card) {
-        if (card.colour === TurtleColours.RAINBOW) {
-            const dialogRef = this.dialog.open(SelectColorDialogComponent);
-            dialogRef.afterClosed().subscribe(data => {
-                if (data !== undefined) {
-                    if (this.gss.validateMove(new Move(this.player.id, card, data))) {
-                        this.gss.playerMove(new Move(this.player.id, card, data));
+    cardClicked(input: { card: Card; discard: boolean }) {
+        console.log(input);
+        if (!input.discard) {
+            console.log('playing');
+            const card = input.card;
+            if (card.colour === TurtleColours.RAINBOW) {
+                const dialogRef = this.dialog.open(SelectColorDialogComponent);
+                dialogRef.afterClosed().subscribe(data => {
+                    if (data !== undefined) {
+                        if (this.gss.validateMove(new Move(this.player.id, card, data))) {
+                            this.gss.playerMove(new Move(this.player.id, card, data));
+                        } else {
+                            this.snackBar.open('You cannot do that!', 'Ok', {
+                                duration: 3 * 1000,
+                                verticalPosition: 'bottom',
+                            });
+                        }
                     } else {
-                        this.snackBar.open('You cannot do that!', 'Ok', {
-                            duration: 3 * 1000,
-                            verticalPosition: 'bottom',
-                        });
                     }
-                } else {
-                }
-            });
-        } else {
-            if (this.gss.validateMove(new Move(this.player.id, card, card.colour))) {
-                this.gss.playerMove(new Move(this.player.id, card, card.colour));
+                });
             } else {
-                this.snackBar.open('You cannot do that!', 'Ok', { duration: 3 * 1000, verticalPosition: 'bottom' });
+                if (this.gss.validateMove(new Move(this.player.id, card, card.colour))) {
+                    this.gss.playerMove(new Move(this.player.id, card, card.colour));
+                } else {
+                    this.snackBar.open('You cannot do that!', 'Ok', { duration: 3 * 1000, verticalPosition: 'bottom' });
+                }
             }
+        } else {
+            console.log('discarding');
+            this.gss.playerMove(new Move(this.player.id, input.card, input.card.colour, true));
         }
     }
 }

@@ -8,7 +8,7 @@ import { TurtleColours } from 'src/app/Enums/TurtleColours';
     templateUrl: './card-view.component.html',
     styleUrls: ['./card-view.component.scss'],
 })
-export class CardViewComponent implements OnInit {
+export class CardViewComponent {
     cards: Array<Card> = [];
     @Input() set cardsInput(cards: Array<Card>) {
         this.cards = cards;
@@ -33,10 +33,16 @@ export class CardViewComponent implements OnInit {
         // this.cards.push(new Card(CardTypes.LAST_ONE_FORWARD, TurtleColours.RAINBOW));
         // this.cards.push(new Card(CardTypes.LAST_TWO_FORWARD, TurtleColours.RAINBOW));
     }
-    @Output() cardClicked: EventEmitter<Card> = new EventEmitter<Card>();
+    @Output() cardClicked: EventEmitter<{ card: Card; discard: boolean }> = new EventEmitter<{
+        card: Card;
+        discard: boolean;
+    }>();
+
     onClickCard(card: Card) {
-        this.cardClicked.emit(card);
+        this.cardClicked.emit({ card, discard: false });
     }
-    constructor() {}
-    ngOnInit() {}
+
+    discardCard(card: Card) {
+        this.cardClicked.emit({ card, discard: true });
+    }
 }
