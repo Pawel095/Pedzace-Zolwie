@@ -17,6 +17,7 @@ export class PlayerBarItemComponent implements OnInit {
         this.inputCard = c;
     }
     @Input() highlight: boolean;
+    @Input() discarded: boolean;
 
     imgSrc = '';
     alt = '';

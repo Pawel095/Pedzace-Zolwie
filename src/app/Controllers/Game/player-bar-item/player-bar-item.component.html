@@ -3,7 +3,8 @@
         <mat-grid-tile [colspan]="2" [rowspan]="1" class="number">#{{ number }}</mat-grid-tile>
         <mat-grid-tile [colspan]="1" [rowspan]="2" class="card">
             <app-card-item [inputCard]="inputCard" [scale]="0.4" *ngIf="inputCard !== undefined"></app-card-item>
-            <span *ngIf="inputCard === undefined">No card played</span>
+            <span *ngIf="inputCard === undefined && !discarded">No card played</span>
+            <span *ngIf="discarded" class="small">Exchanged</span>
         </mat-grid-tile>
         <mat-grid-tile [colspan]="2" [rowspan]="1" class="type">
             <img src="{{ imgSrc }}" alt="{{ alt }} " class="img" />

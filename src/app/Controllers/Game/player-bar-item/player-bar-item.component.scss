@@ -11,6 +11,9 @@
         }
     }
 }
+.small {
+    font-size: 14px;
+}
 .highlighted {
     background: map-get($map: $accent, $key: 100);
 }
