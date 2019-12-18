@@ -3,6 +3,7 @@ import { reject } from 'q';
 import { CardTypes } from '../../../Enums/CardTypes';
 import { TurtleColours } from '../../../Enums/TurtleColours';
 import { Card } from '../../../Models/Card';
+import { Paths } from 'src/app/Enums/Paths';
 
 @Component({
     selector: 'app-card-item',
@@ -15,21 +16,6 @@ export class CardItemComponent implements OnInit {
     canvasWidth = this.width;
     canvasHeight = this.height;
     @Input() scale = 1;
-
-    backgroundPath = 'assets/Background.png';
-    // tslint:disable-next-line: variable-name
-    markingC_1Path = 'assets/CardMarkings/C-1.png';
-    markingC1Path = 'assets/CardMarkings/C1.png';
-    markingC2Path = 'assets/CardMarkings/C2.png';
-    markingL1Path = 'assets/CardMarkings/L1.png';
-    markingL2Path = 'assets/CardMarkings/L2.png';
-
-    turtleBluePath = 'assets/Turtles/Turtle Blue.png';
-    turtleGreenPath = 'assets/Turtles/Turtle Green.png';
-    turtleRainbowPath = 'assets/Turtles/Turtle Rainbow.png';
-    turtleRedPath = 'assets/Turtles/Turtle Red.png';
-    turtleVioletPath = 'assets/Turtles/Turtle Violet.png';
-    turtleYellowPath = 'assets/Turtles/Turtle Yellow.png';
 
     @Input() set inputCard(c: Card) {
         this.card = c;
@@ -64,7 +50,7 @@ export class CardItemComponent implements OnInit {
             this.background.addEventListener('error', e => {
                 reject(e);
             });
-            this.background.src = this.backgroundPath;
+            this.background.src = Paths.BACKGROUND;
         });
 
         const markingPromsie = new Promise(resolve => {
@@ -76,19 +62,19 @@ export class CardItemComponent implements OnInit {
             });
             switch (this.card.type) {
                 case CardTypes.COLOUR_ONE_BACK:
-                    this.marking.src = this.markingC_1Path;
+                    this.marking.src = Paths.MARKING_C_1;
                     break;
                 case CardTypes.COLOUR_ONE_FORWARD:
-                    this.marking.src = this.markingC1Path;
+                    this.marking.src = Paths.MARKING_C1;
                     break;
                 case CardTypes.COLOUR_TWO_FORWARD:
-                    this.marking.src = this.markingC2Path;
+                    this.marking.src = Paths.MARKING_C2;
                     break;
                 case CardTypes.LAST_ONE_FORWARD:
-                    this.marking.src = this.markingL1Path;
+                    this.marking.src = Paths.MARKING_L1;
                     break;
                 case CardTypes.LAST_TWO_FORWARD:
-                    this.marking.src = this.markingL2Path;
+                    this.marking.src = Paths.MARKING_L2;
                     break;
             }
         });
@@ -104,22 +90,22 @@ export class CardItemComponent implements OnInit {
             // turtle
             switch (this.card.colour) {
                 case TurtleColours.BLUE:
-                    this.turtle.src = this.turtleBluePath;
+                    this.turtle.src = Paths.TURTLE_BLUE;
                     break;
                 case TurtleColours.RED:
-                    this.turtle.src = this.turtleRedPath;
+                    this.turtle.src = Paths.TURTLE_RED;
                     break;
                 case TurtleColours.YELLOW:
-                    this.turtle.src = this.turtleYellowPath;
+                    this.turtle.src = Paths.TURTLE_YELLOW;
                     break;
                 case TurtleColours.GREEN:
-                    this.turtle.src = this.turtleGreenPath;
+                    this.turtle.src = Paths.TURTLE_GREEN;
                     break;
                 case TurtleColours.VIOLET:
-                    this.turtle.src = this.turtleVioletPath;
+                    this.turtle.src = Paths.TURTLE_VIOLET;
                     break;
                 case TurtleColours.RAINBOW:
-                    this.turtle.src = this.turtleRainbowPath;
+                    this.turtle.src = Paths.TURTLE_RAINBOW;
                     break;
             }
         });

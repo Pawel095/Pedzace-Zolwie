@@ -4,6 +4,7 @@ export enum Paths {
     TURTLE_RED = 'assets/Turtles/Turtle Red.png',
     TURTLE_VIOLET = 'assets/Turtles/Turtle Violet.png',
     TURTLE_YELLOW = 'assets/Turtles/Turtle Yellow.png',
+    TURTLE_RAINBOW = 'assets/Turtles/Turtle Rainbow.png',
 
     BACKGROUND = 'assets/Background.png',
     MARKING_C_1 = 'assets/CardMarkings/C-1.png',
