@@ -11,6 +11,7 @@ import { Player } from 'src/app/Models/Player';
 import { GameStateService } from 'src/app/Servces/game-state.service';
 import { environment } from 'src/environments/environment';
 import { SelectColorDialogComponent } from './select-color-dialog/select-color-dialog.component';
+import { EndGameDialogComponent } from './end-game-dialog/end-game-dialog.component';
 
 @Component({
     selector: 'app-game-controller',
@@ -31,6 +32,9 @@ export class GameControllerComponent implements OnInit, IPlayer {
                 this.gss.registerPlayer(this, PlayerTypes.HUMAN);
                 break;
         }
+        this.gss.gameEndStatus$.subscribe(data => {
+            this.dialog.open(EndGameDialogComponent, { data });
+        });
     }
 
     init(p: Player): void {

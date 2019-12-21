@@ -30,6 +30,7 @@ import { RulesComponent } from './Controllers/Home/rules/rules.component';
 import { ScoreboardComponent } from './Controllers/Home/scoreboard/scoreboard.component';
 import { NavBarComponent } from './Controllers/nav-bar/nav-bar.component';
 import { PlayerTurtleViewComponent } from './Controllers/Game/player-turtle-view/player-turtle-view.component';
+import { EndGameDialogComponent } from './Controllers/Game/game-controller/end-game-dialog/end-game-dialog.component';
 
 @NgModule({
     declarations: [
@@ -49,6 +50,7 @@ import { PlayerTurtleViewComponent } from './Controllers/Game/player-turtle-view
         SelectColorDialogComponent,
         SelectColorDialogItemComponent,
         PlayerTurtleViewComponent,
+        EndGameDialogComponent,
     ],
     imports: [
         BrowserModule,
@@ -68,6 +70,6 @@ import { PlayerTurtleViewComponent } from './Controllers/Game/player-turtle-view
     ],
     providers: [],
     bootstrap: [AppComponent],
-    entryComponents: [SelectColorDialogComponent, SelectColorDialogItemComponent],
+    entryComponents: [SelectColorDialogComponent, SelectColorDialogItemComponent, EndGameDialogComponent],
 })
 export class AppModule {}

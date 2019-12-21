@@ -32,8 +32,11 @@ export class GameStateService {
     private currentPlayerIndex = 0;
     private firstRound = true;
 
-    private PlayerBarCardUpdatesSubject = new Subject<{ id: number; card: Card | null }>();
-    public PlayerBarCardUpdates$: Observable<{ id: number; card: Card | null }>;
+    private playerBarCardUpdatesSubject = new Subject<{ id: number; card: Card | null }>();
+    public playerBarCardUpdates$: Observable<{ id: number; card: Card | null }>;
+
+    private gameEndStatusSubject = new Subject<GameState>();
+    public gameEndStatus$: Observable<GameState>;
 
     public wasSetupRun = false;
     public currentGamemode: GameModes;
@@ -46,7 +49,8 @@ export class GameStateService {
         this.aiPlayers = [];
         this.mapUpdates$ = this.mapUpdateSubject.asObservable();
         this.currentTurn$ = this.currentTurnSubject.asObservable();
-        this.PlayerBarCardUpdates$ = this.PlayerBarCardUpdatesSubject.asObservable();
+        this.playerBarCardUpdates$ = this.playerBarCardUpdatesSubject.asObservable();
+        this.gameEndStatus$ = this.gameEndStatusSubject.asObservable();
     }
 
     get turtlePositions(): Array<TurtlePiece> {
@@ -113,9 +117,14 @@ export class GameStateService {
         return ret;
     }
 
-    public setup(mode: GameModes) {
-        this.setupDeck();
+    private resetGameState() {
         this.unassingedPlayers = Array<Player>();
+    }
+
+    public setup(mode: GameModes) {
+        this.resetGameState();
+        this.setupDeck();
+
         switch (mode) {
             case GameModes.AI:
                 let players = Array<Player>();
@@ -151,7 +160,9 @@ export class GameStateService {
 
                 const turtles: Array<TurtlePiece> = [];
                 for (let i = 0; i < 5; i++) {
-                    turtles.push(new TurtlePiece(i, 0, 0));
+                    // TODO: restore to default
+                    // turtles.push(new TurtlePiece(i, 0, 0));
+                    turtles.push(new TurtlePiece(i, 9, i));
                 }
                 this.gameState = new GameState(players, turtles);
                 this.currentGamemode = GameModes.AI;
@@ -209,16 +220,18 @@ export class GameStateService {
                 console.log('Playing');
                 if (this.validateMove(m)) {
                     this.processMove(m);
-                    this.PlayerBarCardUpdatesSubject.next({ id: m.playerId, card: m.card });
+                    this.playerBarCardUpdatesSubject.next({ id: m.playerId, card: m.card });
                 }
                 this.mapUpdateSubject.next(this.gameState.turtles);
             } else {
-                this.PlayerBarCardUpdatesSubject.next({ id: m.playerId, card: null });
+                this.playerBarCardUpdatesSubject.next({ id: m.playerId, card: null });
                 console.log('discarding');
             }
 
             if (this.checkGameEnds()) {
                 console.log('THE GAME ENDS!');
+                this.gameEndStatusSubject.next(this.gameState);
+                this.gameEndStatusSubject.complete();
             } else {
                 this.triggerNextTurn();
             }

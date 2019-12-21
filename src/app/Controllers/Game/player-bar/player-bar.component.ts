@@ -49,7 +49,7 @@ export class PlayerBarComponent implements OnInit {
             this.last = current;
         });
 
-        this.gss.PlayerBarCardUpdates$.subscribe((data: { id: number; card: Card | null }) => {
+        this.gss.playerBarCardUpdates$.subscribe((data: { id: number; card: Card | null }) => {
             const player = this.list.find(e => e.id === data.id);
             if (data.card != null) {
                 player.card = null;
