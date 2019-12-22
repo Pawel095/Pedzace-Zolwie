@@ -27,7 +27,6 @@ import { PlayerBarComponent } from './Controllers/Game/player-bar/player-bar.com
 import { HomeViewComponent } from './Controllers/Home/home-view/home-view.component';
 import { NewGameViewComponent } from './Controllers/Home/new-game-view/new-game-view.component';
 import { RulesComponent } from './Controllers/Home/rules/rules.component';
-import { ScoreboardComponent } from './Controllers/Home/scoreboard/scoreboard.component';
 import { NavBarComponent } from './Controllers/nav-bar/nav-bar.component';
 import { PlayerTurtleViewComponent } from './Controllers/Game/player-turtle-view/player-turtle-view.component';
 import { EndGameDialogComponent } from './Controllers/Game/game-controller/end-game-dialog/end-game-dialog.component';
@@ -38,7 +37,6 @@ import { EndGameDialogComponent } from './Controllers/Game/game-controller/end-g
         NavBarComponent,
         MapViewComponent,
         CardViewComponent,
-        ScoreboardComponent,
         RulesComponent,
         CardItemComponent,
         GameControllerComponent,
