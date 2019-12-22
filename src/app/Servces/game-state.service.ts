@@ -160,9 +160,8 @@ export class GameStateService {
 
                 const turtles: Array<TurtlePiece> = [];
                 for (let i = 0; i < 5; i++) {
-                    // TODO: restore to default
-                    // turtles.push(new TurtlePiece(i, 0, 0));
-                    turtles.push(new TurtlePiece(i, 9, i));
+                    turtles.push(new TurtlePiece(i, 0, 0));
+                    // turtles.push(new TurtlePiece(i, 9, i));
                 }
                 this.gameState = new GameState(players, turtles);
                 this.currentGamemode = GameModes.AI;
@@ -175,6 +174,7 @@ export class GameStateService {
         });
         delete this.initsToRun;
     }
+
     public registerPlayer(p: IPlayer, type: PlayerTypes) {
         if (this.wasSetupRun) {
             p.init(this.getPlayer(type));
@@ -200,7 +200,7 @@ export class GameStateService {
     }> {
         const ret = [];
         this.gameState.players.forEach((e, i) => {
-            ret.push({ n: i, id: e.id, type: e.playerType, card: undefined, highlighted: false, discarded: false });
+            ret.push({ n: i + 1, id: e.id, type: e.playerType, card: undefined, highlighted: false, discarded: false });
         });
         return ret;
     }

@@ -19,17 +19,7 @@ export class PlayerBarComponent implements OnInit {
         card: Card;
         highlighted: boolean;
         discarded: boolean;
-    }> = [
-        {
-            n: 1,
-            id: 123,
-            type: PlayerTypes.AI,
-            card: new Card(CardTypes.COLOUR_ONE_BACK, TurtleColours.RED),
-            highlighted: false,
-            discarded: false,
-        },
-        { n: 2, id: 345, type: PlayerTypes.HUMAN, card: undefined, highlighted: false, discarded: false },
-    ];
+    }> = [{ n: 1, id: 345, type: PlayerTypes.HUMAN, card: undefined, highlighted: false, discarded: false }];
     last: {
         n: number;
         id: number;

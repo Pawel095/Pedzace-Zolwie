@@ -1,1 +1,17 @@
-<p>end-game-dialog works!</p>
+<div class="container">
+    <div class="title">RESULTS</div>
+    <table>
+        <tr>
+            <th>Place</th>
+            <th>Colour</th>
+            <th>Type</th>
+            <th>Number</th>
+        </tr>
+        <tr *ngFor="let e of results">
+            <td>{{ e.place }}</td>
+            <td><img src="{{ e.colourImagePath }}" width="60" /></td>
+            <td><img src="{{ e.typeImagePath }}" width="60" /></td>
+            <td>{{ e.number }}</td>
+        </tr>
+    </table>
+</div>

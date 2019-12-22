@@ -12,6 +12,7 @@ import { GameStateService } from 'src/app/Servces/game-state.service';
 import { environment } from 'src/environments/environment';
 import { SelectColorDialogComponent } from './select-color-dialog/select-color-dialog.component';
 import { EndGameDialogComponent } from './end-game-dialog/end-game-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-game-controller',
@@ -19,7 +20,12 @@ import { EndGameDialogComponent } from './end-game-dialog/end-game-dialog.compon
     styleUrls: ['./game-controller.component.scss'],
 })
 export class GameControllerComponent implements OnInit, IPlayer {
-    constructor(private gss: GameStateService, private dialog: MatDialog, private snackBar: MatSnackBar) {}
+    constructor(
+        private gss: GameStateService,
+        private dialog: MatDialog,
+        private snackBar: MatSnackBar,
+        private router: Router
+    ) {}
     player: Player;
     debug = !environment.production;
     ngOnInit() {
@@ -33,7 +39,12 @@ export class GameControllerComponent implements OnInit, IPlayer {
                 break;
         }
         this.gss.gameEndStatus$.subscribe(data => {
-            this.dialog.open(EndGameDialogComponent, { data });
+            this.dialog
+                .open(EndGameDialogComponent, { data })
+                .afterClosed()
+                .subscribe(() => {
+                    this.router.navigateByUrl('/home');
+                });
         });
     }
 

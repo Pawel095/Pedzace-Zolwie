@@ -1,0 +1,23 @@
+table {
+    border-collapse: collapse;
+    td {
+        font-size: 3em;
+        border: 1px solid black;
+        justify-content: center;
+        align-content: center;
+    }
+    th {
+        justify-content: center;
+        align-items: center;
+        border: 1px solid black;
+    }
+}
+.title {
+    font-size: 5em;
+    justify-content: center;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
