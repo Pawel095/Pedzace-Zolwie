@@ -19,17 +19,7 @@ export class PlayerBarComponent implements OnInit {
         card: Card;
         highlighted: boolean;
         discarded: boolean;
-    }> = [
-        {
-            n: 1,
-            id: 123,
-            type: PlayerTypes.AI,
-            card: new Card(CardTypes.COLOUR_ONE_BACK, TurtleColours.RED),
-            highlighted: false,
-            discarded: false,
-        },
-        { n: 2, id: 345, type: PlayerTypes.HUMAN, card: undefined, highlighted: false, discarded: false },
-    ];
+    }> = [{ n: 1, id: 345, type: PlayerTypes.HUMAN, card: undefined, highlighted: false, discarded: false }];
     last: {
         n: number;
         id: number;
@@ -49,7 +39,7 @@ export class PlayerBarComponent implements OnInit {
             this.last = current;
         });
 
-        this.gss.PlayerBarCardUpdates$.subscribe((data: { id: number; card: Card | null }) => {
+        this.gss.playerBarCardUpdates$.subscribe((data: { id: number; card: Card | null }) => {
             const player = this.list.find(e => e.id === data.id);
             if (data.card != null) {
                 player.card = null;
