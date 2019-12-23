@@ -17,6 +17,7 @@ import { AppComponent } from './app.component';
 import { CardItemComponent } from './Controllers/Cards/card-item/card-item.component';
 import { CardViewComponent } from './Controllers/Cards/card-view/card-view.component';
 import { DebugComponent } from './Controllers/debug/debug.component';
+import { EndGameDialogComponent } from './Controllers/Game/game-controller/end-game-dialog/end-game-dialog.component';
 import { GameControllerComponent } from './Controllers/Game/game-controller/game-controller.component';
 // tslint:disable-next-line: max-line-length
 import { SelectColorDialogItemComponent } from './Controllers/Game/game-controller/select-color-dialog-item/select-color-dialog-item.component';
@@ -24,12 +25,11 @@ import { SelectColorDialogComponent } from './Controllers/Game/game-controller/s
 import { MapViewComponent } from './Controllers/Game/map-view/map-view.component';
 import { PlayerBarItemComponent } from './Controllers/Game/player-bar-item/player-bar-item.component';
 import { PlayerBarComponent } from './Controllers/Game/player-bar/player-bar.component';
+import { PlayerTurtleViewComponent } from './Controllers/Game/player-turtle-view/player-turtle-view.component';
 import { HomeViewComponent } from './Controllers/Home/home-view/home-view.component';
 import { NewGameViewComponent } from './Controllers/Home/new-game-view/new-game-view.component';
 import { RulesComponent } from './Controllers/Home/rules/rules.component';
 import { NavBarComponent } from './Controllers/nav-bar/nav-bar.component';
-import { PlayerTurtleViewComponent } from './Controllers/Game/player-turtle-view/player-turtle-view.component';
-import { EndGameDialogComponent } from './Controllers/Game/game-controller/end-game-dialog/end-game-dialog.component';
 
 @NgModule({
     declarations: [

@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SelectColorDialogItemComponent } from './select-color-dialog-item.component';
 
-
 describe('SelectColorDialogItemComponent', () => {
     let component: SelectColorDialogItemComponent;
     let fixture: ComponentFixture<SelectColorDialogItemComponent>;

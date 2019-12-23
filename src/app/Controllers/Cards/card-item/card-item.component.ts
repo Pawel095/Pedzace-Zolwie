@@ -1,9 +1,9 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { reject } from 'q';
+import { Paths } from 'src/app/Enums/Paths';
 import { CardTypes } from '../../../Enums/CardTypes';
 import { TurtleColours } from '../../../Enums/TurtleColours';
 import { Card } from '../../../Models/Card';
-import { Paths } from 'src/app/Enums/Paths';
 
 @Component({
     selector: 'app-card-item',

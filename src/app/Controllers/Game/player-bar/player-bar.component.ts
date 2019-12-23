@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CardTypes } from 'src/app/Enums/CardTypes';
 import { PlayerTypes } from 'src/app/Enums/PlayerTypes';
-import { TurtleColours } from 'src/app/Enums/TurtleColours';
 import { Card } from 'src/app/Models/Card';
 import { GameStateService } from 'src/app/Servces/game-state.service';
 

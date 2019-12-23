@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { TurtleColours } from 'src/app/Enums/TurtleColours';
 import { Paths } from 'src/app/Enums/Paths';
+import { TurtleColours } from 'src/app/Enums/TurtleColours';
 
 @Component({
     selector: 'app-select-color-dialog-item',

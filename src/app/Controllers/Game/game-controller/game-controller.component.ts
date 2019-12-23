@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { GameModes } from 'src/app/Enums/GameModes';
 import { PlayerTypes } from 'src/app/Enums/PlayerTypes';
 import { TurtleColours } from 'src/app/Enums/TurtleColours';
@@ -10,9 +11,8 @@ import { Move } from 'src/app/Models/Move';
 import { Player } from 'src/app/Models/Player';
 import { GameStateService } from 'src/app/Servces/game-state.service';
 import { environment } from 'src/environments/environment';
-import { SelectColorDialogComponent } from './select-color-dialog/select-color-dialog.component';
 import { EndGameDialogComponent } from './end-game-dialog/end-game-dialog.component';
-import { Router } from '@angular/router';
+import { SelectColorDialogComponent } from './select-color-dialog/select-color-dialog.component';
 
 @Component({
     selector: 'app-game-controller',

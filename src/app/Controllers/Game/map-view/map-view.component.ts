@@ -36,12 +36,16 @@ export class MapViewComponent implements OnInit {
         if (this.ctx.canvas.width >= this.ctx.canvas.height) {
             for (let i = 0; i < this.TILE_NUMBER; i++) {
                 temp += piece;
-                this.points.push(new Point((stop.x / this.TILE_NUMBER) * i + start.x, (Math.sin(temp) * stop.y) / 5 + stop.y / 2.5));
+                this.points.push(
+                    new Point((stop.x / this.TILE_NUMBER) * i + start.x, (Math.sin(temp) * stop.y) / 5 + stop.y / 2.5)
+                );
             }
         } else {
             for (let i = 0; i < this.TILE_NUMBER; i++) {
                 temp += piece;
-                this.points.push(new Point((Math.sin(temp) * stop.x) / 5 + stop.x / 2.5, (stop.y / this.TILE_NUMBER) * i + start.y));
+                this.points.push(
+                    new Point((Math.sin(temp) * stop.x) / 5 + stop.x / 2.5, (stop.y / this.TILE_NUMBER) * i + start.y)
+                );
             }
         }
         this.render();
@@ -101,7 +105,9 @@ export class MapViewComponent implements OnInit {
                 } else {
                     const x = this.points[this.TILE_NUMBER - 1 - e.mapPosition].x + this.TurtleSize / 2;
                     const y =
-                        this.points[this.TILE_NUMBER - 1 - e.mapPosition].y + this.TurtleSize / 2 - e.verticalPositon * this.TurtleSize;
+                        this.points[this.TILE_NUMBER - 1 - e.mapPosition].y +
+                        this.TurtleSize / 2 -
+                        e.verticalPositon * this.TurtleSize;
 
                     this.ctx.fillStyle = this.debugFillStyles[debugIterator++];
                     this.ctx.fillRect(x, y, this.TurtleSize, this.TurtleSize);
