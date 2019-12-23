@@ -1,5 +1,5 @@
-import { TurtleColours } from '../Enums/TurtleColours';
 import { Paths } from '../Enums/Paths';
+import { TurtleColours } from '../Enums/TurtleColours';
 
 export function TurtleColour2Path(turtle: TurtleColours): string {
     switch (turtle) {

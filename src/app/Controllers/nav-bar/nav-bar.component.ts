@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -6,8 +6,6 @@ import { environment } from 'src/environments/environment';
     templateUrl: './nav-bar.component.html',
     styleUrls: ['./nav-bar.component.scss'],
 })
-export class NavBarComponent implements OnInit {
-    constructor() {}
+export class NavBarComponent {
     debug = environment.production;
-    ngOnInit() {}
 }

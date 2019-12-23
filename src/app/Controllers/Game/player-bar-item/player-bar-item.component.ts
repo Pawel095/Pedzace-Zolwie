@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Paths } from 'src/app/Enums/Paths';
 import { PlayerTypes } from 'src/app/Enums/PlayerTypes';
 import { Card } from 'src/app/Models/Card';
-import { Paths } from 'src/app/Enums/Paths';
 
 @Component({
     selector: 'app-player-bar-item',

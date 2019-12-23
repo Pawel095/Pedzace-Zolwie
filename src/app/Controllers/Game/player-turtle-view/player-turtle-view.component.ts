@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { TurtleColours } from 'src/app/Enums/TurtleColours';
+import { Component, Input } from '@angular/core';
 import { Paths } from 'src/app/Enums/Paths';
+import { TurtleColours } from 'src/app/Enums/TurtleColours';
 
 @Component({
     selector: 'app-player-turtle-view',

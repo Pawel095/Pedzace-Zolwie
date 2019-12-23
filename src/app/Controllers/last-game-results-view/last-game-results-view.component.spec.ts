@@ -1,18 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { EndGameDialogComponent } from './end-game-dialog.component';
+import { LastGameResultsViewComponent } from './last-game-results-view.component';
 
-describe('EndGameDialogComponent', () => {
-    let component: EndGameDialogComponent;
-    let fixture: ComponentFixture<EndGameDialogComponent>;
+describe('LastGameResultsViewComponent', () => {
+    let component: LastGameResultsViewComponent;
+    let fixture: ComponentFixture<LastGameResultsViewComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [EndGameDialogComponent],
+            declarations: [LastGameResultsViewComponent],
         }).compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(EndGameDialogComponent);
+        fixture = TestBed.createComponent(LastGameResultsViewComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

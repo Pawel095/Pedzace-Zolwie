@@ -35,7 +35,7 @@ export class GameStateService {
     private playerBarCardUpdatesSubject = new Subject<{ id: number; card: Card | null }>();
     public playerBarCardUpdates$: Observable<{ id: number; card: Card | null }>;
 
-    private gameEndStatusSubject = new Subject<GameState>();
+    private gameEndStatusSubject = new ReplaySubject<GameState>();
     public gameEndStatus$: Observable<GameState>;
 
     public wasSetupRun = false;

@@ -1,8 +1,6 @@
-import { CardTypes } from '../Enums/CardTypes';
 import { TurtleColours } from '../Enums/TurtleColours';
 import { IPlayer } from '../Interfaces/IPlayer';
 import { GameStateService } from '../Servces/game-state.service';
-import { Card } from './Card';
 import { Move } from './Move';
 import { Player } from './Player';
 

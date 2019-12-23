@@ -1,5 +1,11 @@
 <div class="container" matDialogContent>
-    <app-select-color-dialog-item *ngFor="let u of [0, 1, 2, 3, 4]" [color]="u" class="elem" matRipple [matDialogClose]="u">
+    <app-select-color-dialog-item
+        *ngFor="let u of [0, 1, 2, 3, 4]"
+        [color]="u"
+        class="elem"
+        matRipple
+        [matDialogClose]="u"
+    >
     </app-select-color-dialog-item>
 </div>
 <div matDialogActions class="actions">

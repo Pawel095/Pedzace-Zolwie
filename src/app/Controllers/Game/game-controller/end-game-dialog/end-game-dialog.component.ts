@@ -1,13 +1,11 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { PlayerTypes } from 'src/app/Enums/PlayerTypes';
+import { TurtleColours } from 'src/app/Enums/TurtleColours';
 import { GameState } from 'src/app/Models/GameState';
 import { Player } from 'src/app/Models/Player';
-import { TurtlePiece } from 'src/app/Models/TurtlePiece';
-import { stringify } from 'querystring';
-import { PlayerTypes } from 'src/app/Enums/PlayerTypes';
-import { TurtleColours as string, TurtleColours } from 'src/app/Enums/TurtleColours';
-import { TurtleColour2Path } from 'src/app/Utils/turtleColour2Path';
 import { PlayerType2Path } from 'src/app/Utils/playerType2Path';
+import { TurtleColour2Path } from 'src/app/Utils/turtleColour2Path';
 
 @Component({
     selector: 'app-end-game-dialog',
