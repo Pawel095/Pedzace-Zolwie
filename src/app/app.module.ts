@@ -30,6 +30,7 @@ import { HomeViewComponent } from './Controllers/Home/home-view/home-view.compon
 import { NewGameViewComponent } from './Controllers/Home/new-game-view/new-game-view.component';
 import { RulesComponent } from './Controllers/Home/rules/rules.component';
 import { NavBarComponent } from './Controllers/nav-bar/nav-bar.component';
+import { LastGameResultsViewComponent } from './Controllers/last-game-results-view/last-game-results-view.component';
 
 @NgModule({
     declarations: [
@@ -49,6 +50,7 @@ import { NavBarComponent } from './Controllers/nav-bar/nav-bar.component';
         SelectColorDialogItemComponent,
         PlayerTurtleViewComponent,
         EndGameDialogComponent,
+        LastGameResultsViewComponent,
     ],
     imports: [
         BrowserModule,
