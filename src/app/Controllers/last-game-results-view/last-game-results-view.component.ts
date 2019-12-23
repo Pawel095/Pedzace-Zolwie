@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { GameStateService } from 'src/app/Servces/game-state.service';
 import { MatDialog } from '@angular/material/dialog';
-import { EndGameDialogComponent } from '../Game/game-controller/end-game-dialog/end-game-dialog.component';
-import { GameState } from 'src/app/Models/GameState';
 import { Router } from '@angular/router';
+import { GameStateService } from 'src/app/Servces/game-state.service';
+import { EndGameDialogComponent } from '../Game/game-controller/end-game-dialog/end-game-dialog.component';
 
 @Component({
     selector: 'app-last-game-results-view',

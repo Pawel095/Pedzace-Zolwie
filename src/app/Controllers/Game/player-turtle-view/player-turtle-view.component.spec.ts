@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PlayerTurtleViewComponent } from './player-turtle-view.component';
 
-
 describe('PlayerTurtleViewComponent', () => {
     let component: PlayerTurtleViewComponent;
     let fixture: ComponentFixture<PlayerTurtleViewComponent>;

@@ -13,8 +13,6 @@ import { Move } from '../Models/Move';
 import { Player } from '../Models/Player';
 import { TurtlePiece } from '../Models/TurtlePiece';
 import shuffle from '../Utils/shuffle';
-import { LastGameResultsViewComponent } from '../Controllers/last-game-results-view/last-game-results-view.component';
-import { LastResultService } from './last-result.service';
 
 @Injectable({
     providedIn: 'root',

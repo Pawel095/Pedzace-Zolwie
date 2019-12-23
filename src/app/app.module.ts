@@ -29,8 +29,8 @@ import { PlayerTurtleViewComponent } from './Controllers/Game/player-turtle-view
 import { HomeViewComponent } from './Controllers/Home/home-view/home-view.component';
 import { NewGameViewComponent } from './Controllers/Home/new-game-view/new-game-view.component';
 import { RulesComponent } from './Controllers/Home/rules/rules.component';
-import { NavBarComponent } from './Controllers/nav-bar/nav-bar.component';
 import { LastGameResultsViewComponent } from './Controllers/last-game-results-view/last-game-results-view.component';
+import { NavBarComponent } from './Controllers/nav-bar/nav-bar.component';
 
 @NgModule({
     declarations: [
