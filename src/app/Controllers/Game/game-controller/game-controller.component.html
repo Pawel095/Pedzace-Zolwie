@@ -4,7 +4,7 @@
 <mat-card>
     <app-map-view class="map"></app-map-view>
     <app-player-turtle-view [colour]="player.turtleColour" class="pieceDisplay"></app-player-turtle-view>
-    <!-- <app-debug *ngIf="debug"></app-debug> -->
+    <app-debug></app-debug>
 </mat-card>
 <mat-card>
     <app-card-view [cardsInput]="player.cards" (cardClicked)="cardClicked($event)"></app-card-view>

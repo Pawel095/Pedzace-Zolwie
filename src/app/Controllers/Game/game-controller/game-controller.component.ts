@@ -39,6 +39,7 @@ export class GameControllerComponent implements OnInit, IPlayer {
                 break;
         }
         this.gss.gameEndStatus$.subscribe(data => {
+            console.log('Opening Dialog');
             this.dialog
                 .open(EndGameDialogComponent, { data })
                 .afterClosed()

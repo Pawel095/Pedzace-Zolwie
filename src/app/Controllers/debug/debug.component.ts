@@ -15,6 +15,10 @@ export class DebugComponent implements OnInit {
 
     ngOnInit() {}
 
+    endGame() {
+        this.gss.debugEndGame();
+    }
+
     c_1(co: TurtleColours) {
         const c: Card = new Card();
         c.type = CardTypes.COLOUR_ONE_BACK;

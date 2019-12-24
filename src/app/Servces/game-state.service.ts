@@ -35,14 +35,18 @@ export class GameStateService {
     private playerBarCardUpdatesSubject = new Subject<{ id: number; card: Card | null }>();
     public playerBarCardUpdates$: Observable<{ id: number; card: Card | null }>;
 
-    private gameEndStatusSubject = new ReplaySubject<GameState>();
+    private gameEndStatusSubject = new Subject<GameState>();
     public gameEndStatus$: Observable<GameState>;
+
+    public lastGameResult: GameState | null;
 
     public wasSetupRun = false;
     public currentGamemode: GameModes;
 
     private aiPlayers: Array<IPlayer>;
     private initsToRun: Array<{ fun: (p: Player) => void; type: PlayerTypes }>;
+
+    private endGameFlag = false;
 
     constructor() {
         this.initsToRun = [];
@@ -60,6 +64,13 @@ export class GameStateService {
     debugGetCurrentthPlayerId(): number {
         if (!environment.production) {
             return this.gameState.players[this.currentPlayerIndex].id;
+        }
+    }
+
+    debugEndGame() {
+        if (!environment.production) {
+            this.gameState.turtles[0].mapPosition = 9;
+            this.endGameFlag = true;
         }
     }
 
@@ -118,7 +129,20 @@ export class GameStateService {
     }
 
     private resetGameState() {
+        this.wasSetupRun = false;
         this.unassingedPlayers = Array<Player>();
+        this.mapUpdateSubject = new Subject<TurtlePiece[]>();
+        this.currentTurnSubject = new ReplaySubject<number>();
+        this.playerBarCardUpdatesSubject = new Subject<{ id: number; card: Card | null }>();
+        this.currentPlayerIndex = 0;
+        this.firstRound = true;
+
+        this.initsToRun = [];
+        this.aiPlayers = [];
+        this.mapUpdates$ = this.mapUpdateSubject.asObservable();
+        this.currentTurn$ = this.currentTurnSubject.asObservable();
+        this.playerBarCardUpdates$ = this.playerBarCardUpdatesSubject.asObservable();
+        this.gameEndStatus$ = this.gameEndStatusSubject.asObservable();
     }
 
     public setup(mode: GameModes) {
@@ -231,7 +255,10 @@ export class GameStateService {
             if (this.checkGameEnds()) {
                 console.log('THE GAME ENDS!');
                 this.gameEndStatusSubject.next(this.gameState);
-                this.gameEndStatusSubject.complete();
+                this.lastGameResult = this.gameState;
+                this.mapUpdateSubject.complete();
+                this.currentTurnSubject.complete();
+                this.playerBarCardUpdatesSubject.complete();
             } else {
                 this.triggerNextTurn();
             }
@@ -239,8 +266,16 @@ export class GameStateService {
     }
 
     private checkGameEnds() {
-        const turtles = this.gameState.turtles.filter(e => e.mapPosition >= 9);
-        return turtles.length > 0;
+        if (environment.production) {
+            const turtles = this.gameState.turtles.filter(e => e.mapPosition >= 9);
+            return turtles.length > 0;
+        } else {
+            if (this.endGameFlag) {
+                return true;
+            }
+            this.endGameFlag = false;
+            return false;
+        }
     }
 
     private triggerNextTurn() {
