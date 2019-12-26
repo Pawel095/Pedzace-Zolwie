@@ -13,8 +13,10 @@ import { GameState } from 'src/app/Models/GameState';
 export class LastGameResultsViewComponent implements OnInit {
     constructor(private gss: GameStateService, private dialog: MatDialog, private router: Router) {}
     data: GameState;
+    dataAvailable = false;
     ngOnInit() {
         if (this.gss.lastGameResult !== null) {
+            this.dataAvailable = true;
             this.data = this.gss.lastGameResult;
             this.dialog
                 .open(EndGameDialogComponent, { data: this.data })

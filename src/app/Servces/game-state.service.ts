@@ -38,7 +38,7 @@ export class GameStateService {
     private gameEndStatusSubject = new Subject<GameState>();
     public gameEndStatus$: Observable<GameState>;
 
-    public lastGameResult: GameState | null;
+    public lastGameResult: GameState | null = null;
 
     public wasSetupRun = false;
     public currentGamemode: GameModes;
