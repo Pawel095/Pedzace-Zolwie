@@ -29,10 +29,13 @@ export class GameControllerComponent implements OnInit, IPlayer {
     player: Player;
     debug = !environment.production;
     ngOnInit() {
-        // TODO: usuń debugowanie z tego miejsca
+        // if (!environment.production) {
+        //     this.gss.setup(GameModes.AI);
+        // }
         if (!environment.production) {
-            this.gss.setup(GameModes.AI);
+            this.gss.setup(GameModes.HOT_SEAT, { hu: 3 });
         }
+
         switch (this.gss.currentGamemode) {
             case GameModes.AI:
                 this.gss.registerPlayer(this, PlayerTypes.HUMAN);
