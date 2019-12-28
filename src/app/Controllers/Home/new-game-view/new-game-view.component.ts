@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GameModes } from 'src/app/Enums/GameModes';
 import { GameStateService } from 'src/app/Servces/game-state.service';
+import { validateHorizontalPosition } from '@angular/cdk/overlay';
 
 @Component({
     selector: 'app-new-game-view',
@@ -14,6 +15,7 @@ export class NewGameViewComponent implements OnInit {
 
     form = this.fb.group({
         select: ['', Validators.required],
+        huAmmount: [''],
     });
 
     showHSSlider = false;
@@ -39,6 +41,8 @@ export class NewGameViewComponent implements OnInit {
                 this.router.navigateByUrl('game');
                 break;
             case 'HS':
+                this.showHSSlider = false;
+                this.gss.setup(GameModes.HOT_SEAT, { hu: this.form.value.huAmmount });
                 this.router.navigateByUrl('game');
                 break;
             case 'MP':
