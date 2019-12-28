@@ -2,12 +2,10 @@
   "name": "pedzace-zolwie",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
     "start": "ng serve --host 0.0.0.0",
+    "build-watch":"ng build --watch --prod",
+    "lite-server":"lite-server --baseDir=dist",
     "build": "ng build --prod",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e",
     "format": "prettier --write \"src/**/*.{ts,scss,html}\""
   },
   "private": true,
@@ -45,6 +43,7 @@
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
+    "lite-server": "^2.5.4",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",

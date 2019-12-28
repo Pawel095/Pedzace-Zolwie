@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { GameState } from 'src/app/Models/GameState';
 import { GameStateService } from 'src/app/Servces/game-state.service';
 import { EndGameDialogComponent } from '../Game/game-controller/end-game-dialog/end-game-dialog.component';
 
@@ -11,16 +12,18 @@ import { EndGameDialogComponent } from '../Game/game-controller/end-game-dialog/
 })
 export class LastGameResultsViewComponent implements OnInit {
     constructor(private gss: GameStateService, private dialog: MatDialog, private router: Router) {}
+    data: GameState;
     dataAvailable = false;
     ngOnInit() {
-        this.gss.gameEndStatus$.subscribe(data => {
+        if (this.gss.lastGameResult !== null) {
             this.dataAvailable = true;
+            this.data = this.gss.lastGameResult;
             this.dialog
-                .open(EndGameDialogComponent, { data })
+                .open(EndGameDialogComponent, { data: this.data })
                 .afterClosed()
                 .subscribe(() => {
                     this.router.navigateByUrl('/home');
                 });
-        });
+        }
     }
 }

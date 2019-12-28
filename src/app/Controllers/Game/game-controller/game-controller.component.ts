@@ -9,6 +9,7 @@ import { IPlayer } from 'src/app/Interfaces/IPlayer';
 import { Card } from 'src/app/Models/Card';
 import { Move } from 'src/app/Models/Move';
 import { Player } from 'src/app/Models/Player';
+import { PlayerInstrance } from 'src/app/Models/PlayerInstance';
 import { GameStateService } from 'src/app/Servces/game-state.service';
 import { environment } from 'src/environments/environment';
 import { EndGameDialogComponent } from './end-game-dialog/end-game-dialog.component';
@@ -26,19 +27,46 @@ export class GameControllerComponent implements OnInit, IPlayer {
         private snackBar: MatSnackBar,
         private router: Router
     ) {}
-    player: Player;
+
+    vsAiPlayer: Player;
+    HotSeatPlayers: PlayerInstrance[];
+
+    currentDisplayPlayer: Player;
+
     debug = !environment.production;
     ngOnInit() {
-        // TODO: usuń debugowanie z tego miejsca
+        this.currentDisplayPlayer = new Player(PlayerTypes.HUMAN, TurtleColours.RED);
+        // if (!environment.production) {
+        //     this.gss.setup(GameModes.AI);
+        // }
         if (!environment.production) {
-            this.gss.setup(GameModes.AI);
+            this.gss.setup(GameModes.HOT_SEAT, { hu: 2 });
         }
+
         switch (this.gss.currentGamemode) {
             case GameModes.AI:
                 this.gss.registerPlayer(this, PlayerTypes.HUMAN);
+                this.currentDisplayPlayer = this.vsAiPlayer;
+                break;
+            case GameModes.HOT_SEAT:
+                this.HotSeatPlayers = [];
+                for (let i = 0; i < this.gss.huAmmount; i++) {
+                    const p = new PlayerInstrance(this.gss);
+                    this.gss.registerPlayer(p, PlayerTypes.HUMAN);
+                    this.HotSeatPlayers.push(p);
+                }
+                this.gss.currentTurn$.subscribe(data => {
+                    const playerInstalce = this.HotSeatPlayers.find(e => e.player.id === data);
+                    console.log(playerInstalce);
+                    if (playerInstalce !== undefined) {
+                        this.currentDisplayPlayer = playerInstalce.player;
+                    }
+                });
                 break;
         }
+
         this.gss.gameEndStatus$.subscribe(data => {
+            console.log('Opening Dialog');
             this.dialog
                 .open(EndGameDialogComponent, { data })
                 .afterClosed()
@@ -49,11 +77,20 @@ export class GameControllerComponent implements OnInit, IPlayer {
     }
 
     init(p: Player): void {
-        this.player = p;
+        this.vsAiPlayer = p;
     }
 
     cardClicked(input: { card: Card; discard: boolean }) {
         console.log(input);
+        let player: Player;
+        switch (this.gss.currentGamemode) {
+            case GameModes.AI:
+                player = this.vsAiPlayer;
+                break;
+            case GameModes.HOT_SEAT:
+                player = this.currentDisplayPlayer;
+                break;
+        }
         if (!input.discard) {
             console.log('playing');
             const card = input.card;
@@ -61,8 +98,8 @@ export class GameControllerComponent implements OnInit, IPlayer {
                 const dialogRef = this.dialog.open(SelectColorDialogComponent);
                 dialogRef.afterClosed().subscribe(data => {
                     if (data !== undefined) {
-                        if (this.gss.validateMove(new Move(this.player.id, card, data))) {
-                            this.gss.playerMove(new Move(this.player.id, card, data));
+                        if (this.gss.validateMove(new Move(player.id, card, data))) {
+                            this.gss.playerMove(new Move(player.id, card, data));
                         } else {
                             this.snackBar.open('You cannot do that!', 'Ok', {
                                 duration: 3 * 1000,
@@ -73,15 +110,15 @@ export class GameControllerComponent implements OnInit, IPlayer {
                     }
                 });
             } else {
-                if (this.gss.validateMove(new Move(this.player.id, card, card.colour))) {
-                    this.gss.playerMove(new Move(this.player.id, card, card.colour));
+                if (this.gss.validateMove(new Move(player.id, card, card.colour))) {
+                    this.gss.playerMove(new Move(player.id, card, card.colour));
                 } else {
                     this.snackBar.open('You cannot do that!', 'Ok', { duration: 3 * 1000, verticalPosition: 'bottom' });
                 }
             }
         } else {
             console.log('discarding');
-            this.gss.playerMove(new Move(this.player.id, input.card, input.card.colour, true));
+            this.gss.playerMove(new Move(player.id, input.card, input.card.colour, true));
         }
     }
 }

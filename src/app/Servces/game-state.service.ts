@@ -35,14 +35,21 @@ export class GameStateService {
     private playerBarCardUpdatesSubject = new Subject<{ id: number; card: Card | null }>();
     public playerBarCardUpdates$: Observable<{ id: number; card: Card | null }>;
 
-    private gameEndStatusSubject = new ReplaySubject<GameState>();
+    private gameEndStatusSubject = new Subject<GameState>();
     public gameEndStatus$: Observable<GameState>;
+
+    public lastGameResult: GameState | null = null;
 
     public wasSetupRun = false;
     public currentGamemode: GameModes;
 
     private aiPlayers: Array<IPlayer>;
     private initsToRun: Array<{ fun: (p: Player) => void; type: PlayerTypes }>;
+
+    private endGameFlag = false;
+
+    private aiNumber: number;
+    private huNumber: number;
 
     constructor() {
         this.initsToRun = [];
@@ -57,9 +64,23 @@ export class GameStateService {
         return this.gameState.turtles;
     }
 
+    get aiAmmount(): number {
+        return this.aiNumber;
+    }
+    get huAmmount(): number {
+        return this.huNumber;
+    }
+
     debugGetCurrentthPlayerId(): number {
         if (!environment.production) {
             return this.gameState.players[this.currentPlayerIndex].id;
+        }
+    }
+
+    debugEndGame() {
+        if (!environment.production) {
+            this.gameState.turtles[0].mapPosition = 9;
+            this.endGameFlag = true;
         }
     }
 
@@ -118,23 +139,35 @@ export class GameStateService {
     }
 
     private resetGameState() {
+        this.wasSetupRun = false;
         this.unassingedPlayers = Array<Player>();
+        this.mapUpdateSubject = new Subject<TurtlePiece[]>();
+        this.currentTurnSubject = new ReplaySubject<number>();
+        this.playerBarCardUpdatesSubject = new Subject<{ id: number; card: Card | null }>();
+        this.currentPlayerIndex = 0;
+        this.firstRound = true;
+
+        this.initsToRun = [];
+        this.aiPlayers = [];
+        this.mapUpdates$ = this.mapUpdateSubject.asObservable();
+        this.currentTurn$ = this.currentTurnSubject.asObservable();
+        this.playerBarCardUpdates$ = this.playerBarCardUpdatesSubject.asObservable();
+        this.gameEndStatus$ = this.gameEndStatusSubject.asObservable();
     }
 
-    public setup(mode: GameModes) {
+    public setup(mode: GameModes, bonusInformation?: { hu: number }) {
         this.resetGameState();
         this.setupDeck();
-
+        let players = Array<Player>();
+        const availableTurtleColours = [
+            TurtleColours.RED,
+            TurtleColours.YELLOW,
+            TurtleColours.BLUE,
+            TurtleColours.GREEN,
+            TurtleColours.VIOLET,
+        ];
         switch (mode) {
             case GameModes.AI:
-                let players = Array<Player>();
-                const availableTurtleColours = [
-                    TurtleColours.RED,
-                    TurtleColours.YELLOW,
-                    TurtleColours.BLUE,
-                    TurtleColours.GREEN,
-                    TurtleColours.VIOLET,
-                ];
                 for (let i = 0; i < 4; i++) {
                     const rand: number = Math.floor(Math.random() * availableTurtleColours.length);
                     const colour: TurtleColours = availableTurtleColours.splice(rand, 1)[0];
@@ -166,6 +199,49 @@ export class GameStateService {
                 this.gameState = new GameState(players, turtles);
                 this.currentGamemode = GameModes.AI;
                 this.triggerNextTurn();
+                break;
+
+            case GameModes.HOT_SEAT:
+                if (bonusInformation && bonusInformation.hu > 0 && bonusInformation.hu <= 5) {
+                    this.aiNumber = 5 - bonusInformation.hu;
+                    this.huNumber = bonusInformation.hu;
+                    for (let i = 0; i < this.aiNumber; i++) {
+                        const rand: number = Math.floor(Math.random() * availableTurtleColours.length);
+                        const colour: TurtleColours = availableTurtleColours.splice(rand, 1)[0];
+                        const pl = new Player(PlayerTypes.AI, colour);
+                        this.aiPlayers.push(new AI(this));
+                        players.push(pl);
+                        this.unassingedPlayers.push(pl);
+                    }
+
+                    for (let i = 0; i < bonusInformation.hu; i++) {
+                        const rand: number = Math.floor(Math.random() * availableTurtleColours.length);
+                        const colour: TurtleColours = availableTurtleColours.splice(rand, 1)[0];
+                        const pl = new Player(PlayerTypes.HUMAN, colour);
+                        players.push(pl);
+                        this.unassingedPlayers.push(pl);
+                    }
+
+                    players.forEach((e, i) => {
+                        const cards = this.dealCard(5);
+                        e.cards = cards;
+                        this.unassingedPlayers[i].cards = cards;
+                    });
+
+                    this.aiPlayers.forEach(e => {
+                        e.init(this.getPlayer(PlayerTypes.AI));
+                    });
+                    players = shuffle(players);
+
+                    const turtleHS: Array<TurtlePiece> = [];
+                    for (let i = 0; i < 5; i++) {
+                        turtleHS.push(new TurtlePiece(i, 0, 0));
+                        // turtles.push(new TurtlePiece(i, 9, i));
+                    }
+                    this.gameState = new GameState(players, turtleHS);
+                    this.currentGamemode = GameModes.HOT_SEAT;
+                    this.triggerNextTurn();
+                }
                 break;
         }
         this.wasSetupRun = true;
@@ -231,7 +307,10 @@ export class GameStateService {
             if (this.checkGameEnds()) {
                 console.log('THE GAME ENDS!');
                 this.gameEndStatusSubject.next(this.gameState);
-                this.gameEndStatusSubject.complete();
+                this.lastGameResult = this.gameState;
+                this.mapUpdateSubject.complete();
+                this.currentTurnSubject.complete();
+                this.playerBarCardUpdatesSubject.complete();
             } else {
                 this.triggerNextTurn();
             }
@@ -239,8 +318,16 @@ export class GameStateService {
     }
 
     private checkGameEnds() {
-        const turtles = this.gameState.turtles.filter(e => e.mapPosition >= 9);
-        return turtles.length > 0;
+        if (environment.production) {
+            const turtles = this.gameState.turtles.filter(e => e.mapPosition >= 9);
+            return turtles.length > 0;
+        } else {
+            if (this.endGameFlag) {
+                return true;
+            }
+            this.endGameFlag = false;
+            return false;
+        }
     }
 
     private triggerNextTurn() {
