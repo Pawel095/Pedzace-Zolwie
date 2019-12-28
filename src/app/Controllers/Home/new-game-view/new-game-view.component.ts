@@ -16,7 +16,21 @@ export class NewGameViewComponent implements OnInit {
         select: ['', Validators.required],
     });
 
-    ngOnInit() {}
+    showHSSlider = false;
+
+    ngOnInit() {
+        this.form.valueChanges.subscribe(val => {
+            switch (val.select) {
+                case 'HS':
+                    this.showHSSlider = true;
+                    break;
+
+                default:
+                    this.showHSSlider = false;
+                    break;
+            }
+        });
+    }
 
     onSubmit() {
         switch (this.form.value.select) {

@@ -8,6 +8,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatRadioModule } from '@angular/material/radio';
+import {MatSliderModule} from '@angular/material/slider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
@@ -19,6 +20,7 @@ import { CardViewComponent } from './Controllers/Cards/card-view/card-view.compo
 import { DebugComponent } from './Controllers/debug/debug.component';
 import { EndGameDialogComponent } from './Controllers/Game/game-controller/end-game-dialog/end-game-dialog.component';
 import { GameControllerComponent } from './Controllers/Game/game-controller/game-controller.component';
+
 // tslint:disable-next-line: max-line-length
 import { SelectColorDialogItemComponent } from './Controllers/Game/game-controller/select-color-dialog-item/select-color-dialog-item.component';
 import { SelectColorDialogComponent } from './Controllers/Game/game-controller/select-color-dialog/select-color-dialog.component';
@@ -67,6 +69,7 @@ import { NavBarComponent } from './Controllers/nav-bar/nav-bar.component';
         MatSnackBarModule,
         ReactiveFormsModule,
         MatGridListModule,
+        MatSliderModule
     ],
     providers: [],
     bootstrap: [AppComponent],

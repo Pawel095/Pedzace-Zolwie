@@ -4,20 +4,26 @@
             Select Game Mode
         </mat-card-header>
         <mat-card-content>
-            <!-- TODO: ADD LOGIC so that selecting actually does somenthing -->
             <form (submit)="onSubmit()" class="modeForm" [formGroup]="form">
                 <mat-radio-group formControlName="select">
                     <mat-radio-button value="AI">
                         Vs AI
                     </mat-radio-button>
-                    <mat-radio-button value="HS" disabled>
-                        Vs Humans (hot seat) (not yet implemented)
-                    </mat-radio-button>
+                    <span>
+                        <mat-radio-button value="HS">
+                            Vs Humans (hot seat)
+                        </mat-radio-button>
+                        <mat-slider
+                            min="2"
+                            max="5"
+                            step="1"
+                            thumbLabel
+                            tickInterval="1"
+                            *ngIf="showHSSlider"
+                        ></mat-slider>
+                    </span>
                     <mat-radio-button value="MP" disabled>
                         Vs Humans (multiplayer) (not yet implemented)
-                    </mat-radio-button>
-                    <mat-radio-button value="CS" disabled>
-                        Custom (not yet implemented)
                     </mat-radio-button>
                 </mat-radio-group>
                 <button mat-button type="submit" [disabled]="!form.valid">Start!</button>
