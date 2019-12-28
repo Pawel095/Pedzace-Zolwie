@@ -9,13 +9,11 @@ import { IPlayer } from 'src/app/Interfaces/IPlayer';
 import { Card } from 'src/app/Models/Card';
 import { Move } from 'src/app/Models/Move';
 import { Player } from 'src/app/Models/Player';
+import { PlayerInstrance } from 'src/app/Models/PlayerInstance';
 import { GameStateService } from 'src/app/Servces/game-state.service';
 import { environment } from 'src/environments/environment';
 import { EndGameDialogComponent } from './end-game-dialog/end-game-dialog.component';
 import { SelectColorDialogComponent } from './select-color-dialog/select-color-dialog.component';
-import { PlayerInstrance } from 'src/app/Models/PlayerInstance';
-import { platform } from 'os';
-import { PlayerType2Path } from 'src/app/Utils/playerType2Path';
 
 @Component({
     selector: 'app-game-controller',
