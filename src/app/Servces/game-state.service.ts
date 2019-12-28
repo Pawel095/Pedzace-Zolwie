@@ -48,6 +48,9 @@ export class GameStateService {
 
     private endGameFlag = false;
 
+    private aiNumber: number;
+    private huNumber: number;
+
     constructor() {
         this.initsToRun = [];
         this.aiPlayers = [];
@@ -59,6 +62,13 @@ export class GameStateService {
 
     get turtlePositions(): Array<TurtlePiece> {
         return this.gameState.turtles;
+    }
+
+    get aiAmmount(): number {
+        return this.aiNumber;
+    }
+    get huAmmount(): number {
+        return this.huNumber;
     }
 
     debugGetCurrentthPlayerId(): number {
@@ -193,8 +203,9 @@ export class GameStateService {
 
             case GameModes.HOT_SEAT:
                 if (bonusInformation && bonusInformation.hu > 0 && bonusInformation.hu <= 5) {
-                    let aiNumber = 5 - bonusInformation.hu;
-                    for (let i = 0; i < aiNumber; i++) {
+                    this.aiNumber = 5 - bonusInformation.hu;
+                    this.huNumber = bonusInformation.hu;
+                    for (let i = 0; i < this.aiNumber; i++) {
                         const rand: number = Math.floor(Math.random() * availableTurtleColours.length);
                         const colour: TurtleColours = availableTurtleColours.splice(rand, 1)[0];
                         const pl = new Player(PlayerTypes.AI, colour);
