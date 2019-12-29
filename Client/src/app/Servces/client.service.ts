@@ -15,11 +15,14 @@ import { Socket } from 'ngx-socket-io';
 export class ClientService {
     socket: CustomSocket;
 
-    private playerBarCardUpdatesSubject = new Subject<{ id: number; card: Card | null }>();
+    private playerBarCardUpdatesSubject = new ReplaySubject<{ id: number; card: Card | null }>();
     public playerBarCardUpdates$ = this.playerBarCardUpdatesSubject.asObservable();
 
     private currentTurnSubject = new ReplaySubject<number>();
     public currentTurn$ = this.currentTurnSubject.asObservable();
+
+    private mapUpdateSubject = new ReplaySubject<TurtlePiece[]>();
+    public mapUpdates$ = this.mapUpdateSubject.asObservable();
 
     debug() {
         if (!environment.production) {
@@ -35,6 +38,10 @@ export class ClientService {
 
         this.socket.on(Events.currentTurn$, id => {
             this.currentTurnSubject.next(id);
+        });
+
+        this.socket.on(Events.mapUpdates$, data => {
+            this.mapUpdateSubject.next(data);
         });
     }
 

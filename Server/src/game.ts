@@ -26,11 +26,11 @@ export class Game {
     private playerBarCardUpdatesSubject = new Subject<{ id: number; card: Card | null }>();
     public playerBarCardUpdates$: Observable<{ id: number; card: Card | null }>;
 
-    private gameEndStatusSubject = new Subject<GameState>();
-    public gameEndStatus$: Observable<GameState>;
-
     private mapUpdateSubject = new Subject<TurtlePiece[]>();
     public mapUpdates$: Observable<TurtlePiece[]>;
+
+    private gameEndStatusSubject = new Subject<GameState>();
+    public gameEndStatus$: Observable<GameState>;
 
     wasSetupRun: boolean;
     lastGameResult: GameState;

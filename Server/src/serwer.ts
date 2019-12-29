@@ -8,6 +8,7 @@ import { callbackify } from 'util';
 import { Player } from './Utils/Player';
 import { TurtlePiece } from './Utils/TurtlePiece';
 import { Card } from './Utils/Card';
+import { observable, Observable, Subscription } from 'rxjs';
 
 // export interface IGameStateService {
 //     setup(): {};
@@ -32,6 +33,8 @@ const io = require('socket.io')(http);
 
 const game = new Game();
 game.setup(1);
+
+const unsubList: Subscription[] = [];
 
 io.on('connection', (socket: socketio.Socket) => {
     const ip = socket.handshake.address.replace(/^[\:f]+/, '');
@@ -74,17 +77,30 @@ io.on('connection', (socket: socketio.Socket) => {
     socket.on(Events.playerMove, (m: Move) => {});
 
     // observables
-    game.playerBarCardUpdates$.subscribe((data: { id: number; card: Card | null }) => {
-        socket.emit(Events.playerBarUpdates$, data);
-        console.log('Emitting', data);
-    });
-
-    game.currentTurn$.subscribe(id => {
-        socket.emit(Events.currentTurn$, id);
-    });
+    unsubList.push(
+        game.playerBarCardUpdates$.subscribe((data: { id: number; card: Card | null }) => {
+            socket.emit(Events.playerBarUpdates$, data);
+            console.log('PlayerBarUpdates$', data);
+        })
+    );
+    unsubList.push(
+        game.currentTurn$.subscribe(id => {
+            socket.emit(Events.currentTurn$, id);
+            console.log('CurrentTurn$', id);
+        })
+    );
+    unsubList.push(
+        game.mapUpdates$.subscribe((data: TurtlePiece[]) => {
+            socket.emit(Events.mapUpdates$, data);
+            console.log('mapUpdates$', data);
+        })
+    );
 
     socket.on('disconnect', reason => {
         console.log(`Disconnected ${ip}, reason: ${reason}`);
+        unsubList.forEach(e => {
+            e.unsubscribe();
+        });
     });
 });
 

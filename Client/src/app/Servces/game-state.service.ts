@@ -157,6 +157,10 @@ export class GameStateService {
         this.cs.currentTurn$.subscribe(id => {
             this.currentTurnSubject.next(id);
         });
+        this.cs.mapUpdates$.subscribe(data => {
+            this.mapUpdateSubject.next(data);
+            console.log('logged', data);
+        });
     }
 
     public setup(mode: GameModes, bonusInformation?: { hu: number }) {
