@@ -6,6 +6,7 @@ import { Player } from '../Models/Player';
 import { PlayerTypes } from '../Enums/PlayerTypes';
 import { promise } from 'protractor';
 import { promisify } from 'util';
+import { TurtlePiece } from '../Models/TurtlePiece';
 
 @Injectable({
     providedIn: 'root',
@@ -24,20 +25,21 @@ export class ClientService {
         this.socket.emit(Events.getPlayer, type, callback);
     }
 
-    // Promise<{ n: number; id: number; type: PlayerTypes; card: undefined; highlighted: boolean; discarded: boolean }[]>
-
     getInitialPlayerBarData(): Promise<
         { n: number; id: number; type: PlayerTypes; card: undefined; highlighted: boolean; discarded: boolean }[]
     > {
         return new Promise(resolve => {
-            this.socket.emit(
-                Events.getInitialPlayerBarData,
-                (data => {
-                    console.log(this);
-                    console.log(data);
-                    resolve(data);
-                }).bind(this)
-            );
+            this.socket.emit(Events.getInitialPlayerBarData, data => {
+                resolve(data);
+            });
+        });
+    }
+
+    getTurtlePositions(): Promise<TurtlePiece[]> {
+        return new Promise(resolve => {
+            this.socket.emit(Events.getTurtlePositions, data => {
+                resolve(data);
+            });
         });
     }
 }

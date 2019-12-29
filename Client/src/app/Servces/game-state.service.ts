@@ -63,8 +63,12 @@ export class GameStateService {
         this.gameEndStatus$ = this.gameEndStatusSubject.asObservable();
     }
 
-    get turtlePositions(): Array<TurtlePiece> {
-        return this.gameState.turtles;
+    get turtlePositions(): Array<TurtlePiece> | Promise<TurtlePiece[]> {
+        if (this.currentGamemode === GameModes.MULTIPLAYER) {
+            return this.cs.getTurtlePositions();
+        } else {
+            return this.gameState.turtles;
+        }
     }
 
     get aiAmmount(): number {

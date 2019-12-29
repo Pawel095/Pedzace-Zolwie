@@ -44,6 +44,9 @@ export class Game {
         this.playerBarCardUpdates$ = this.playerBarCardUpdatesSubject.asObservable();
         this.gameEndStatus$ = this.gameEndStatusSubject.asObservable();
     }
+    getTurtlePositions(): Array<TurtlePiece> {
+        return this.gameState.turtles;
+    }
 
     private setupDeck() {
         this.deck = [];
@@ -102,7 +105,8 @@ export class Game {
     public getPlayer(type: PlayerTypes) {
         const playerId = this.unassingedPlayers.findIndex(e => e.playerType === type);
         const player = this.unassingedPlayers[playerId];
-        this.unassingedPlayers.splice(playerId, 1);
+        // TODO: uncomment this
+        // this.unassingedPlayers.splice(playerId, 1);
         return player;
     }
 

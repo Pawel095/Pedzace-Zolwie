@@ -2,6 +2,7 @@ import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular
 import { Point } from 'src/app/Models/Point';
 import { TurtlePiece } from 'src/app/Models/TurtlePiece';
 import { GameStateService } from 'src/app/Servces/game-state.service';
+import { GameModes } from 'src/app/Enums/GameModes';
 
 @Component({
     selector: 'app-map-view',
@@ -53,7 +54,16 @@ export class MapViewComponent implements OnInit {
 
     ngOnInit() {
         this.ctx = this.map.nativeElement.getContext('2d');
-        this.turtlePositions = this.gss.turtlePositions;
+        // this.turtlePositions = this.gss.turtlePositions;
+        if (this.gss.currentGamemode === GameModes.MULTIPLAYER) {
+            this.turtlePositions = [];
+            (this.gss.turtlePositions as Promise<TurtlePiece[]>).then(result => {
+                this.turtlePositions = result;
+                this.render();
+            });
+        } else {
+            this.turtlePositions = this.gss.turtlePositions as TurtlePiece[];
+        }
 
         this.onResize();
         this.gss.mapUpdates$.subscribe((data: TurtlePiece[]) => {

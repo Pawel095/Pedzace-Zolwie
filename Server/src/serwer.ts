@@ -6,6 +6,7 @@ import { PlayerTypes } from './Utils/PlayerTypes';
 import { Events } from './Events';
 import { callbackify } from 'util';
 import { Player } from './Utils/Player';
+import { TurtlePiece } from './Utils/TurtlePiece';
 
 // export interface IGameStateService {
 //     setup(): {};
@@ -29,7 +30,7 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
 const game = new Game();
-game.setup(5);
+game.setup(2);
 
 io.on('connection', (socket: socketio.Socket) => {
     const ip = socket.handshake.address.replace(/^[\:f]+/, '');
@@ -60,7 +61,9 @@ io.on('connection', (socket: socketio.Socket) => {
     );
 
     // During gameplay
-    socket.on(Events.getTurtlePositions, () => {});
+    socket.on(Events.getTurtlePositions, (callback: (data: TurtlePiece[]) => void) => {
+        callback(game.getTurtlePositions())
+    });
     socket.on(Events.getAiAmmount, () => {});
     socket.on(Events.getHuAmmount, () => {});
     socket.on(Events.playerMove, (m: Move) => {});
