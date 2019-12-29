@@ -136,7 +136,15 @@ export class GameControllerComponent implements OnInit, IPlayer {
             }
         } else {
             console.log('discarding');
-            this.gss.playerMove(new Move(player.id, input.card, input.card.colour, true));
+            if (this.gss.currentGamemode === GameModes.MULTIPLAYER) {
+                this.gss.playerMove(new Move(player.id, input.card, input.card.colour, true), (cards: Card[]) => {
+                    console.log(cards);
+                    console.log(player.cards);
+                    player.cards = cards;
+                });
+            } else {
+                this.gss.playerMove(new Move(player.id, input.card, input.card.colour, true));
+            }
         }
     }
 }
