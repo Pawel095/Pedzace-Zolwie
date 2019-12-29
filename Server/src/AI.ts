@@ -2,24 +2,25 @@ import { IPlayer } from './Utils/IPlayer';
 import { Move } from './Utils/Move';
 import { Player } from './Utils/Player';
 import { TurtleColours } from './Utils/TurtleColours';
+import { Game } from './game';
 
 export class AI implements IPlayer {
-    constructor() {}
+    constructor(private gss: Game) {}
 
     player: Player;
 
     init(p: Player): void {
         this.player = p;
-        // this.gss.currentTurn$.subscribe((id: number) => {
-        //     if (id === p.id) {
-        //         // console.log('AI!', p.id);
-        //         // hack for waiting 1 second
-        //         new Promise(res => setTimeout(res, 1000)).then(() => {
-        //             const move = this.makeMove();
-        //             this.gss.playerMove(move);
-        //         });
-        //     }
-        // });
+        this.gss.currentTurn$.subscribe((id: number) => {
+            if (id === p.id) {
+                // console.log('AI!', p.id);
+                // hack for waiting 1 second
+                new Promise(res => setTimeout(res, 1000)).then(() => {
+                    const move = this.makeMove();
+                    this.gss.playerMove(move);
+                });
+            }
+        });
     }
 
     makeMove(): Move {
@@ -31,12 +32,11 @@ export class AI implements IPlayer {
             const rand = Math.floor(Math.random() * (Object.keys(TurtleColours).length / 2 - 2));
             ret = new Move(this.player.id, card, rand);
         }
-        return ret;
-        // if (this.gss.validateMove(ret)) {
-        //     return ret;
-        // } else {
-        //     ret.discard = true;
-        //     return ret;
-        // }
+        if (this.gss.validateMove(ret)) {
+            return ret;
+        } else {
+            ret.discard = true;
+            return ret;
+        }
     }
 }
