@@ -2,7 +2,7 @@ import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular
 import { GameModes } from 'src/app/Enums/GameModes';
 import { Point } from 'src/app/Models/Point';
 import { TurtlePiece } from 'src/app/Models/TurtlePiece';
-import { GameStateService } from 'src/app/Servces/game-state.service';
+import { GameService } from 'src/app/Servces/game.service';
 
 @Component({
     selector: 'app-map-view',
@@ -19,7 +19,7 @@ export class MapViewComponent implements OnInit {
     points: Array<Point> = [];
 
     turtlePositions: Array<TurtlePiece>;
-    constructor(private gss: GameStateService) {}
+    constructor(private gss: GameService) {}
 
     @ViewChild('map', { static: true }) map: ElementRef<HTMLCanvasElement>;
 

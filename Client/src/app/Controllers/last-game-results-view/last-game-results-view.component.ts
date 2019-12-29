@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { GameState } from 'src/app/Models/GameState';
-import { GameStateService } from 'src/app/Servces/game-state.service';
+import { GameService } from 'src/app/Servces/game.service';
 import { EndGameDialogComponent } from '../Game/game-controller/end-game-dialog/end-game-dialog.component';
 
 @Component({
@@ -11,7 +11,7 @@ import { EndGameDialogComponent } from '../Game/game-controller/end-game-dialog/
     styleUrls: ['./last-game-results-view.component.scss'],
 })
 export class LastGameResultsViewComponent implements OnInit {
-    constructor(private gss: GameStateService, private dialog: MatDialog, private router: Router) {}
+    constructor(private gss: GameService, private dialog: MatDialog, private router: Router) {}
     data: GameState;
     dataAvailable = false;
     ngOnInit() {

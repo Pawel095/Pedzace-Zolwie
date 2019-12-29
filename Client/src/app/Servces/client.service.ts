@@ -8,6 +8,7 @@ import { Subject, ReplaySubject, Observable } from 'rxjs';
 import { Card } from '../Models/Card';
 import { environment } from 'src/environments/environment';
 import { Socket } from 'ngx-socket-io';
+import { Move } from '../Models/Move';
 
 @Injectable({
     providedIn: 'root',
@@ -65,5 +66,8 @@ export class ClientService {
                 resolve(data);
             });
         });
+    }
+    playerMove(m:Move){
+
     }
 }

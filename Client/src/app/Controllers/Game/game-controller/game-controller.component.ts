@@ -10,7 +10,7 @@ import { Card } from 'src/app/Models/Card';
 import { Move } from 'src/app/Models/Move';
 import { Player } from 'src/app/Models/Player';
 import { PlayerInstrance } from 'src/app/Models/PlayerInstance';
-import { GameStateService } from 'src/app/Servces/game-state.service';
+import { GameService } from 'src/app/Servces/game.service';
 import { environment } from 'src/environments/environment';
 import { EndGameDialogComponent } from './end-game-dialog/end-game-dialog.component';
 import { SelectColorDialogComponent } from './select-color-dialog/select-color-dialog.component';
@@ -22,7 +22,7 @@ import { SelectColorDialogComponent } from './select-color-dialog/select-color-d
 })
 export class GameControllerComponent implements OnInit, IPlayer {
     constructor(
-        private gss: GameStateService,
+        private gss: GameService,
         private dialog: MatDialog,
         private snackBar: MatSnackBar,
         private router: Router

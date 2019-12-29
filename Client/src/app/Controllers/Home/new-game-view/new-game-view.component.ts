@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GameModes } from 'src/app/Enums/GameModes';
-import { GameStateService } from 'src/app/Servces/game-state.service';
+import { GameService } from 'src/app/Servces/game.service';
 
 @Component({
     selector: 'app-new-game-view',
@@ -10,7 +10,7 @@ import { GameStateService } from 'src/app/Servces/game-state.service';
     styleUrls: ['./new-game-view.component.scss'],
 })
 export class NewGameViewComponent implements OnInit {
-    constructor(private gss: GameStateService, private router: Router, private fb: FormBuilder) {}
+    constructor(private gss: GameService, private router: Router, private fb: FormBuilder) {}
 
     form = this.fb.group({
         select: ['', Validators.required],

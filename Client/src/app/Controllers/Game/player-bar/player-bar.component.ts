@@ -3,7 +3,7 @@ import { GameModes } from 'src/app/Enums/GameModes';
 import { PlayerTypes } from 'src/app/Enums/PlayerTypes';
 import { Card } from 'src/app/Models/Card';
 import { InitialPlayerBarData } from 'src/app/Models/InitialPlayerBarData';
-import { GameStateService } from 'src/app/Servces/game-state.service';
+import { GameService } from 'src/app/Servces/game.service';
 
 @Component({
     selector: 'app-player-bar',
@@ -11,7 +11,7 @@ import { GameStateService } from 'src/app/Servces/game-state.service';
     styleUrls: ['./player-bar.component.scss'],
 })
 export class PlayerBarComponent implements OnInit {
-    constructor(private gss: GameStateService) {}
+    constructor(private gss: GameService) {}
     list: Array<InitialPlayerBarData> = [
         { n: 1, id: 345, type: PlayerTypes.HUMAN, card: undefined, highlighted: false, discarded: false },
     ];

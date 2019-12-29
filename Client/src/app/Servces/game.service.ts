@@ -19,7 +19,7 @@ import { ClientService } from './client.service';
 @Injectable({
     providedIn: 'root',
 })
-export class GameStateService {
+export class GameService {
     private gameState: GameState;
     private unassingedPlayers: Array<Player>;
     private deck: Array<Card>;
@@ -304,34 +304,38 @@ export class GameStateService {
     }
 
     public playerMove(m: Move) {
-        if (m.playerId === this.gameState.players[this.currentPlayerIndex].id) {
-            const player = this.gameState.players.find(e => e.id === m.playerId);
-            const cardIndex = player.cards.findIndex(e => e.compare(m.card));
+        if (this.currentGamemode === GameModes.MULTIPLAYER) {
 
-            // put card randomly into deck, give one from the top
-            const card = new Card(player.cards[cardIndex].type, player.cards[cardIndex].colour);
-            player.cards.splice(cardIndex, 1);
-            this.deck.splice(Math.floor(Math.random() * this.deck.length - 1), 0, card);
-            player.cards.push(...this.dealCard());
+        } else {
+            if (m.playerId === this.gameState.players[this.currentPlayerIndex].id) {
+                const player = this.gameState.players.find(e => e.id === m.playerId);
+                const cardIndex = player.cards.findIndex(e => e.compare(m.card));
 
-            if (!m.discard) {
-                if (this.validateMove(m)) {
-                    this.processMove(m);
-                    this.playerBarCardUpdatesSubject.next({ id: m.playerId, card: m.card });
+                // put card randomly into deck, give one from the top
+                const card = new Card(player.cards[cardIndex].type, player.cards[cardIndex].colour);
+                player.cards.splice(cardIndex, 1);
+                this.deck.splice(Math.floor(Math.random() * this.deck.length - 1), 0, card);
+                player.cards.push(...this.dealCard());
+
+                if (!m.discard) {
+                    if (this.validateMove(m)) {
+                        this.processMove(m);
+                        this.playerBarCardUpdatesSubject.next({ id: m.playerId, card: m.card });
+                    }
+                    this.mapUpdateSubject.next(this.gameState.turtles);
+                } else {
+                    this.playerBarCardUpdatesSubject.next({ id: m.playerId, card: null });
                 }
-                this.mapUpdateSubject.next(this.gameState.turtles);
-            } else {
-                this.playerBarCardUpdatesSubject.next({ id: m.playerId, card: null });
-            }
 
-            if (this.checkGameEnds()) {
-                this.gameEndStatusSubject.next(this.gameState);
-                this.lastGameResult = this.gameState;
-                this.mapUpdateSubject.complete();
-                this.currentTurnSubject.complete();
-                this.playerBarCardUpdatesSubject.complete();
-            } else {
-                this.triggerNextTurn();
+                if (this.checkGameEnds()) {
+                    this.gameEndStatusSubject.next(this.gameState);
+                    this.lastGameResult = this.gameState;
+                    this.mapUpdateSubject.complete();
+                    this.currentTurnSubject.complete();
+                    this.playerBarCardUpdatesSubject.complete();
+                } else {
+                    this.triggerNextTurn();
+                }
             }
         }
     }

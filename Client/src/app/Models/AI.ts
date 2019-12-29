@@ -1,11 +1,11 @@
 import { TurtleColours } from '../Enums/TurtleColours';
 import { IPlayer } from '../Interfaces/IPlayer';
-import { GameStateService } from '../Servces/game-state.service';
+import { GameService } from '../Servces/game.service';
 import { Move } from './Move';
 import { Player } from './Player';
 
 export class AI implements IPlayer {
-    constructor(private gss: GameStateService) {}
+    constructor(private gss: GameService) {}
 
     player: Player;
 
