@@ -43,8 +43,6 @@ export class GameControllerComponent implements OnInit, IPlayer {
         //     this.gss.setup(GameModes.HOT_SEAT, { hu: 2 });
         // }
 
-
-
         switch (this.gss.currentGamemode) {
             case GameModes.AI:
                 this.gss.registerPlayer(this, PlayerTypes.HUMAN);

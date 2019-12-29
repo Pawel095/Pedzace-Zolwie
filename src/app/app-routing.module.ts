@@ -7,6 +7,7 @@ import { NewGameViewComponent } from './Controllers/Home/new-game-view/new-game-
 import { RulesComponent } from './Controllers/Home/rules/rules.component';
 import { LastGameResultsViewComponent } from './Controllers/last-game-results-view/last-game-results-view.component';
 import { RefrechCheckGuard } from './Guards/refrech-check.guard';
+import { DebugViewComponent } from './Controllers/debug-view/debug-view.component';
 
 const routes: Routes = [
     { path: 'home', component: HomeViewComponent },
@@ -17,7 +18,7 @@ const routes: Routes = [
         component: GameControllerComponent,
         canActivate: [RefrechCheckGuard],
     },
-    { path: 'debug', component: PlayerBarComponent },
+    { path: 'debug', component: DebugViewComponent },
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: 'rules', component: RulesComponent },
 ];

@@ -33,6 +33,7 @@ import { NewGameViewComponent } from './Controllers/Home/new-game-view/new-game-
 import { RulesComponent } from './Controllers/Home/rules/rules.component';
 import { LastGameResultsViewComponent } from './Controllers/last-game-results-view/last-game-results-view.component';
 import { NavBarComponent } from './Controllers/nav-bar/nav-bar.component';
+import { DebugViewComponent } from './Controllers/debug-view/debug-view.component';
 
 @NgModule({
     declarations: [
@@ -53,6 +54,7 @@ import { NavBarComponent } from './Controllers/nav-bar/nav-bar.component';
         PlayerTurtleViewComponent,
         EndGameDialogComponent,
         LastGameResultsViewComponent,
+        DebugViewComponent,
     ],
     imports: [
         BrowserModule,
