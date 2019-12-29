@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { GameModes } from 'src/app/Enums/GameModes';
 import { PlayerTypes } from 'src/app/Enums/PlayerTypes';
 import { Card } from 'src/app/Models/Card';
+import { InitialPlayerBarData } from 'src/app/Models/InitialPlayerBarData';
 import { GameStateService } from 'src/app/Servces/game-state.service';
-import { InitialPlayerBarData } from 'src/app/Servces/InitialPlayerBarData';
-import { GameModes } from 'src/app/Enums/GameModes';
-import { InitialNavigation } from '@angular/router';
 
 @Component({
     selector: 'app-player-bar',
@@ -18,27 +17,24 @@ export class PlayerBarComponent implements OnInit {
     ];
     last: InitialPlayerBarData;
 
+    setup(data) {
+        this.list = data;
+        this.last = this.list[0];
+        this.gss.currentTurn$.subscribe(id => {
+            const current = this.list.find(e => e.id === id);
+            this.last.highlighted = false;
+            current.highlighted = true;
+            this.last = current;
+        });
+    }
+
     ngOnInit() {
         if (this.gss.currentGamemode === GameModes.MULTIPLAYER) {
             (this.gss.getInitialPlayerBarData() as Promise<InitialPlayerBarData[]>).then(result => {
-                this.list = result;
-                this.last = this.list[0];
-                this.gss.currentTurn$.subscribe(id => {
-                    const current = this.list.find(e => e.id === id);
-                    this.last.highlighted = false;
-                    current.highlighted = true;
-                    this.last = current;
-                });
+                this.setup(result);
             });
         } else {
-            this.list = this.gss.getInitialPlayerBarData() as InitialPlayerBarData[];
-            this.last = this.list[0];
-            this.gss.currentTurn$.subscribe(id => {
-                const current = this.list.find(e => e.id === id);
-                this.last.highlighted = false;
-                current.highlighted = true;
-                this.last = current;
-            });
+            this.setup(this.gss.getInitialPlayerBarData() as InitialPlayerBarData[]);
         }
 
         this.gss.playerBarCardUpdates$.subscribe((data: { id: number; card: Card | null }) => {

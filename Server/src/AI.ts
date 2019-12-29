@@ -13,7 +13,7 @@ export class AI implements IPlayer {
         this.player = p;
         this.gss.currentTurn$.subscribe((id: number) => {
             if (id === p.id) {
-                // console.log('AI!', p.id);
+                console.log('AI!', p.id);
                 // hack for waiting 1 second
                 new Promise(res => setTimeout(res, 1000)).then(() => {
                     const move = this.makeMove();

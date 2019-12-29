@@ -12,7 +12,5 @@ export class DebugViewComponent implements OnInit {
     ngOnInit() {
         this.cs.connect();
     }
-    emit() {
-        this.cs.emit();
-    }
+    emit() {}
 }

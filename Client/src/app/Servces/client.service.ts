@@ -1,24 +1,41 @@
 import { Injectable } from '@angular/core';
-import { CustomSocket } from '../Models/CustomSocket';
-import { Move } from '../Models/Move';
 import { Events } from '../Enums/Events';
-import { Player } from '../Models/Player';
 import { PlayerTypes } from '../Enums/PlayerTypes';
-import { promise } from 'protractor';
-import { promisify } from 'util';
+import { CustomSocket } from '../Models/CustomSocket';
+import { Player } from '../Models/Player';
 import { TurtlePiece } from '../Models/TurtlePiece';
+import { Subject, ReplaySubject, Observable } from 'rxjs';
+import { Card } from '../Models/Card';
+import { environment } from 'src/environments/environment';
+import { Socket } from 'ngx-socket-io';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ClientService {
     socket: CustomSocket;
-    ret;
+
+    private playerBarCardUpdatesSubject = new Subject<{ id: number; card: Card | null }>();
+    public playerBarCardUpdates$ = this.playerBarCardUpdatesSubject.asObservable();
+
+    private currentTurnSubject = new ReplaySubject<number>();
+    public currentTurn$ = this.currentTurnSubject.asObservable();
+
+    debug() {
+        if (!environment.production) {
+            this.socket.emit('debug');
+        }
+    }
+
     connect() {
         this.socket = new CustomSocket('http://localhost:1234');
-    }
-    emit() {
-        this.socket.emit(Events.getTurtlePositions, 'data');
+        this.socket.on(Events.playerBarUpdates$, (data: { id: number; card: Card | null }) => {
+            this.playerBarCardUpdatesSubject.next(data);
+        });
+
+        this.socket.on(Events.currentTurn$, id => {
+            this.currentTurnSubject.next(id);
+        });
     }
 
     getPlayer(type: PlayerTypes, callback: (p: Player) => void) {

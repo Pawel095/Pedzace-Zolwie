@@ -9,15 +9,12 @@ import { IPlayer } from '../Interfaces/IPlayer';
 import { AI } from '../Models/AI';
 import { Card } from '../Models/Card';
 import { GameState } from '../Models/GameState';
+import { InitialPlayerBarData } from '../Models/InitialPlayerBarData';
 import { Move } from '../Models/Move';
 import { Player } from '../Models/Player';
 import { TurtlePiece } from '../Models/TurtlePiece';
 import shuffle from '../Utils/shuffle';
 import { ClientService } from './client.service';
-import { CssSelector } from '@angular/compiler';
-import { resolve } from 'url';
-import { InitialPlayerBarData } from './InitialPlayerBarData';
-import { InitialNavigation } from '@angular/router';
 
 @Injectable({
     providedIn: 'root',
@@ -65,7 +62,11 @@ export class GameStateService {
 
     get turtlePositions(): Array<TurtlePiece> | Promise<TurtlePiece[]> {
         if (this.currentGamemode === GameModes.MULTIPLAYER) {
-            return this.cs.getTurtlePositions();
+            const promise = this.cs.getTurtlePositions();
+            promise.then(result => {
+                this.gameState.turtles = result;
+            });
+            return promise;
         } else {
             return this.gameState.turtles;
         }
@@ -147,6 +148,15 @@ export class GameStateService {
         this.currentTurn$ = this.currentTurnSubject.asObservable();
         this.playerBarCardUpdates$ = this.playerBarCardUpdatesSubject.asObservable();
         this.gameEndStatus$ = this.gameEndStatusSubject.asObservable();
+    }
+
+    private subscribeToCSObservables() {
+        this.cs.playerBarCardUpdates$.subscribe(data => {
+            this.playerBarCardUpdatesSubject.next(data);
+        });
+        this.cs.currentTurn$.subscribe(id => {
+            this.currentTurnSubject.next(id);
+        });
     }
 
     public setup(mode: GameModes, bonusInformation?: { hu: number }) {
@@ -241,6 +251,8 @@ export class GameStateService {
             case GameModes.MULTIPLAYER:
                 this.cs.connect();
                 this.currentGamemode = GameModes.MULTIPLAYER;
+                this.subscribeToCSObservables();
+                this.gameState = new GameState([], []);
         }
         this.wasSetupRun = true;
         this.initsToRun.forEach(e => {
@@ -268,7 +280,6 @@ export class GameStateService {
         return player;
     }
 
-    // TODO: this func must be extended to work with servers
     public getInitialPlayerBarData(): Array<InitialPlayerBarData> | Promise<InitialPlayerBarData[]> {
         if (this.currentGamemode === GameModes.MULTIPLAYER) {
             return this.cs.getInitialPlayerBarData();

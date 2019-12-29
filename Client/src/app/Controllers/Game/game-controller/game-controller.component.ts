@@ -85,8 +85,10 @@ export class GameControllerComponent implements OnInit, IPlayer {
         console.log(input);
         let player: Player;
         switch (this.gss.currentGamemode) {
+            case GameModes.MULTIPLAYER:
             case GameModes.AI:
                 player = this.vsAiAndMpPlayer;
+                console.log(player);
                 break;
             case GameModes.HOT_SEAT:
                 player = this.currentDisplayPlayer;

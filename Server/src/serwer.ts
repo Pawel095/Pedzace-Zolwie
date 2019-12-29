@@ -7,6 +7,7 @@ import { Events } from './Events';
 import { callbackify } from 'util';
 import { Player } from './Utils/Player';
 import { TurtlePiece } from './Utils/TurtlePiece';
+import { Card } from './Utils/Card';
 
 // export interface IGameStateService {
 //     setup(): {};
@@ -30,11 +31,15 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
 const game = new Game();
-game.setup(2);
+game.setup(1);
 
 io.on('connection', (socket: socketio.Socket) => {
     const ip = socket.handshake.address.replace(/^[\:f]+/, '');
     console.log(`Connected ${ip}`);
+
+    socket.on('debug', () => {
+        game.startGame();
+    });
 
     // as soon as client connects | in lobby
     socket.on(Events.getPlayer, (type: PlayerTypes, callback: (p: Player) => void) => {
@@ -62,11 +67,21 @@ io.on('connection', (socket: socketio.Socket) => {
 
     // During gameplay
     socket.on(Events.getTurtlePositions, (callback: (data: TurtlePiece[]) => void) => {
-        callback(game.getTurtlePositions())
+        callback(game.getTurtlePositions());
     });
     socket.on(Events.getAiAmmount, () => {});
     socket.on(Events.getHuAmmount, () => {});
     socket.on(Events.playerMove, (m: Move) => {});
+
+    // observables
+    game.playerBarCardUpdates$.subscribe((data: { id: number; card: Card | null }) => {
+        socket.emit(Events.playerBarUpdates$, data);
+        console.log('Emitting', data);
+    });
+
+    game.currentTurn$.subscribe(id => {
+        socket.emit(Events.currentTurn$, id);
+    });
 
     socket.on('disconnect', reason => {
         console.log(`Disconnected ${ip}, reason: ${reason}`);
