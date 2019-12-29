@@ -15,6 +15,7 @@ import { TurtlePiece } from '../Models/TurtlePiece';
 import shuffle from '../Utils/shuffle';
 import { ClientService } from './client.service';
 import { CssSelector } from '@angular/compiler';
+import { resolve } from 'url';
 
 @Injectable({
     providedIn: 'root',
@@ -230,6 +231,7 @@ export class GameStateService {
                     this.triggerNextTurn();
                 }
                 break;
+
             case GameModes.MULTIPLAYER:
                 this.cs.connect();
                 this.currentGamemode = GameModes.MULTIPLAYER;
@@ -241,12 +243,15 @@ export class GameStateService {
         delete this.initsToRun;
     }
 
-    // TODO: this func must me extended to work with servers
     public registerPlayer(p: IPlayer, type: PlayerTypes) {
-        if (this.wasSetupRun) {
-            p.init(this.getPlayer(type));
+        if (this.currentGamemode === GameModes.MULTIPLAYER) {
+            this.cs.getPlayer(type, p.init.bind(p));
         } else {
-            this.initsToRun.push({ fun: p.init, type });
+            if (this.wasSetupRun) {
+                p.init(this.getPlayer(type));
+            } else {
+                this.initsToRun.push({ fun: p.init, type });
+            }
         }
     }
 
@@ -257,6 +262,7 @@ export class GameStateService {
         return player;
     }
 
+    // TODO: this func must be extended to work with servers
     public getInitialPlayerBarData(): Array<{
         n: number;
         id: number;
@@ -265,11 +271,23 @@ export class GameStateService {
         highlighted: boolean;
         discarded: boolean;
     }> {
-        const ret = [];
-        this.gameState.players.forEach((e, i) => {
-            ret.push({ n: i + 1, id: e.id, type: e.playerType, card: undefined, highlighted: false, discarded: false });
-        });
-        return ret;
+        if (this.currentGamemode === GameModes.MULTIPLAYER) {
+            let ret = this.cs.getInitialPlayerBarData();
+            console.log(ret);
+        } else {
+            const ret = [];
+            this.gameState.players.forEach((e, i) => {
+                ret.push({
+                    n: i + 1,
+                    id: e.id,
+                    type: e.playerType,
+                    card: undefined,
+                    highlighted: false,
+                    discarded: false,
+                });
+            });
+            return ret;
+        }
     }
 
     public playerMove(m: Move) {

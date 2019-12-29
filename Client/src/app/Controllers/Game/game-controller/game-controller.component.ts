@@ -28,19 +28,13 @@ export class GameControllerComponent implements OnInit, IPlayer {
         private router: Router
     ) {}
 
-    vsAiPlayer: Player;
+    vsAiAndMpPlayer: Player;
     HotSeatPlayers: PlayerInstrance[];
 
     currentDisplayPlayer: Player;
 
     ngOnInit() {
         this.currentDisplayPlayer = new Player(PlayerTypes.HUMAN, TurtleColours.RED);
-        // if (!environment.production) {
-        //     this.gss.setup(GameModes.AI);
-        // }
-        // if (!environment.production) {
-        //     this.gss.setup(GameModes.HOT_SEAT, { hu: 2 });
-        // }
 
         if (!environment.production) {
             this.gss.setup(GameModes.MULTIPLAYER);
@@ -49,7 +43,7 @@ export class GameControllerComponent implements OnInit, IPlayer {
         switch (this.gss.currentGamemode) {
             case GameModes.AI:
                 this.gss.registerPlayer(this, PlayerTypes.HUMAN);
-                this.currentDisplayPlayer = this.vsAiPlayer;
+                this.currentDisplayPlayer = this.vsAiAndMpPlayer;
                 break;
             case GameModes.HOT_SEAT:
                 this.HotSeatPlayers = [];
@@ -66,6 +60,8 @@ export class GameControllerComponent implements OnInit, IPlayer {
                     }
                 });
                 break;
+            case GameModes.MULTIPLAYER:
+                this.gss.registerPlayer(this, PlayerTypes.HUMAN);
         }
 
         this.gss.gameEndStatus$.subscribe(data => {
@@ -80,7 +76,9 @@ export class GameControllerComponent implements OnInit, IPlayer {
     }
 
     init(p: Player): void {
-        this.vsAiPlayer = p;
+        this.vsAiAndMpPlayer = p;
+        this.currentDisplayPlayer = undefined;
+        this.currentDisplayPlayer = p;
     }
 
     cardClicked(input: { card: Card; discard: boolean }) {
@@ -88,7 +86,7 @@ export class GameControllerComponent implements OnInit, IPlayer {
         let player: Player;
         switch (this.gss.currentGamemode) {
             case GameModes.AI:
-                player = this.vsAiPlayer;
+                player = this.vsAiAndMpPlayer;
                 break;
             case GameModes.HOT_SEAT:
                 player = this.currentDisplayPlayer;
