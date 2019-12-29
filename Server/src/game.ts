@@ -1,14 +1,14 @@
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { AI } from './AI';
 import { Card } from './Utils/Card';
 import { CardTypes } from './Utils/CardTypes';
 import { GameState } from './Utils/GameState';
+import { Move } from './Utils/Move';
 import { Player } from './Utils/Player';
 import { PlayerTypes } from './Utils/PlayerTypes';
 import shuffle from './Utils/shuffle';
 import { TurtleColours } from './Utils/TurtleColours';
 import { TurtlePiece } from './Utils/TurtlePiece';
-import { ReplaySubject, Observable, Subject } from 'rxjs';
-import { Move } from './Utils/Move';
 
 export class Game {
     private gameState: GameState;
@@ -208,7 +208,7 @@ export class Game {
         return ret;
     }
 
-    public playerMove(m: Move) {
+    public playerMove(m: Move, callback?: (c: Card[]) => void) {
         if (m.playerId === this.gameState.players[this.currentPlayerIndex].id) {
             const player = this.gameState.players.find(e => e.id === m.playerId);
             const cardIndex = player.cards.findIndex(e => e.compare(m.card));
@@ -218,6 +218,10 @@ export class Game {
             player.cards.splice(cardIndex, 1);
             this.deck.splice(Math.floor(Math.random() * this.deck.length - 1), 0, card);
             player.cards.push(...this.dealCard());
+
+            if (callback) {
+                callback(player.cards);
+            }
 
             if (!m.discard) {
                 if (this.validateMove(m)) {

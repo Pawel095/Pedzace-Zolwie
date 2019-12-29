@@ -159,7 +159,7 @@ export class GameService {
         });
         this.cs.mapUpdates$.subscribe(data => {
             this.mapUpdateSubject.next(data);
-            console.log('logged', data);
+            this.gameState.turtles = data;
         });
     }
 
@@ -303,9 +303,9 @@ export class GameService {
         }
     }
 
-    public playerMove(m: Move) {
+    public playerMove(m: Move, callback?) {
         if (this.currentGamemode === GameModes.MULTIPLAYER) {
-
+            this.cs.playerMove(m, callback);
         } else {
             if (m.playerId === this.gameState.players[this.currentPlayerIndex].id) {
                 const player = this.gameState.players.find(e => e.id === m.playerId);

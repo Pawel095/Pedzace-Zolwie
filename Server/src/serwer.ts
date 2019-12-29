@@ -1,30 +1,13 @@
 import * as express from 'express';
+import { Subscription } from 'rxjs';
 import * as socketio from 'socket.io';
-import { Game } from './game';
-import { Move } from './Utils/Move';
-import { PlayerTypes } from './Utils/PlayerTypes';
 import { Events } from './Events';
-import { callbackify } from 'util';
-import { Player } from './Utils/Player';
-import { TurtlePiece } from './Utils/TurtlePiece';
+import { Game } from './game';
 import { Card } from './Utils/Card';
-import { observable, Observable, Subscription } from 'rxjs';
-
-// export interface IGameStateService {
-//     setup(): {};
-//     registerPlayer(p: IPlayer, type: PlayerTypes): {};
-//     getPlayer(type: PlayerTypes): {};
-//     getInitialPlayerBarData(): Array<{
-//         n: number;
-//         id: number;
-//         type: PlayerTypes;
-//         card: undefined;
-//         highlighted: boolean;
-//         discarded: boolean;
-//     }>;
-//     playerMove(m: Move): {};
-//     validateMove(m: Move): boolean;
-// }
+import { Move } from './Utils/Move';
+import { Player } from './Utils/Player';
+import { PlayerTypes } from './Utils/PlayerTypes';
+import { TurtlePiece } from './Utils/TurtlePiece';
 
 const app = express();
 app.set('port', process.env.PORT || 3000);
@@ -74,25 +57,28 @@ io.on('connection', (socket: socketio.Socket) => {
     });
     socket.on(Events.getAiAmmount, () => {});
     socket.on(Events.getHuAmmount, () => {});
-    socket.on(Events.playerMove, (m: Move) => {});
+    socket.on(Events.playerMove, (m: Move, callback: (c: Card[]) => void) => {
+        console.log('PlayerMove', m);
+        game.playerMove(m, callback);
+    });
 
     // observables
     unsubList.push(
         game.playerBarCardUpdates$.subscribe((data: { id: number; card: Card | null }) => {
             socket.emit(Events.playerBarUpdates$, data);
-            console.log('PlayerBarUpdates$', data);
+            // console.log('PlayerBarUpdates$', data);
         })
     );
     unsubList.push(
         game.currentTurn$.subscribe(id => {
             socket.emit(Events.currentTurn$, id);
-            console.log('CurrentTurn$', id);
+            // console.log('CurrentTurn$', id);
         })
     );
     unsubList.push(
         game.mapUpdates$.subscribe((data: TurtlePiece[]) => {
             socket.emit(Events.mapUpdates$, data);
-            console.log('mapUpdates$', data);
+            // console.log('mapUpdates$', data);
         })
     );
 

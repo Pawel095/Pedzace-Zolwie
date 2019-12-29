@@ -67,7 +67,7 @@ export class ClientService {
             });
         });
     }
-    playerMove(m:Move){
-
+    playerMove(m: Move, callback) {
+        this.socket.emit(Events.playerMove, m, callback);
     }
 }

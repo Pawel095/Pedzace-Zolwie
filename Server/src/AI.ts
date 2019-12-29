@@ -1,8 +1,8 @@
+import { Game } from './game';
 import { IPlayer } from './Utils/IPlayer';
 import { Move } from './Utils/Move';
 import { Player } from './Utils/Player';
 import { TurtleColours } from './Utils/TurtleColours';
-import { Game } from './game';
 
 export class AI implements IPlayer {
     constructor(private gss: Game) {}
@@ -13,7 +13,7 @@ export class AI implements IPlayer {
         this.player = p;
         this.gss.currentTurn$.subscribe((id: number) => {
             if (id === p.id) {
-                console.log('AI!', p.id);
+                // console.log('AI!', p.id);
                 // hack for waiting 1 second
                 new Promise(res => setTimeout(res, 1000)).then(() => {
                     const move = this.makeMove();

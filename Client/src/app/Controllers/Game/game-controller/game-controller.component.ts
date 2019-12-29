@@ -102,7 +102,14 @@ export class GameControllerComponent implements OnInit, IPlayer {
                 dialogRef.afterClosed().subscribe(data => {
                     if (data !== undefined) {
                         if (this.gss.validateMove(new Move(player.id, card, data))) {
-                            this.gss.playerMove(new Move(player.id, card, data));
+                            if (this.gss.currentGamemode === GameModes.MULTIPLAYER) {
+                                this.gss.playerMove(new Move(player.id, card, data), (cards: Card[]) => {
+                                    player.cards = cards;
+                                    console.log(this);
+                                });
+                            } else {
+                                this.gss.playerMove(new Move(player.id, card, data));
+                            }
                         } else {
                             this.snackBar.open('You cannot do that!', 'Ok', {
                                 duration: 3 * 1000,
@@ -114,7 +121,15 @@ export class GameControllerComponent implements OnInit, IPlayer {
                 });
             } else {
                 if (this.gss.validateMove(new Move(player.id, card, card.colour))) {
-                    this.gss.playerMove(new Move(player.id, card, card.colour));
+                    if (this.gss.currentGamemode === GameModes.MULTIPLAYER) {
+                        this.gss.playerMove(new Move(player.id, card, card.colour), (cards: Card[]) => {
+                            console.log(cards);
+                            console.log(player.cards);
+                            player.cards = cards;
+                        });
+                    } else {
+                        this.gss.playerMove(new Move(player.id, card, card.colour));
+                    }
                 } else {
                     this.snackBar.open('You cannot do that!', 'Ok', { duration: 3 * 1000, verticalPosition: 'bottom' });
                 }
