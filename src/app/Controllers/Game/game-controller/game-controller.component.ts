@@ -39,9 +39,11 @@ export class GameControllerComponent implements OnInit, IPlayer {
         // if (!environment.production) {
         //     this.gss.setup(GameModes.AI);
         // }
-        if (!environment.production) {
-            this.gss.setup(GameModes.HOT_SEAT, { hu: 2 });
-        }
+        // if (!environment.production) {
+        //     this.gss.setup(GameModes.HOT_SEAT, { hu: 2 });
+        // }
+
+
 
         switch (this.gss.currentGamemode) {
             case GameModes.AI:

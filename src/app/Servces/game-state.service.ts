@@ -22,8 +22,6 @@ export class GameStateService {
     private unassingedPlayers: Array<Player>;
     private deck: Array<Card>;
 
-    public playerMoves$: Observable<Move>;
-
     private mapUpdateSubject = new Subject<TurtlePiece[]>();
     public mapUpdates$: Observable<TurtlePiece[]>;
 
@@ -293,7 +291,6 @@ export class GameStateService {
             player.cards.push(...this.dealCard());
 
             if (!m.discard) {
-                console.log('Playing');
                 if (this.validateMove(m)) {
                     this.processMove(m);
                     this.playerBarCardUpdatesSubject.next({ id: m.playerId, card: m.card });
@@ -301,11 +298,9 @@ export class GameStateService {
                 this.mapUpdateSubject.next(this.gameState.turtles);
             } else {
                 this.playerBarCardUpdatesSubject.next({ id: m.playerId, card: null });
-                console.log('discarding');
             }
 
             if (this.checkGameEnds()) {
-                console.log('THE GAME ENDS!');
                 this.gameEndStatusSubject.next(this.gameState);
                 this.lastGameResult = this.gameState;
                 this.mapUpdateSubject.complete();

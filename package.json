@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "start": "ng serve --host 0.0.0.0",
-    "build-watch":"ng build --watch --prod",
-    "lite-server":"lite-server --baseDir=dist",
+    "build-watch": "ng build --watch --prod",
+    "lite-server": "lite-server --baseDir=dist",
     "build": "ng build --prod",
     "format": "prettier --write \"src/**/*.{ts,scss,html}\""
   },
@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "^8.2.14",
     "@angular/router": "^8.2.14",
     "hammerjs": "^2.0.8",
+    "ngx-socket-io": "^3.0.1",
     "prettier": "^1.19.1",
     "rxjs": "~6.4.0",
     "serialize-javascript": "^2.1.2",
