@@ -5,5 +5,5 @@ export enum Events {
     getPlayer = 'getPlayer',
     getInitialPlayerBarData = 'getInitialPlayerBarData',
     setup = 'setup',
-    playerMove = '',
+    playerMove = 'playerMove',
 }
