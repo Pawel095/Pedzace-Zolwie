@@ -107,7 +107,7 @@ export class Game {
         const player = this.unassingedPlayers[playerId];
         // TODO: Uncomment this
         if (type === PlayerTypes.HUMAN) {
-            // this.unassingedPlayers.splice(playerId, 1);
+            this.unassingedPlayers.splice(playerId, 1);
         } else {
             this.unassingedPlayers.splice(playerId, 1);
         }

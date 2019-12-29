@@ -161,6 +161,10 @@ export class GameService {
             this.mapUpdateSubject.next(data);
             this.gameState.turtles = data;
         });
+        this.cs.gameEndStatus$.subscribe(data => {
+            this.gameEndStatusSubject.next(data);
+            this.lastGameResult = data;
+        });
     }
 
     public setup(mode: GameModes, bonusInformation?: { hu: number }) {

@@ -82,6 +82,13 @@ io.on('connection', (socket: socketio.Socket) => {
         })
     );
 
+    unsubList.push(
+        game.gameEndStatus$.subscribe(data => {
+            socket.emit(Events.gameEndStatus$, data);
+            game.setup(1);
+        })
+    );
+
     socket.on('disconnect', reason => {
         console.log(`Disconnected ${ip}, reason: ${reason}`);
         unsubList.forEach(e => {

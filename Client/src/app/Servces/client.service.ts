@@ -9,6 +9,7 @@ import { Card } from '../Models/Card';
 import { environment } from 'src/environments/environment';
 import { Socket } from 'ngx-socket-io';
 import { Move } from '../Models/Move';
+import { GameState } from '../Models/GameState';
 
 @Injectable({
     providedIn: 'root',
@@ -24,6 +25,9 @@ export class ClientService {
 
     private mapUpdateSubject = new ReplaySubject<TurtlePiece[]>();
     public mapUpdates$ = this.mapUpdateSubject.asObservable();
+
+    private gameEndStatusSubject = new Subject<GameState>();
+    public gameEndStatus$ = this.gameEndStatusSubject.asObservable();
 
     debug() {
         if (!environment.production) {
@@ -43,6 +47,9 @@ export class ClientService {
 
         this.socket.on(Events.mapUpdates$, data => {
             this.mapUpdateSubject.next(data);
+        });
+        this.socket.on(Events.gameEndStatus$, data => {
+            this.gameEndStatusSubject.next(data);
         });
     }
 
