@@ -1,6 +1,9 @@
 import * as express from 'express';
 import * as socketio from 'socket.io';
-
+import { Game } from './game';
+import { Move } from './Utils/Move';
+import { PlayerTypes } from './Utils/PlayerTypes';
+import { Events } from './Events';
 
 // export interface IGameStateService {
 //     setup(): {};
@@ -18,15 +21,24 @@ import * as socketio from 'socket.io';
 //     validateMove(m: Move): boolean;
 // }
 
-
 const app = express();
 app.set('port', process.env.PORT || 3000);
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
+const game = new Game();
+
 io.on('connection', (socket: socketio.Socket) => {
     const ip = socket.handshake.address.replace(/^[\:f]+/, '');
     console.log(`Connected ${ip}`);
+
+    socket.on(Events.getTurtlePositions, () => {});
+    socket.on(Events.getAiAmmount, () => {});
+    socket.on(Events.getHuAmmount, () => {});
+    socket.on(Events.getPlayer, (type: PlayerTypes) => {});
+    socket.on(Events.getInitialPlayerBarData, () => {});
+    socket.on(Events.setup, (hu: number) => {});
+    socket.on(Events.playerMove, (m: Move) => {});
 
     socket.on('disconnect', reason => {
         console.log(`Disconnected ${ip}, reason: ${reason}`);
