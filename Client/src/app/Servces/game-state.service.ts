@@ -236,6 +236,7 @@ export class GameStateService {
         delete this.initsToRun;
     }
 
+    // TODO: this func must me extended to work with servers
     public registerPlayer(p: IPlayer, type: PlayerTypes) {
         if (this.wasSetupRun) {
             p.init(this.getPlayer(type));
