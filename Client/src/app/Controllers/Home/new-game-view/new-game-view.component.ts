@@ -15,7 +15,7 @@ export class NewGameViewComponent implements OnInit {
 
     form = this.fb.group({
         select: ['', Validators.required],
-        huAmmount: [''],
+        huAmmount: [2],
     });
 
     showHSSlider = false;
