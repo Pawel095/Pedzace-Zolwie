@@ -26,14 +26,18 @@ export class ClientService {
 
     // Promise<{ n: number; id: number; type: PlayerTypes; card: undefined; highlighted: boolean; discarded: boolean }[]>
 
-    getInitialPlayerBarData() {
-        this.socket.emit(
-            Events.getInitialPlayerBarData,
-            (data => {
-                this.ret = data;
-                console.log(this);
-            }).bind(this.getInitialPlayerBarData)
-        );
-        return this.ret;
+    getInitialPlayerBarData(): Promise<
+        { n: number; id: number; type: PlayerTypes; card: undefined; highlighted: boolean; discarded: boolean }[]
+    > {
+        return new Promise(resolve => {
+            this.socket.emit(
+                Events.getInitialPlayerBarData,
+                (data => {
+                    console.log(this);
+                    console.log(data);
+                    resolve(data);
+                }).bind(this)
+            );
+        });
     }
 }

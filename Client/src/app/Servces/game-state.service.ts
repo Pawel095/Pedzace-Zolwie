@@ -16,6 +16,8 @@ import shuffle from '../Utils/shuffle';
 import { ClientService } from './client.service';
 import { CssSelector } from '@angular/compiler';
 import { resolve } from 'url';
+import { InitialPlayerBarData } from './InitialPlayerBarData';
+import { InitialNavigation } from '@angular/router';
 
 @Injectable({
     providedIn: 'root',
@@ -263,17 +265,9 @@ export class GameStateService {
     }
 
     // TODO: this func must be extended to work with servers
-    public getInitialPlayerBarData(): Array<{
-        n: number;
-        id: number;
-        type: PlayerTypes;
-        card: undefined;
-        highlighted: boolean;
-        discarded: boolean;
-    }> {
+    public getInitialPlayerBarData(): Array<InitialPlayerBarData> | Promise<InitialPlayerBarData[]> {
         if (this.currentGamemode === GameModes.MULTIPLAYER) {
-            let ret = this.cs.getInitialPlayerBarData();
-            console.log(ret);
+            return this.cs.getInitialPlayerBarData();
         } else {
             const ret = [];
             this.gameState.players.forEach((e, i) => {
