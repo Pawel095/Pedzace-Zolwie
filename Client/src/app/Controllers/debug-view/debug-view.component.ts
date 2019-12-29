@@ -7,12 +7,12 @@ import { ClientService } from 'src/app/Servces/client.service';
     styleUrls: ['./debug-view.component.scss'],
 })
 export class DebugViewComponent implements OnInit {
-    constructor(private s: ClientService) {}
+    constructor(private cs: ClientService) {}
 
     ngOnInit() {
-        this.s.connect();
+        this.cs.connect();
     }
     emit() {
-        this.s.emit();
+        this.cs.emit();
     }
 }

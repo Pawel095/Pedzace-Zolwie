@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CustomSocket } from '../Models/Sock';
+import { CustomSocket } from '../Models/CustomSocket';
 
 @Injectable({
     providedIn: 'root',
