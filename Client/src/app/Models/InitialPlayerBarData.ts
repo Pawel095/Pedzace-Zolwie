@@ -1,5 +1,5 @@
 import { PlayerTypes } from '../Enums/PlayerTypes';
-import { Card } from '../Models/Card';
+import { Card } from './Card';
 
 export interface InitialPlayerBarData {
     n: number;

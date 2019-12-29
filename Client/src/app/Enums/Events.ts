@@ -6,4 +6,9 @@ export enum Events {
     getInitialPlayerBarData = 'getInitialPlayerBarData',
     setup = 'setup',
     playerMove = 'playerMove',
+
+    playerBarUpdates$ = 'playerBarUpdates$',
+    gameEndStatus$ = 'gameEndStatus$',
+    mapUpdates$ = 'mapUpdates$',
+    currentTurn$ = 'currentTurn$',
 }

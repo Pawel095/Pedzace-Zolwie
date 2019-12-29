@@ -3,7 +3,6 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GameModes } from 'src/app/Enums/GameModes';
 import { GameStateService } from 'src/app/Servces/game-state.service';
-import { validateHorizontalPosition } from '@angular/cdk/overlay';
 
 @Component({
     selector: 'app-new-game-view',

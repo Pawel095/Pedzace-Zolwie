@@ -8,7 +8,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatRadioModule } from '@angular/material/radio';
-import {MatSliderModule} from '@angular/material/slider';
+import { MatSliderModule } from '@angular/material/slider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
@@ -17,9 +17,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CardItemComponent } from './Controllers/Cards/card-item/card-item.component';
 import { CardViewComponent } from './Controllers/Cards/card-view/card-view.component';
+import { DebugViewComponent } from './Controllers/debug-view/debug-view.component';
 import { EndGameDialogComponent } from './Controllers/Game/game-controller/end-game-dialog/end-game-dialog.component';
 import { GameControllerComponent } from './Controllers/Game/game-controller/game-controller.component';
-
 // tslint:disable-next-line: max-line-length
 import { SelectColorDialogItemComponent } from './Controllers/Game/game-controller/select-color-dialog-item/select-color-dialog-item.component';
 import { SelectColorDialogComponent } from './Controllers/Game/game-controller/select-color-dialog/select-color-dialog.component';
@@ -32,7 +32,6 @@ import { NewGameViewComponent } from './Controllers/Home/new-game-view/new-game-
 import { RulesComponent } from './Controllers/Home/rules/rules.component';
 import { LastGameResultsViewComponent } from './Controllers/last-game-results-view/last-game-results-view.component';
 import { NavBarComponent } from './Controllers/nav-bar/nav-bar.component';
-import { DebugViewComponent } from './Controllers/debug-view/debug-view.component';
 
 @NgModule({
     declarations: [
@@ -69,7 +68,7 @@ import { DebugViewComponent } from './Controllers/debug-view/debug-view.componen
         MatSnackBarModule,
         ReactiveFormsModule,
         MatGridListModule,
-        MatSliderModule
+        MatSliderModule,
     ],
     providers: [],
     bootstrap: [AppComponent],
