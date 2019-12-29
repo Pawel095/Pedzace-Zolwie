@@ -38,6 +38,11 @@ export class Game {
     constructor() {
         this.aiPlayers = [];
         this.unassingedPlayers = [];
+
+        this.mapUpdates$ = this.mapUpdateSubject.asObservable();
+        this.currentTurn$ = this.currentTurnSubject.asObservable();
+        this.playerBarCardUpdates$ = this.playerBarCardUpdatesSubject.asObservable();
+        this.gameEndStatus$ = this.gameEndStatusSubject.asObservable();
     }
 
     private setupDeck() {
@@ -102,6 +107,7 @@ export class Game {
     }
 
     public setup(hu: number) {
+        this.resetGameState();
         this.setupDeck();
         let players = Array<Player>();
         const availableTurtleColours = [
@@ -118,8 +124,7 @@ export class Game {
                 const rand: number = Math.floor(Math.random() * availableTurtleColours.length);
                 const colour: TurtleColours = availableTurtleColours.splice(rand, 1)[0];
                 const pl = new Player(PlayerTypes.AI, colour);
-                // TODO: poprawić ai
-                this.aiPlayers.push(new AI());
+                this.aiPlayers.push(new AI(this));
                 players.push(pl);
                 this.unassingedPlayers.push(pl);
             }
@@ -149,6 +154,12 @@ export class Game {
                 // turtles.push(new TurtlePiece(i, 9, i));
             }
             this.gameState = new GameState(players, turtleHS);
+            // this.triggerNextTurn();
+        }
+    }
+
+    public startGame() {
+        if (this.firstRound) {
             this.triggerNextTurn();
         }
     }
@@ -162,6 +173,10 @@ export class Game {
         if (this.currentPlayerIndex >= this.gameState.players.length) {
             this.currentPlayerIndex = 0;
         }
+        console.log(
+            this.gameState.players[this.currentPlayerIndex].id,
+            this.gameState.players[this.currentPlayerIndex].playerType
+        );
         this.currentTurnSubject.next(this.gameState.players[this.currentPlayerIndex].id);
     }
 
