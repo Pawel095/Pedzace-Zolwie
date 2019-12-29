@@ -33,7 +33,6 @@ export class GameControllerComponent implements OnInit, IPlayer {
 
     currentDisplayPlayer: Player;
 
-
     ngOnInit() {
         this.currentDisplayPlayer = new Player(PlayerTypes.HUMAN, TurtleColours.RED);
         // if (!environment.production) {
@@ -42,6 +41,10 @@ export class GameControllerComponent implements OnInit, IPlayer {
         // if (!environment.production) {
         //     this.gss.setup(GameModes.HOT_SEAT, { hu: 2 });
         // }
+
+        if (!environment.production) {
+            this.gss.setup(GameModes.MULTIPLAYER);
+        }
 
         switch (this.gss.currentGamemode) {
             case GameModes.AI:

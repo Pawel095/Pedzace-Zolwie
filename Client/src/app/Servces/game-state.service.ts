@@ -13,6 +13,8 @@ import { Move } from '../Models/Move';
 import { Player } from '../Models/Player';
 import { TurtlePiece } from '../Models/TurtlePiece';
 import shuffle from '../Utils/shuffle';
+import { ClientService } from './client.service';
+import { CssSelector } from '@angular/compiler';
 
 @Injectable({
     providedIn: 'root',
@@ -49,7 +51,7 @@ export class GameStateService {
     private aiNumber: number;
     private huNumber: number;
 
-    constructor() {
+    constructor(private cs: ClientService) {
         this.initsToRun = [];
         this.aiPlayers = [];
         this.mapUpdates$ = this.mapUpdateSubject.asObservable();
@@ -228,6 +230,9 @@ export class GameStateService {
                     this.triggerNextTurn();
                 }
                 break;
+            case GameModes.MULTIPLAYER:
+                this.cs.connect();
+                this.currentGamemode = GameModes.MULTIPLAYER;
         }
         this.wasSetupRun = true;
         this.initsToRun.forEach(e => {
