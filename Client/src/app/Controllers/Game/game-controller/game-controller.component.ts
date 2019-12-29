@@ -33,7 +33,7 @@ export class GameControllerComponent implements OnInit, IPlayer {
 
     currentDisplayPlayer: Player;
 
-    debug = !environment.production;
+
     ngOnInit() {
         this.currentDisplayPlayer = new Player(PlayerTypes.HUMAN, TurtleColours.RED);
         // if (!environment.production) {

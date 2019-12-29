@@ -17,7 +17,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CardItemComponent } from './Controllers/Cards/card-item/card-item.component';
 import { CardViewComponent } from './Controllers/Cards/card-view/card-view.component';
-import { DebugComponent } from './Controllers/debug/debug.component';
 import { EndGameDialogComponent } from './Controllers/Game/game-controller/end-game-dialog/end-game-dialog.component';
 import { GameControllerComponent } from './Controllers/Game/game-controller/game-controller.component';
 
@@ -47,7 +46,6 @@ import { DebugViewComponent } from './Controllers/debug-view/debug-view.componen
         PlayerBarComponent,
         NewGameViewComponent,
         HomeViewComponent,
-        DebugComponent,
         PlayerBarItemComponent,
         SelectColorDialogComponent,
         SelectColorDialogItemComponent,

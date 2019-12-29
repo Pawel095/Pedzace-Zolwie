@@ -69,19 +69,6 @@ export class GameStateService {
         return this.huNumber;
     }
 
-    debugGetCurrentthPlayerId(): number {
-        if (!environment.production) {
-            return this.gameState.players[this.currentPlayerIndex].id;
-        }
-    }
-
-    debugEndGame() {
-        if (!environment.production) {
-            this.gameState.turtles[0].mapPosition = 9;
-            this.endGameFlag = true;
-        }
-    }
-
     private setupDeck() {
         this.deck = [];
         // coloured cards
