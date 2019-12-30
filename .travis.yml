@@ -7,7 +7,7 @@ branches:
   only:
   - master
 before_script:
-  - npm install
+  - cd Client && npm install
 script:
 - cd Client && ng lint
 - cd Client && ng build --prod --base-href https://pawel095.github.io/Pedzace-Zolwie/
