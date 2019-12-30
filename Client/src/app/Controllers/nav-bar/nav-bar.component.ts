@@ -10,8 +10,4 @@ import { environment } from 'src/environments/environment';
 export class NavBarComponent {
     constructor(private cs: ClientService) {}
     debug = !environment.production;
-
-    debugFunc() {
-        this.cs.debug();
-    }
 }

@@ -41,6 +41,8 @@ export class Game {
     wasSetupRun: boolean;
     lastGameResult: GameState;
 
+    lastSetupArgs: { hu: number; ai: number } = { hu: 0, ai: 0 };
+
     constructor() {
         this.aiPlayers = [];
         this.unassingedPlayers = [];
@@ -123,7 +125,20 @@ export class Game {
         return player;
     }
 
-    public setup(hu: number) {
+    public setup(hu?: number, ai?: number) {
+        if (hu !== undefined) {
+            this.lastSetupArgs.hu = hu;
+        } else {
+            hu = this.lastSetupArgs.hu;
+        }
+
+        if (ai !== undefined) {
+            this.lastSetupArgs.ai = ai;
+        } else {
+            ai = this.lastSetupArgs.ai;
+        }
+        this.huNumber = hu;
+        this.aiNumber = ai;
         this.resetGameState();
         this.setupDeck();
         let players = Array<Player>();
@@ -135,7 +150,11 @@ export class Game {
             TurtleColours.VIOLET,
         ];
         if (hu > 0 && hu <= 5) {
-            this.aiNumber = 5 - hu;
+            if (ai !== undefined) {
+                this.aiNumber = ai;
+            } else {
+                this.aiNumber = 5 - hu;
+            }
             this.huNumber = hu;
             for (let i = 0; i < this.aiNumber; i++) {
                 const rand: number = Math.floor(Math.random() * availableTurtleColours.length);
@@ -168,10 +187,9 @@ export class Game {
             const turtleHS: Array<TurtlePiece> = [];
             for (let i = 0; i < 5; i++) {
                 turtleHS.push(new TurtlePiece(i, 0, 0));
-                // turtles.push(new TurtlePiece(i, 9, i));
+                // turtleHS.push(new TurtlePiece(i, 9, i));
             }
             this.gameState = new GameState(players, turtleHS);
-            // this.triggerNextTurn();
         }
     }
 
@@ -323,7 +341,7 @@ export class Game {
     }
 
     private resetGameState() {
-        this.spotsLeft = 5;
+        this.spotsLeft = this.huNumber + this.aiNumber;
         this.available = true;
         this.wasSetupRun = false;
         this.unassingedPlayers = Array<Player>();

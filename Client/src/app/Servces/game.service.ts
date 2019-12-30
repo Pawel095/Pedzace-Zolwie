@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CardTypes } from '../Enums/CardTypes';
 import { GameModes } from '../Enums/GameModes';
@@ -51,6 +51,7 @@ export class GameService {
 
     private aiNumber: number;
     private huNumber: number;
+    unsubList: Subscription[] = [];
 
     constructor(private cs: ClientService) {
         this.initsToRun = [];
@@ -152,20 +153,25 @@ export class GameService {
     }
 
     private subscribeToCSObservables() {
-        this.cs.playerBarCardUpdates$.subscribe(data => {
-            this.playerBarCardUpdatesSubject.next(data);
-        });
-        this.cs.currentTurn$.subscribe(id => {
-            this.currentTurnSubject.next(id);
-        });
-        this.cs.mapUpdates$.subscribe(data => {
-            this.mapUpdateSubject.next(data);
-            this.gameState.turtles = data;
-        });
-        this.cs.gameEndStatus$.subscribe(data => {
-            this.gameEndStatusSubject.next(data);
-            this.lastGameResult = data;
-        });
+        this.unsubList.push(
+            this.cs.playerBarCardUpdates$.subscribe(data => {
+                this.playerBarCardUpdatesSubject.next(data);
+            }),
+            this.cs.currentTurn$.subscribe(id => {
+                this.currentTurnSubject.next(id);
+            }),
+            this.cs.mapUpdates$.subscribe(data => {
+                this.mapUpdateSubject.next(data);
+                this.gameState.turtles = data;
+            }),
+            this.cs.gameEndStatus$.subscribe(data => {
+                this.gameEndStatusSubject.next(data);
+                this.lastGameResult = data;
+                this.unsubList.forEach(e => {
+                    e.unsubscribe();
+                });
+            })
+        );
     }
 
     public setup(mode: GameModes, bonusInformation?: { hu?: number; url?: string }) {

@@ -31,11 +31,6 @@ export class ClientService {
     private gamePreparingSubject = new ReplaySubject<boolean>();
     public gamePreparing$ = this.gamePreparingSubject.asObservable();
 
-    debug() {
-        if (!environment.production) {
-            this.socket.emit('debug');
-        }
-    }
     reset() {
         this.socket = undefined;
 
@@ -78,6 +73,7 @@ export class ClientService {
             this.socket.on(Events.gameEndStatus$, data => {
                 this.gameEndStatusSubject.next(data);
                 this.socket.disconnect();
+                this.reset();
             });
         }
     }
