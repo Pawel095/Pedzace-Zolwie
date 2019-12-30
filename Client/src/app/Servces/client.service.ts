@@ -35,9 +35,9 @@ export class ClientService {
         }
     }
 
-    connect() {
+    connect(url: string) {
         if (this.socket === undefined) {
-            this.socket = new CustomSocket({ url: 'http://localhost:1234' });
+            this.socket = new CustomSocket({ url });
             this.socket.on(Events.playerBarUpdates$, (data: { id: number; card: Card | null }) => {
                 this.playerBarCardUpdatesSubject.next(data);
             });

@@ -167,7 +167,7 @@ export class GameService {
         });
     }
 
-    public setup(mode: GameModes, bonusInformation?: { hu: number }) {
+    public setup(mode: GameModes, bonusInformation?: { hu?: number; url?: string }) {
         this.resetGameState();
         this.setupDeck();
         let players = Array<Player>();
@@ -257,7 +257,7 @@ export class GameService {
                 break;
 
             case GameModes.MULTIPLAYER:
-                this.cs.connect();
+                this.cs.connect(bonusInformation.url);
                 this.currentGamemode = GameModes.MULTIPLAYER;
                 this.subscribeToCSObservables();
                 this.gameState = new GameState([], []);

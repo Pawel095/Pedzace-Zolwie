@@ -10,7 +10,7 @@ import { GameService } from 'src/app/Servces/game.service';
     styleUrls: ['./new-game-view.component.scss'],
 })
 export class NewGameViewComponent implements OnInit {
-    constructor(private gss: GameService, private router: Router, private fb: FormBuilder) {}
+    constructor(private gs: GameService, private router: Router, private fb: FormBuilder) {}
 
     form = this.fb.group({
         select: ['', Validators.required],
@@ -36,12 +36,12 @@ export class NewGameViewComponent implements OnInit {
     onSubmit() {
         switch (this.form.value.select) {
             case 'AI':
-                this.gss.setup(GameModes.AI);
+                this.gs.setup(GameModes.AI);
                 this.router.navigateByUrl('game');
                 break;
             case 'HS':
                 this.showHSSlider = false;
-                this.gss.setup(GameModes.HOT_SEAT, { hu: this.form.value.huAmmount });
+                this.gs.setup(GameModes.HOT_SEAT, { hu: this.form.value.huAmmount });
                 this.router.navigateByUrl('game');
                 break;
             case 'MP':

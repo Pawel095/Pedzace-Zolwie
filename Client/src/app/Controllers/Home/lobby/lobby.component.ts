@@ -4,6 +4,12 @@ import { Observable } from 'rxjs';
 import { CustomSocket } from 'src/app/Models/CustomSocket';
 import { SocketIoModule } from 'ngx-socket-io';
 import { environment } from 'src/environments/environment';
+import { getMatScrollStrategyAlreadyAttachedError } from '@angular/cdk/overlay/typings/scroll/scroll-strategy';
+import { Router } from '@angular/router';
+import { GameService } from 'src/app/Servces/game.service';
+import { GameModes } from 'src/app/Enums/GameModes';
+import { Events } from 'src/app/Enums/Events';
+import { SimpleSnackBar, MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-lobby',
@@ -12,8 +18,8 @@ import { environment } from 'src/environments/environment';
 })
 export class LobbyComponent {
     debug = !environment.production;
-    constructor(private fb: FormBuilder) {}
-
+    constructor(private fb: FormBuilder, private router: Router, private gs: GameService, private sb: MatSnackBar) {}
+    data: { available: boolean; spotsLeft: number }[] = [{ available: false, spotsLeft: 0 }];
     form = this.fb.group(
         {
             protocol: ['http://', [Validators.required]],
@@ -22,7 +28,7 @@ export class LobbyComponent {
         },
         {
             validators: [totalValidator()],
-            asyncValidators: [ServerValidator()],
+            asyncValidators: [ServerValidator(this.data)],
             updateOn: 'blur',
         }
     );
@@ -34,6 +40,22 @@ export class LobbyComponent {
     }
     get port() {
         return this.form.get('port');
+    }
+    get url() {
+        return this.protocol.value + this.hostname.value + ':' + this.port.value;
+    }
+
+    submit() {
+        if (this.data[0].available) {
+            if (this.data[0].spotsLeft > 0) {
+                this.gs.setup(GameModes.MULTIPLAYER, { url: this.url });
+                this.router.navigateByUrl('/game');
+            } else {
+                this.sb.open('There are no spots left. ', 'OK');
+            }
+        } else {
+            this.sb.open('The server is busy.', 'OK');
+        }
     }
 }
 
@@ -71,7 +93,7 @@ function totalValidator(): ValidatorFn {
     };
 }
 
-function ServerValidator(): ValidatorFn {
+function ServerValidator(GlobalData: { available: boolean; spotsLeft: number }[]): ValidatorFn {
     let lastcheck = 0;
     let lastResult: ValidationErrors | null;
     return (ctrl: FormGroup): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
@@ -80,13 +102,25 @@ function ServerValidator(): ValidatorFn {
         const port = ctrl.get('port');
         const url = protocol.value + hostname.value + ':' + port.value;
 
-        return new Promise((res, err) => {
+        return new Promise(res => {
             if (lastcheck + 1000 < new Date().getTime()) {
                 lastcheck = new Date().getTime();
-                const socket = new CustomSocket({ url, options: { reconection: false, reconnectionAttempts: 0 } });
+                const socket = new CustomSocket({
+                    url,
+                    options: {
+                        reconection: false,
+                        reconnectionAttempts: 0,
+                        timeout: 1000,
+                        randomizationFactor: 0,
+                        reconnectionDelay: 1000,
+                    },
+                });
                 socket.on('connect', () => {
                     console.log('connected');
-                    socket.disconnect();
+                    socket.emit(Events.checkIfAvailable, (data: { available: boolean; spotsLeft: number }) => {
+                        GlobalData[0] = data;
+                        socket.disconnect();
+                    });
                     lastResult = null;
                     res(lastResult);
                 });
@@ -99,7 +133,7 @@ function ServerValidator(): ValidatorFn {
             } else {
                 setTimeout(() => {
                     res(lastResult);
-                }, 4000);
+                }, 1000);
             }
         });
     };

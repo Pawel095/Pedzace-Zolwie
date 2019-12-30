@@ -5,19 +5,19 @@ import { Move } from './Move';
 import { Player } from './Player';
 
 export class AI implements IPlayer {
-    constructor(private gss: GameService) {}
+    constructor(private gs: GameService) {}
 
     player: Player;
 
     init(p: Player): void {
         this.player = p;
-        this.gss.currentTurn$.subscribe((id: number) => {
+        this.gs.currentTurn$.subscribe((id: number) => {
             if (id === p.id) {
                 // console.log('AI!', p.id);
                 // hack for waiting 1 second
                 new Promise(res => setTimeout(res, 1000)).then(() => {
                     const move = this.makeMove();
-                    this.gss.playerMove(move);
+                    this.gs.playerMove(move);
                 });
             }
         });
@@ -32,7 +32,7 @@ export class AI implements IPlayer {
             const rand = Math.floor(Math.random() * (Object.keys(TurtleColours).length / 2 - 2));
             ret = new Move(this.player.id, card, rand);
         }
-        if (this.gss.validateMove(ret)) {
+        if (this.gs.validateMove(ret)) {
             return ret;
         } else {
             ret.discard = true;

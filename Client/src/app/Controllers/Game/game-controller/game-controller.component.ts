@@ -22,7 +22,7 @@ import { SelectColorDialogComponent } from './select-color-dialog/select-color-d
 })
 export class GameControllerComponent implements OnInit, IPlayer {
     constructor(
-        private gss: GameService,
+        private gs: GameService,
         private dialog: MatDialog,
         private snackBar: MatSnackBar,
         private router: Router
@@ -36,23 +36,23 @@ export class GameControllerComponent implements OnInit, IPlayer {
     ngOnInit() {
         this.currentDisplayPlayer = new Player(PlayerTypes.HUMAN, TurtleColours.RED);
 
-        if (!environment.production) {
-            this.gss.setup(GameModes.MULTIPLAYER);
-        }
+        // if (!environment.production) {
+        //     this.gs.setup(GameModes.MULTIPLAYER);
+        // }
 
-        switch (this.gss.currentGamemode) {
+        switch (this.gs.currentGamemode) {
             case GameModes.AI:
-                this.gss.registerPlayer(this, PlayerTypes.HUMAN);
+                this.gs.registerPlayer(this, PlayerTypes.HUMAN);
                 this.currentDisplayPlayer = this.vsAiAndMpPlayer;
                 break;
             case GameModes.HOT_SEAT:
                 this.HotSeatPlayers = [];
-                for (let i = 0; i < this.gss.huAmmount; i++) {
-                    const p = new PlayerInstrance(this.gss);
-                    this.gss.registerPlayer(p, PlayerTypes.HUMAN);
+                for (let i = 0; i < this.gs.huAmmount; i++) {
+                    const p = new PlayerInstrance(this.gs);
+                    this.gs.registerPlayer(p, PlayerTypes.HUMAN);
                     this.HotSeatPlayers.push(p);
                 }
-                this.gss.currentTurn$.subscribe(data => {
+                this.gs.currentTurn$.subscribe(data => {
                     const playerInstalce = this.HotSeatPlayers.find(e => e.player.id === data);
                     console.log(playerInstalce);
                     if (playerInstalce !== undefined) {
@@ -61,10 +61,10 @@ export class GameControllerComponent implements OnInit, IPlayer {
                 });
                 break;
             case GameModes.MULTIPLAYER:
-                this.gss.registerPlayer(this, PlayerTypes.HUMAN);
+                this.gs.registerPlayer(this, PlayerTypes.HUMAN);
         }
 
-        this.gss.gameEndStatus$.subscribe(data => {
+        this.gs.gameEndStatus$.subscribe(data => {
             console.log('Opening Dialog');
             this.dialog
                 .open(EndGameDialogComponent, { data })
@@ -84,7 +84,7 @@ export class GameControllerComponent implements OnInit, IPlayer {
     cardClicked(input: { card: Card; discard: boolean }) {
         console.log(input);
         let player: Player;
-        switch (this.gss.currentGamemode) {
+        switch (this.gs.currentGamemode) {
             case GameModes.MULTIPLAYER:
             case GameModes.AI:
                 player = this.vsAiAndMpPlayer;
@@ -101,14 +101,14 @@ export class GameControllerComponent implements OnInit, IPlayer {
                 const dialogRef = this.dialog.open(SelectColorDialogComponent);
                 dialogRef.afterClosed().subscribe(data => {
                     if (data !== undefined) {
-                        if (this.gss.validateMove(new Move(player.id, card, data))) {
-                            if (this.gss.currentGamemode === GameModes.MULTIPLAYER) {
-                                this.gss.playerMove(new Move(player.id, card, data), (cards: Card[]) => {
+                        if (this.gs.validateMove(new Move(player.id, card, data))) {
+                            if (this.gs.currentGamemode === GameModes.MULTIPLAYER) {
+                                this.gs.playerMove(new Move(player.id, card, data), (cards: Card[]) => {
                                     player.cards = cards;
                                     console.log(this);
                                 });
                             } else {
-                                this.gss.playerMove(new Move(player.id, card, data));
+                                this.gs.playerMove(new Move(player.id, card, data));
                             }
                         } else {
                             this.snackBar.open('You cannot do that!', 'Ok', {
@@ -120,15 +120,15 @@ export class GameControllerComponent implements OnInit, IPlayer {
                     }
                 });
             } else {
-                if (this.gss.validateMove(new Move(player.id, card, card.colour))) {
-                    if (this.gss.currentGamemode === GameModes.MULTIPLAYER) {
-                        this.gss.playerMove(new Move(player.id, card, card.colour), (cards: Card[]) => {
+                if (this.gs.validateMove(new Move(player.id, card, card.colour))) {
+                    if (this.gs.currentGamemode === GameModes.MULTIPLAYER) {
+                        this.gs.playerMove(new Move(player.id, card, card.colour), (cards: Card[]) => {
                             console.log(cards);
                             console.log(player.cards);
                             player.cards = cards;
                         });
                     } else {
-                        this.gss.playerMove(new Move(player.id, card, card.colour));
+                        this.gs.playerMove(new Move(player.id, card, card.colour));
                     }
                 } else {
                     this.snackBar.open('You cannot do that!', 'Ok', { duration: 3 * 1000, verticalPosition: 'bottom' });
@@ -136,14 +136,14 @@ export class GameControllerComponent implements OnInit, IPlayer {
             }
         } else {
             console.log('discarding');
-            if (this.gss.currentGamemode === GameModes.MULTIPLAYER) {
-                this.gss.playerMove(new Move(player.id, input.card, input.card.colour, true), (cards: Card[]) => {
+            if (this.gs.currentGamemode === GameModes.MULTIPLAYER) {
+                this.gs.playerMove(new Move(player.id, input.card, input.card.colour, true), (cards: Card[]) => {
                     console.log(cards);
                     console.log(player.cards);
                     player.cards = cards;
                 });
             } else {
-                this.gss.playerMove(new Move(player.id, input.card, input.card.colour, true));
+                this.gs.playerMove(new Move(player.id, input.card, input.card.colour, true));
             }
         }
     }

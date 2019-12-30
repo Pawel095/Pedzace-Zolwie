@@ -31,7 +31,7 @@ io.on('connection', (socket: socketio.Socket) => {
     });
 
     // Form testing for acces
-    socket.on('checkIfAvailable', (callback: (data: { available: boolean; spotsLeft: number }) => void) => {
+    socket.on(Events.checkIfAvailable, (callback: (data: { available: boolean; spotsLeft: number }) => void) => {
         callback({ available: game.available, spotsLeft: game.spotsLeft });
     });
 

@@ -19,7 +19,7 @@ export class MapViewComponent implements OnInit {
     points: Array<Point> = [];
 
     turtlePositions: Array<TurtlePiece>;
-    constructor(private gss: GameService) {}
+    constructor(private gs: GameService) {}
 
     @ViewChild('map', { static: true }) map: ElementRef<HTMLCanvasElement>;
 
@@ -54,19 +54,19 @@ export class MapViewComponent implements OnInit {
 
     ngOnInit() {
         this.ctx = this.map.nativeElement.getContext('2d');
-        // this.turtlePositions = this.gss.turtlePositions;
-        if (this.gss.currentGamemode === GameModes.MULTIPLAYER) {
+        // this.turtlePositions = this.gs.turtlePositions;
+        if (this.gs.currentGamemode === GameModes.MULTIPLAYER) {
             this.turtlePositions = [];
-            (this.gss.turtlePositions as Promise<TurtlePiece[]>).then(result => {
+            (this.gs.turtlePositions as Promise<TurtlePiece[]>).then(result => {
                 this.turtlePositions = result;
                 this.render();
             });
         } else {
-            this.turtlePositions = this.gss.turtlePositions as TurtlePiece[];
+            this.turtlePositions = this.gs.turtlePositions as TurtlePiece[];
         }
 
         this.onResize();
-        this.gss.mapUpdates$.subscribe((data: TurtlePiece[]) => {
+        this.gs.mapUpdates$.subscribe((data: TurtlePiece[]) => {
             this.turtlePositions = data;
             this.render();
         });

@@ -4,7 +4,7 @@ import { Move } from './Move';
 import { Player } from './Player';
 
 export class PlayerInstrance implements IPlayer {
-    constructor(private gss: GameService) {}
+    constructor(private gs: GameService) {}
 
     public player: Player;
 
@@ -13,8 +13,8 @@ export class PlayerInstrance implements IPlayer {
     }
 
     makeMove(m: Move): boolean {
-        if (this.gss.validateMove(m)) {
-            this.gss.playerMove(m);
+        if (this.gs.validateMove(m)) {
+            this.gs.playerMove(m);
             return true;
         } else {
             return false;

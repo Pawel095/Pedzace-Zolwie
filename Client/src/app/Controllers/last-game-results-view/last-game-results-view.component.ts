@@ -11,13 +11,13 @@ import { EndGameDialogComponent } from '../Game/game-controller/end-game-dialog/
     styleUrls: ['./last-game-results-view.component.scss'],
 })
 export class LastGameResultsViewComponent implements OnInit {
-    constructor(private gss: GameService, private dialog: MatDialog, private router: Router) {}
+    constructor(private gs: GameService, private dialog: MatDialog, private router: Router) {}
     data: GameState;
     dataAvailable = false;
     ngOnInit() {
-        if (this.gss.lastGameResult !== null) {
+        if (this.gs.lastGameResult !== null) {
             this.dataAvailable = true;
-            this.data = this.gss.lastGameResult;
+            this.data = this.gs.lastGameResult;
             this.dialog
                 .open(EndGameDialogComponent, { data: this.data })
                 .afterClosed()

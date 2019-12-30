@@ -4,7 +4,7 @@
             Connect To the server
         </mat-card-header>
         <mat-card-content>
-            <form [formGroup]="form">
+            <form [formGroup]="form" (submit)="submit()">
                 <mat-select formControlName="protocol">
                     <mat-option value="http://">http://</mat-option>
                     <mat-option value="https://">https://</mat-option>
@@ -18,13 +18,14 @@
                     <mat-hint>From 1000 to 65535</mat-hint>
                 </mat-form-field>
                 <span>
-                    <button type="submit" mat-raised-button>CONNECT</button>
+                    <button type="submit" mat-raised-button [disabled]="!form.valid">CONNECT</button>
                     <mat-spinner *ngIf="form.pending"></mat-spinner>
                 </span>
             </form>
             <span *ngIf="debug">
                 {{ form.value | json }} <br />
                 {{ form.errors | json }}
+                {{ data[0] | json }}
             </span>
         </mat-card-content>
     </mat-card>

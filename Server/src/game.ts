@@ -108,13 +108,12 @@ export class Game {
     public getPlayer(type: PlayerTypes) {
         const playerId = this.unassingedPlayers.findIndex(e => e.playerType === type);
         const player = this.unassingedPlayers[playerId];
-        this.spotsLeft = this.unassingedPlayers.length;
-        // TODO: Uncomment this
         if (type === PlayerTypes.HUMAN) {
             this.unassingedPlayers.splice(playerId, 1);
         } else {
             this.unassingedPlayers.splice(playerId, 1);
         }
+        this.spotsLeft = this.unassingedPlayers.length;
         return player;
     }
 

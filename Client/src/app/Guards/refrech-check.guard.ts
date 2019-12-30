@@ -8,13 +8,13 @@ import { GameService } from '../Servces/game.service';
     providedIn: 'root',
 })
 export class RefrechCheckGuard implements CanActivate {
-    constructor(private gss: GameService) {}
+    constructor(private gs: GameService) {}
     canActivate(
         next: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
         if (environment.production) {
-            if (this.gss.wasSetupRun) {
+            if (this.gs.wasSetupRun) {
                 return true;
             } else {
                 return false;
