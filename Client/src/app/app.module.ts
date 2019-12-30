@@ -32,6 +32,10 @@ import { NewGameViewComponent } from './Controllers/Home/new-game-view/new-game-
 import { RulesComponent } from './Controllers/Home/rules/rules.component';
 import { LastGameResultsViewComponent } from './Controllers/last-game-results-view/last-game-results-view.component';
 import { NavBarComponent } from './Controllers/nav-bar/nav-bar.component';
+import { LobbyComponent } from './Controllers/Home/lobby/lobby.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
     declarations: [
@@ -52,6 +56,7 @@ import { NavBarComponent } from './Controllers/nav-bar/nav-bar.component';
         EndGameDialogComponent,
         LastGameResultsViewComponent,
         DebugViewComponent,
+        LobbyComponent,
     ],
     imports: [
         BrowserModule,
@@ -69,6 +74,9 @@ import { NavBarComponent } from './Controllers/nav-bar/nav-bar.component';
         ReactiveFormsModule,
         MatGridListModule,
         MatSliderModule,
+        MatSelectModule,
+        MatInputModule,
+        MatProgressSpinnerModule,
     ],
     providers: [],
     bootstrap: [AppComponent],

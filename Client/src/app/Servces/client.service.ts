@@ -15,7 +15,7 @@ import { GameState } from '../Models/GameState';
     providedIn: 'root',
 })
 export class ClientService {
-    socket: CustomSocket;
+    socket: CustomSocket = undefined;
 
     private playerBarCardUpdatesSubject = new ReplaySubject<{ id: number; card: Card | null }>();
     public playerBarCardUpdates$ = this.playerBarCardUpdatesSubject.asObservable();
@@ -36,21 +36,23 @@ export class ClientService {
     }
 
     connect() {
-        this.socket = new CustomSocket('http://localhost:1234');
-        this.socket.on(Events.playerBarUpdates$, (data: { id: number; card: Card | null }) => {
-            this.playerBarCardUpdatesSubject.next(data);
-        });
+        if (this.socket === undefined) {
+            this.socket = new CustomSocket({ url: 'http://localhost:1234' });
+            this.socket.on(Events.playerBarUpdates$, (data: { id: number; card: Card | null }) => {
+                this.playerBarCardUpdatesSubject.next(data);
+            });
 
-        this.socket.on(Events.currentTurn$, id => {
-            this.currentTurnSubject.next(id);
-        });
+            this.socket.on(Events.currentTurn$, id => {
+                this.currentTurnSubject.next(id);
+            });
 
-        this.socket.on(Events.mapUpdates$, data => {
-            this.mapUpdateSubject.next(data);
-        });
-        this.socket.on(Events.gameEndStatus$, data => {
-            this.gameEndStatusSubject.next(data);
-        });
+            this.socket.on(Events.mapUpdates$, data => {
+                this.mapUpdateSubject.next(data);
+            });
+            this.socket.on(Events.gameEndStatus$, data => {
+                this.gameEndStatusSubject.next(data);
+            });
+        }
     }
 
     getPlayer(type: PlayerTypes, callback: (p: Player) => void) {

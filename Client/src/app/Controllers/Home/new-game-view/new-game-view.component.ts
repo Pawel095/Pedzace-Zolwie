@@ -45,7 +45,7 @@ export class NewGameViewComponent implements OnInit {
                 this.router.navigateByUrl('game');
                 break;
             case 'MP':
-                this.router.navigateByUrl('game');
+                this.router.navigateByUrl('lobby');
                 break;
             default:
                 console.log('badSelectionMade!');

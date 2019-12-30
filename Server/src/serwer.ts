@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import * as socketio from 'socket.io';
 import { Events } from './Events';
 import { Game } from './game';
@@ -19,6 +19,9 @@ game.setup(1);
 
 const unsubList: Subscription[] = [];
 
+const isGameReady = new Subject<void>();
+const isGameReady$ = isGameReady.asObservable();
+
 io.on('connection', (socket: socketio.Socket) => {
     const ip = socket.handshake.address.replace(/^[\:f]+/, '');
     console.log(`Connected ${ip}`);
@@ -27,10 +30,22 @@ io.on('connection', (socket: socketio.Socket) => {
         game.startGame();
     });
 
+    // Form testing for acces
+    socket.on('checkIfAvailable', (callback: (data: { available: boolean; spotsLeft: number }) => void) => {
+        callback({ available: game.available, spotsLeft: game.spotsLeft });
+    });
+
     // as soon as client connects | in lobby
     socket.on(Events.getPlayer, (type: PlayerTypes, callback: (p: Player) => void) => {
         callback(game.getPlayer(type));
     });
+
+    // begin game
+    unsubList.push(
+        isGameReady$.subscribe(() => {
+            socket.emit('');
+        })
+    );
 
     // after lobby
     socket.on(

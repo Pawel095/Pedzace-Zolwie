@@ -32,6 +32,9 @@ export class Game {
     private gameEndStatusSubject = new Subject<GameState>();
     public gameEndStatus$: Observable<GameState>;
 
+    public spotsLeft: number;
+    public available = false;
+
     wasSetupRun: boolean;
     lastGameResult: GameState;
 
@@ -105,6 +108,7 @@ export class Game {
     public getPlayer(type: PlayerTypes) {
         const playerId = this.unassingedPlayers.findIndex(e => e.playerType === type);
         const player = this.unassingedPlayers[playerId];
+        this.spotsLeft = this.unassingedPlayers.length;
         // TODO: Uncomment this
         if (type === PlayerTypes.HUMAN) {
             this.unassingedPlayers.splice(playerId, 1);
@@ -167,7 +171,8 @@ export class Game {
     }
 
     public startGame() {
-        if (this.firstRound) {
+        if (this.available) {
+            this.available = false;
             this.triggerNextTurn();
         }
     }
@@ -313,6 +318,8 @@ export class Game {
     }
 
     private resetGameState() {
+        this.spotsLeft = 5;
+        this.available = true;
         this.wasSetupRun = false;
         this.unassingedPlayers = Array<Player>();
         this.mapUpdateSubject = new Subject<TurtlePiece[]>();
