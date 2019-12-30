@@ -10,7 +10,8 @@ before_script:
   - cd Client 
   - npm install
 script:
-- ./travis_build.sh
+  - ng lint
+  - ng build --prod --base-href https://pawel095.github.io/Pedzace-Zolwie/
 
 deploy:
   provider: pages
