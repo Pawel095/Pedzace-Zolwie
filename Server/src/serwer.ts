@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { Subscription, Subject } from 'rxjs';
+import { Subscription } from 'rxjs';
 import * as socketio from 'socket.io';
 import { Events } from './Events';
 import { Game } from './game';
@@ -15,7 +15,20 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
 const game = new Game();
-game.setup(2);
+
+const args = process.argv.slice(2);
+if (args.length !== 2) {
+    console.log('USAGE:');
+    console.log('ts-node server.ts <HUMAN_AMMOUNT> <AI_AMMOUNT>');
+    process.exit();
+} else {
+    if (+args[0] > 0 && +args[0] <= 5) {
+        const spotsForAi = 5 - +args[0];
+        if (+args[1] >= 0 && +args[1] <= spotsForAi) {
+            game.setup(+args[0], +args[1]);
+        }
+    }
+}
 
 const unsubList: Subscription[] = [];
 
@@ -23,18 +36,15 @@ io.on('connection', (socket: socketio.Socket) => {
     const ip = socket.handshake.address.replace(/^[\:f]+/, '');
     console.log(`Connected ${ip}`);
 
-    socket.on('debug', () => {
-        game.startGame();
-    });
-
     // client testing for access
     socket.on(Events.checkIfAvailable, (callback: (data: { available: boolean; spotsLeft: number }) => void) => {
         callback({ available: game.available, spotsLeft: game.spotsLeft });
     });
 
     // as soon as client connects | in lobby
-    socket.on(Events.getPlayer, (type: PlayerTypes, callback: (p: Player) => void) => {
-        callback(game.getPlayer(type));
+    socket.on(Events.getPlayer, (type: PlayerTypes, callback: (p: Player, no: number) => void) => {
+        const player = game.getPlayer(type);
+        callback(player, game.gameState.players.findIndex(e => e.id === player.id) + 1);
     });
 
     // begin game
@@ -102,7 +112,7 @@ io.on('connection', (socket: socketio.Socket) => {
     unsubList.push(
         game.gameEndStatus$.subscribe(data => {
             io.sockets.emit(Events.gameEndStatus$, data);
-            game.setup(1);
+            game.setup();
         })
     );
 
@@ -111,6 +121,9 @@ io.on('connection', (socket: socketio.Socket) => {
         unsubList.forEach(e => {
             e.unsubscribe();
         });
+        if (io.engine.clientsCount <= 0) {
+            game.setup();
+        }
     });
 });
 

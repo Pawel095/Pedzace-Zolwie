@@ -1,15 +1,19 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Paths } from 'src/app/Enums/Paths';
 import { TurtleColours } from 'src/app/Enums/TurtleColours';
+import { GameService } from 'src/app/Servces/game.service';
+import { GameModes } from 'src/app/Enums/GameModes';
+import { InitialPlayerBarData } from 'src/app/Models/InitialPlayerBarData';
 
 @Component({
     selector: 'app-player-turtle-view',
     templateUrl: './player-turtle-view.component.html',
     styleUrls: ['./player-turtle-view.component.scss'],
 })
-export class PlayerTurtleViewComponent {
+export class PlayerTurtleViewComponent implements OnInit {
     src: string;
     alt: string;
+    @Input() number = '0';
 
     @Input() set colour(colour: TurtleColours) {
         switch (colour) {
@@ -37,4 +41,7 @@ export class PlayerTurtleViewComponent {
                 break;
         }
     }
+
+    constructor(private gs: GameService) {}
+    ngOnInit(): void {}
 }

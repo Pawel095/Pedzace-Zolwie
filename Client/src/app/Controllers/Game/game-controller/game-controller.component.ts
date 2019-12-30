@@ -34,10 +34,15 @@ export class GameControllerComponent implements OnInit, IPlayer {
     HotSeatPlayers: PlayerInstrance[];
 
     currentDisplayPlayer: Player;
+    currentPlayerInstance: PlayerInstrance;
+    number: string;
 
     ngOnInit() {
         this.currentDisplayPlayer = new Player(PlayerTypes.HUMAN, TurtleColours.RED);
 
+        // if (!environment.production) {
+        //     this.gs.setup(GameModes.HOT_SEAT, { hu: 2 });
+        // }
         // if (!environment.production) {
         //     this.gs.setup(GameModes.MULTIPLAYER);
         // }
@@ -56,9 +61,10 @@ export class GameControllerComponent implements OnInit, IPlayer {
                 }
                 this.gs.currentTurn$.subscribe(data => {
                     const playerInstalce = this.HotSeatPlayers.find(e => e.player.id === data);
-                    console.log(playerInstalce);
                     if (playerInstalce !== undefined) {
+                        this.currentPlayerInstance = playerInstalce;
                         this.currentDisplayPlayer = playerInstalce.player;
+                        this.number = this.currentPlayerInstance.number;
                     }
                 });
                 break;
@@ -81,7 +87,8 @@ export class GameControllerComponent implements OnInit, IPlayer {
         });
     }
 
-    init(p: Player): void {
+    init(p: Player, n: number): void {
+        this.number = n.toString();
         this.vsAiAndMpPlayer = p;
         this.currentDisplayPlayer = undefined;
         this.currentDisplayPlayer = p;

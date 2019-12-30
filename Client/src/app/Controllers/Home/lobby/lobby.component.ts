@@ -91,7 +91,6 @@ function totalValidator(): ValidatorFn {
         const protocol = control.get('protocol');
         const hostname = control.get('hostname');
         const port = control.get('port');
-        console.log(protocol.valid && hostname.valid && port.valid);
         if (protocol.valid && hostname.valid && port.valid) {
             return null;
         } else {
@@ -123,7 +122,6 @@ function ServerValidator(GlobalData: { available: boolean; spotsLeft: number }[]
                     },
                 });
                 socket.on('connect', () => {
-                    console.log('connected');
                     socket.emit(Events.checkIfAvailable, (data: { available: boolean; spotsLeft: number }) => {
                         GlobalData[0] = data;
                         socket.disconnect();
@@ -132,7 +130,6 @@ function ServerValidator(GlobalData: { available: boolean; spotsLeft: number }[]
                     res(lastResult);
                 });
                 socket.on('connect_error', () => {
-                    console.log('error');
                     socket.disconnect();
                     lastResult = { async: false };
                     res(lastResult);

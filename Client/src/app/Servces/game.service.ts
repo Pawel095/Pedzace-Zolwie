@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CardTypes } from '../Enums/CardTypes';
 import { GameModes } from '../Enums/GameModes';
@@ -15,6 +15,7 @@ import { Player } from '../Models/Player';
 import { TurtlePiece } from '../Models/TurtlePiece';
 import shuffle from '../Utils/shuffle';
 import { ClientService } from './client.service';
+import { promise } from 'protractor';
 
 @Injectable({
     providedIn: 'root',
@@ -50,6 +51,7 @@ export class GameService {
 
     private aiNumber: number;
     private huNumber: number;
+    unsubList: Subscription[] = [];
 
     constructor(private cs: ClientService) {
         this.initsToRun = [];
@@ -62,11 +64,11 @@ export class GameService {
 
     get turtlePositions(): Array<TurtlePiece> | Promise<TurtlePiece[]> {
         if (this.currentGamemode === GameModes.MULTIPLAYER) {
-            const promise = this.cs.getTurtlePositions();
-            promise.then(result => {
+            const promis = this.cs.getTurtlePositions();
+            promis.then(result => {
                 this.gameState.turtles = result;
             });
-            return promise;
+            return promis;
         } else {
             return this.gameState.turtles;
         }
@@ -151,20 +153,25 @@ export class GameService {
     }
 
     private subscribeToCSObservables() {
-        this.cs.playerBarCardUpdates$.subscribe(data => {
-            this.playerBarCardUpdatesSubject.next(data);
-        });
-        this.cs.currentTurn$.subscribe(id => {
-            this.currentTurnSubject.next(id);
-        });
-        this.cs.mapUpdates$.subscribe(data => {
-            this.mapUpdateSubject.next(data);
-            this.gameState.turtles = data;
-        });
-        this.cs.gameEndStatus$.subscribe(data => {
-            this.gameEndStatusSubject.next(data);
-            this.lastGameResult = data;
-        });
+        this.unsubList.push(
+            this.cs.playerBarCardUpdates$.subscribe(data => {
+                this.playerBarCardUpdatesSubject.next(data);
+            }),
+            this.cs.currentTurn$.subscribe(id => {
+                this.currentTurnSubject.next(id);
+            }),
+            this.cs.mapUpdates$.subscribe(data => {
+                this.mapUpdateSubject.next(data);
+                this.gameState.turtles = data;
+            }),
+            this.cs.gameEndStatus$.subscribe(data => {
+                this.gameEndStatusSubject.next(data);
+                this.lastGameResult = data;
+                this.unsubList.forEach(e => {
+                    e.unsubscribe();
+                });
+            })
+        );
     }
 
     public setup(mode: GameModes, bonusInformation?: { hu?: number; url?: string }) {
@@ -274,7 +281,8 @@ export class GameService {
             this.cs.getPlayer(type, p.init.bind(p));
         } else {
             if (this.wasSetupRun) {
-                p.init(this.getPlayer(type));
+                const player = this.getPlayer(type);
+                p.init(player, this.gameState.players.findIndex(e => e.id === player.id) + 1);
             } else {
                 this.initsToRun.push({ fun: p.init, type });
             }
