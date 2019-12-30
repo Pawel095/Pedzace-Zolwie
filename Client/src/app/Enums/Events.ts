@@ -1,6 +1,7 @@
 export enum Events {
     gameReady = 'GameReady',
     checkIfAvailable = 'checkIfAvailable',
+    gamepreparingStatus = 'gamepreparingStatus',
 
     getTurtlePositions = 'getTurtlePositions',
     getAiAmmount = 'getAiAmmount',

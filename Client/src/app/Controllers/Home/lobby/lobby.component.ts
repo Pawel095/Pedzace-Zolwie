@@ -10,6 +10,9 @@ import { GameService } from 'src/app/Servces/game.service';
 import { GameModes } from 'src/app/Enums/GameModes';
 import { Events } from 'src/app/Enums/Events';
 import { SimpleSnackBar, MatSnackBar } from '@angular/material/snack-bar';
+import { ClientService } from 'src/app/Servces/client.service';
+import { MatDialog } from '@angular/material/dialog';
+import { WaitingDialogComponent } from '../../Game/game-controller/waiting-dialog/waiting-dialog.component';
 
 @Component({
     selector: 'app-lobby',
@@ -18,7 +21,14 @@ import { SimpleSnackBar, MatSnackBar } from '@angular/material/snack-bar';
 })
 export class LobbyComponent {
     debug = !environment.production;
-    constructor(private fb: FormBuilder, private router: Router, private gs: GameService, private sb: MatSnackBar) {}
+    constructor(
+        private fb: FormBuilder,
+        private router: Router,
+        private gs: GameService,
+        private sb: MatSnackBar,
+        private cs: ClientService,
+        private dialog: MatDialog
+    ) {}
     data: { available: boolean; spotsLeft: number }[] = [{ available: false, spotsLeft: 0 }];
     form = this.fb.group(
         {

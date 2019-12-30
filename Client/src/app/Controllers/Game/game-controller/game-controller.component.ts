@@ -14,6 +14,8 @@ import { GameService } from 'src/app/Servces/game.service';
 import { environment } from 'src/environments/environment';
 import { EndGameDialogComponent } from './end-game-dialog/end-game-dialog.component';
 import { SelectColorDialogComponent } from './select-color-dialog/select-color-dialog.component';
+import { ClientService } from 'src/app/Servces/client.service';
+import { WaitingDialogComponent } from './waiting-dialog/waiting-dialog.component';
 
 @Component({
     selector: 'app-game-controller',
@@ -23,6 +25,7 @@ import { SelectColorDialogComponent } from './select-color-dialog/select-color-d
 export class GameControllerComponent implements OnInit, IPlayer {
     constructor(
         private gs: GameService,
+        private cs:ClientService,
         private dialog: MatDialog,
         private snackBar: MatSnackBar,
         private router: Router
@@ -62,6 +65,10 @@ export class GameControllerComponent implements OnInit, IPlayer {
                 break;
             case GameModes.MULTIPLAYER:
                 this.gs.registerPlayer(this, PlayerTypes.HUMAN);
+                const dialogref = this.dialog.open(WaitingDialogComponent);
+                this.cs.gamePreparing$.subscribe(data => {
+                    dialogref.close();
+                });
         }
 
         this.gs.gameEndStatus$.subscribe(data => {

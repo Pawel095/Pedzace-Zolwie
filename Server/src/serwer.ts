@@ -15,12 +15,9 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
 const game = new Game();
-game.setup(1);
+game.setup(2);
 
 const unsubList: Subscription[] = [];
-
-const isGameReady = new Subject<void>();
-const isGameReady$ = isGameReady.asObservable();
 
 io.on('connection', (socket: socketio.Socket) => {
     const ip = socket.handshake.address.replace(/^[\:f]+/, '');
@@ -30,7 +27,7 @@ io.on('connection', (socket: socketio.Socket) => {
         game.startGame();
     });
 
-    // Form testing for acces
+    // client testing for access
     socket.on(Events.checkIfAvailable, (callback: (data: { available: boolean; spotsLeft: number }) => void) => {
         callback({ available: game.available, spotsLeft: game.spotsLeft });
     });
@@ -42,8 +39,13 @@ io.on('connection', (socket: socketio.Socket) => {
 
     // begin game
     unsubList.push(
-        isGameReady$.subscribe(() => {
-            socket.emit('');
+        game.gamePreparing$.subscribe(() => {
+            const temp = new Promise(res => {
+                io.sockets.emit(Events.gamepreparingStatus, true);
+                setTimeout(() => {
+                    game.startGame();
+                }, 3000);
+            });
         })
     );
 
@@ -80,26 +82,26 @@ io.on('connection', (socket: socketio.Socket) => {
     // observables
     unsubList.push(
         game.playerBarCardUpdates$.subscribe((data: { id: number; card: Card | null }) => {
-            socket.emit(Events.playerBarUpdates$, data);
+            io.sockets.emit(Events.playerBarUpdates$, data);
             // console.log('PlayerBarUpdates$', data);
         })
     );
     unsubList.push(
         game.currentTurn$.subscribe(id => {
-            socket.emit(Events.currentTurn$, id);
+            io.sockets.emit(Events.currentTurn$, id);
             // console.log('CurrentTurn$', id);
         })
     );
     unsubList.push(
         game.mapUpdates$.subscribe((data: TurtlePiece[]) => {
-            socket.emit(Events.mapUpdates$, data);
+            io.sockets.emit(Events.mapUpdates$, data);
             // console.log('mapUpdates$', data);
         })
     );
 
     unsubList.push(
         game.gameEndStatus$.subscribe(data => {
-            socket.emit(Events.gameEndStatus$, data);
+            io.sockets.emit(Events.gameEndStatus$, data);
             game.setup(1);
         })
     );

@@ -11,7 +11,7 @@ import { TurtleColours } from './Utils/TurtleColours';
 import { TurtlePiece } from './Utils/TurtlePiece';
 
 export class Game {
-    private gameState: GameState;
+    public gameState: GameState;
     deck: Card[];
     private aiNumber: number;
     private huNumber: number;
@@ -31,6 +31,9 @@ export class Game {
 
     private gameEndStatusSubject = new Subject<GameState>();
     public gameEndStatus$: Observable<GameState>;
+
+    private gamePreparingStatus = new Subject<void>();
+    public gamePreparing$ = this.gamePreparingStatus.asObservable();
 
     public spotsLeft: number;
     public available = false;
@@ -114,6 +117,9 @@ export class Game {
             this.unassingedPlayers.splice(playerId, 1);
         }
         this.spotsLeft = this.unassingedPlayers.length;
+        if (this.spotsLeft <= 0) {
+            this.gamePreparingStatus.next();
+        }
         return player;
     }
 

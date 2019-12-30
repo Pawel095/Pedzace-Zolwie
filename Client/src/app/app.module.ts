@@ -17,7 +17,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CardItemComponent } from './Controllers/Cards/card-item/card-item.component';
 import { CardViewComponent } from './Controllers/Cards/card-view/card-view.component';
-import { DebugViewComponent } from './Controllers/debug-view/debug-view.component';
 import { EndGameDialogComponent } from './Controllers/Game/game-controller/end-game-dialog/end-game-dialog.component';
 import { GameControllerComponent } from './Controllers/Game/game-controller/game-controller.component';
 // tslint:disable-next-line: max-line-length
@@ -36,6 +35,7 @@ import { LobbyComponent } from './Controllers/Home/lobby/lobby.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { WaitingDialogComponent } from './Controllers/Game/game-controller/waiting-dialog/waiting-dialog.component';
 
 @NgModule({
     declarations: [
@@ -55,8 +55,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         PlayerTurtleViewComponent,
         EndGameDialogComponent,
         LastGameResultsViewComponent,
-        DebugViewComponent,
         LobbyComponent,
+        WaitingDialogComponent,
     ],
     imports: [
         BrowserModule,
@@ -80,6 +80,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     ],
     providers: [],
     bootstrap: [AppComponent],
-    entryComponents: [SelectColorDialogComponent, SelectColorDialogItemComponent, EndGameDialogComponent],
+    entryComponents: [
+        SelectColorDialogComponent,
+        SelectColorDialogItemComponent,
+        EndGameDialogComponent,
+        WaitingDialogComponent,
+    ],
 })
 export class AppModule {}

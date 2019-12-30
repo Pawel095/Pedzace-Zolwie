@@ -15,7 +15,7 @@ import { GameState } from '../Models/GameState';
     providedIn: 'root',
 })
 export class ClientService {
-    socket: CustomSocket = undefined;
+    private socket: CustomSocket = undefined;
 
     private playerBarCardUpdatesSubject = new ReplaySubject<{ id: number; card: Card | null }>();
     public playerBarCardUpdates$ = this.playerBarCardUpdatesSubject.asObservable();
@@ -29,15 +29,42 @@ export class ClientService {
     private gameEndStatusSubject = new Subject<GameState>();
     public gameEndStatus$ = this.gameEndStatusSubject.asObservable();
 
+    private gamePreparingSubject = new ReplaySubject<boolean>();
+    public gamePreparing$ = this.gamePreparingSubject.asObservable();
+
     debug() {
         if (!environment.production) {
             this.socket.emit('debug');
         }
     }
+    reset() {
+        this.socket = undefined;
+
+        this.playerBarCardUpdatesSubject = new ReplaySubject<{ id: number; card: Card | null }>();
+        this.playerBarCardUpdates$ = this.playerBarCardUpdatesSubject.asObservable();
+
+        this.currentTurnSubject = new ReplaySubject<number>();
+        this.currentTurn$ = this.currentTurnSubject.asObservable();
+
+        this.mapUpdateSubject = new ReplaySubject<TurtlePiece[]>();
+        this.mapUpdates$ = this.mapUpdateSubject.asObservable();
+
+        this.gameEndStatusSubject = new Subject<GameState>();
+        this.gameEndStatus$ = this.gameEndStatusSubject.asObservable();
+
+        this.gamePreparingSubject = new ReplaySubject<boolean>();
+        this.gamePreparing$ = this.gamePreparingSubject.asObservable();
+    }
 
     connect(url: string) {
         if (this.socket === undefined) {
             this.socket = new CustomSocket({ url });
+
+            this.socket.on(Events.gamepreparingStatus, data => {
+                this.gamePreparingSubject.next(data);
+                console.log('gamePreparing');
+            });
+
             this.socket.on(Events.playerBarUpdates$, (data: { id: number; card: Card | null }) => {
                 this.playerBarCardUpdatesSubject.next(data);
             });
@@ -51,6 +78,7 @@ export class ClientService {
             });
             this.socket.on(Events.gameEndStatus$, data => {
                 this.gameEndStatusSubject.next(data);
+                this.socket.disconnect();
             });
         }
     }
@@ -76,6 +104,7 @@ export class ClientService {
             });
         });
     }
+
     playerMove(m: Move, callback) {
         this.socket.emit(Events.playerMove, m, callback);
     }

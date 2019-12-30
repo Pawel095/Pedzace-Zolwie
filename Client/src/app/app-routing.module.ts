@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DebugViewComponent } from './Controllers/debug-view/debug-view.component';
 import { GameControllerComponent } from './Controllers/Game/game-controller/game-controller.component';
 import { HomeViewComponent } from './Controllers/Home/home-view/home-view.component';
 import { NewGameViewComponent } from './Controllers/Home/new-game-view/new-game-view.component';
@@ -18,7 +17,7 @@ const routes: Routes = [
         component: GameControllerComponent,
         canActivate: [RefrechCheckGuard],
     },
-    { path: 'debug', component: DebugViewComponent },
+    // { path: 'debug', component: DebugViewComponent },
     { path: 'lobby', component: LobbyComponent },
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: 'rules', component: RulesComponent },
