@@ -39,6 +39,9 @@ export class GameControllerComponent implements OnInit, IPlayer {
         this.currentDisplayPlayer = new Player(PlayerTypes.HUMAN, TurtleColours.RED);
 
         // if (!environment.production) {
+        //     this.gs.setup(GameModes.HOT_SEAT, { hu: 2 });
+        // }
+        // if (!environment.production) {
         //     this.gs.setup(GameModes.MULTIPLAYER);
         // }
 

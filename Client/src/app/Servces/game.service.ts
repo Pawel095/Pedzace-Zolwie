@@ -15,6 +15,7 @@ import { Player } from '../Models/Player';
 import { TurtlePiece } from '../Models/TurtlePiece';
 import shuffle from '../Utils/shuffle';
 import { ClientService } from './client.service';
+import { promise } from 'protractor';
 
 @Injectable({
     providedIn: 'root',
