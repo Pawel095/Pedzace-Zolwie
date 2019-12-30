@@ -8,8 +8,11 @@ export class PlayerInstrance implements IPlayer {
 
     public player: Player;
 
-    init(p: Player): void {
+    number: string;
+
+    init(p: Player, n: number): void {
         this.player = p;
+        this.number = n.toString();
     }
 
     makeMove(m: Move): boolean {

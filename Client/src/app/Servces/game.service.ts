@@ -63,11 +63,11 @@ export class GameService {
 
     get turtlePositions(): Array<TurtlePiece> | Promise<TurtlePiece[]> {
         if (this.currentGamemode === GameModes.MULTIPLAYER) {
-            const promise = this.cs.getTurtlePositions();
-            promise.then(result => {
+            const promis = this.cs.getTurtlePositions();
+            promis.then(result => {
                 this.gameState.turtles = result;
             });
-            return promise;
+            return promis;
         } else {
             return this.gameState.turtles;
         }
@@ -275,7 +275,8 @@ export class GameService {
             this.cs.getPlayer(type, p.init.bind(p));
         } else {
             if (this.wasSetupRun) {
-                p.init(this.getPlayer(type));
+                const player = this.getPlayer(type);
+                p.init(player, this.gameState.players.findIndex(e => e.id === player.id) + 1);
             } else {
                 this.initsToRun.push({ fun: p.init, type });
             }

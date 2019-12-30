@@ -82,7 +82,7 @@ export class ClientService {
         }
     }
 
-    getPlayer(type: PlayerTypes, callback: (p: Player) => void) {
+    getPlayer(type: PlayerTypes, callback: (p: Player, n: number) => void) {
         this.socket.emit(Events.getPlayer, type, callback);
     }
 

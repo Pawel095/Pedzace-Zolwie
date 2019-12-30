@@ -13,18 +13,7 @@ import { InitialPlayerBarData } from 'src/app/Models/InitialPlayerBarData';
 export class PlayerTurtleViewComponent implements OnInit {
     src: string;
     alt: string;
-    @Input() set id(i: number) {
-        if (this.gs.currentGamemode === GameModes.MULTIPLAYER) {
-            (this.gs.getInitialPlayerBarData() as Promise<InitialPlayerBarData[]>).then(result => {
-                (result.findIndex(e => e.id === i) + 1).toString();
-            });
-        } else {
-            this.number = (
-                (this.gs.getInitialPlayerBarData() as InitialPlayerBarData[]).findIndex(e => e.id === i) + 1
-            ).toString();
-        }
-    }
-    number = '0';
+    @Input() number = '0';
 
     @Input() set colour(colour: TurtleColours) {
         switch (colour) {

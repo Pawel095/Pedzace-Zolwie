@@ -8,6 +8,7 @@ import { Move } from './Utils/Move';
 import { Player } from './Utils/Player';
 import { PlayerTypes } from './Utils/PlayerTypes';
 import { TurtlePiece } from './Utils/TurtlePiece';
+import { GameState } from './Utils/GameState';
 
 const app = express();
 app.set('port', process.env.PORT || 3000);
@@ -15,7 +16,7 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
 const game = new Game();
-game.setup(2);
+game.setup(1);
 
 const unsubList: Subscription[] = [];
 
@@ -33,8 +34,12 @@ io.on('connection', (socket: socketio.Socket) => {
     });
 
     // as soon as client connects | in lobby
-    socket.on(Events.getPlayer, (type: PlayerTypes, callback: (p: Player) => void) => {
-        callback(game.getPlayer(type));
+    socket.on(Events.getPlayer, (type: PlayerTypes, callback: (p: Player, number: number) => void) => {
+        let player = game.getPlayer(type);
+        callback(
+            player,
+            game.gameState.players.findIndex(e => e.id === player.id)+1
+        );
     });
 
     // begin game
