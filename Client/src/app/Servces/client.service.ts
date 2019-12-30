@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ReplaySubject, Subject } from 'rxjs';
+import { ReplaySubject, Subject, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Events } from '../Enums/Events';
 import { PlayerTypes } from '../Enums/PlayerTypes';
@@ -51,6 +51,7 @@ export class ClientService {
     }
 
     connect(url: string) {
+        this.reset();
         if (this.socket === undefined) {
             this.socket = new CustomSocket({ url });
 
