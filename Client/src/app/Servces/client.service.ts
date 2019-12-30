@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
+import { ReplaySubject, Subject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Events } from '../Enums/Events';
 import { PlayerTypes } from '../Enums/PlayerTypes';
+import { Card } from '../Models/Card';
 import { CustomSocket } from '../Models/CustomSocket';
+import { GameState } from '../Models/GameState';
+import { Move } from '../Models/Move';
 import { Player } from '../Models/Player';
 import { TurtlePiece } from '../Models/TurtlePiece';
-import { Subject, ReplaySubject, Observable } from 'rxjs';
-import { Card } from '../Models/Card';
-import { environment } from 'src/environments/environment';
-import { Socket } from 'ngx-socket-io';
-import { Move } from '../Models/Move';
-import { GameState } from '../Models/GameState';
 
 @Injectable({
     providedIn: 'root',

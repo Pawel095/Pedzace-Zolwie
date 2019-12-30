@@ -1,18 +1,15 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { CustomSocket } from 'src/app/Models/CustomSocket';
-import { SocketIoModule } from 'ngx-socket-io';
-import { environment } from 'src/environments/environment';
-import { getMatScrollStrategyAlreadyAttachedError } from '@angular/cdk/overlay/typings/scroll/scroll-strategy';
-import { Router } from '@angular/router';
-import { GameService } from 'src/app/Servces/game.service';
-import { GameModes } from 'src/app/Enums/GameModes';
-import { Events } from 'src/app/Enums/Events';
-import { SimpleSnackBar, MatSnackBar } from '@angular/material/snack-bar';
-import { ClientService } from 'src/app/Servces/client.service';
 import { MatDialog } from '@angular/material/dialog';
-import { WaitingDialogComponent } from '../../Game/game-controller/waiting-dialog/waiting-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { Events } from 'src/app/Enums/Events';
+import { GameModes } from 'src/app/Enums/GameModes';
+import { CustomSocket } from 'src/app/Models/CustomSocket';
+import { ClientService } from 'src/app/Servces/client.service';
+import { GameService } from 'src/app/Servces/game.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'app-lobby',
